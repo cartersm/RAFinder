@@ -1,0 +1,10 @@
+RAFinder feedback:
+
+
+Kyle Rhodes:
+- Full directory of RAs/RA on duty for every hall
+- - Separate view accessible from NavDrawer
+
+- Pictures of residents so RAs can put names to faces
+- - Rosters for other halls as well
+

@@ -1,0 +1,86 @@
+<resources>
+    <string name="app_name">RAFinder</string>
+
+    <string name="fri">Fri:</string>
+    <string name="sat">Sat:</string>
+    <string name="edit_duty_roster">Edit Duty Roster</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="name_default">John Public</string>
+    <string name="room_default">Room: Apartments East 201</string>
+    <string name="status_default">Status: In my room</string>
+    <string name="status_format">Status: %s</string>
+    <string name="status_detail_default">\"In my apartment. Come hang out with me!\"</string>
+    <string name="status_detail_format">\"%s\"</string>
+    <string name="feedback">Anonymous Feedback</string>
+    <string name="phone_default">(555) 555–5555</string>
+    <string name="email_default">publicjq@rose-hulman.edu</string>
+    <string name="profile_email_format">Email: %s</string>
+    <string name="profile_phone_format">Phone: %s</string>
+    <string name="profile_room_format">Room: %1$s %2$d</string>
+    <string name="room_default_short">Apts E 201</string>
+    <string name="off_duty">Off Duty</string>
+    <string name="res_hall_default">Apartments East</string>
+    <string name="duty_roster">Duty Roster</string>
+
+    <string name="emergency_contacts">Emergency Contacts</string>
+    <string name="name_default_emergency">John Public (My RA)</string>
+    <string name="action_call">Call</string>
+    <string name="action_email">Email</string>
+    <string name="my_ra">My RA</string>
+    <string name="my_ras">My RAs</string>
+    <string name="hall_ras">Other Hall RAs</string>
+    <string name="dates_default">Fri 7/10 - Sun 7/12</string>
+    <string name="hall_roster_room_default">101</string>
+    <string name="hall_roster">Hall Roster</string>
+    <string name="content_description_profile_picture">The profile picture</string>
+
+    <string name="profile_edit_message_format">Enter a new %s:</string>
+    <string name="profile_edit_phone">Phone Number</string>
+    <string name="profile_edit_status_detail">Status Message</string>
+    <string name="profile_edit_message_default">Enter a new Status:</string>
+    <string name="edit_prompt">Long press the image or the Status, Status Detail, or Phone fields to change them.</string>
+
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_register">Register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="welcome_message">Welcome to RA Finder</string>
+
+    <string name="title_activity_register">Register for RA Finder</string>
+
+    <string name="prompt_confirm_password">Confirm Password</string>
+    <string name="prompt_confirm_email">Confirm Email</string>
+    <string name="prompt_ra_email">Your RA\'s Email</string>
+    <string name="prompt_confirm_ra_email">Confirm your RA\'s Email</string>
+
+    <string name="error_email_mismatch">Emails don\'t match</string>
+    <string name="error_password_mismatch">Passwords don\'t match</string>
+    <string name="error_ra_email_mismatch">RA\'s Emails don\'t match</string>
+    <string name="error_invalid_ra_email">RA\'s email is invalid.</string>
+    <string name="error_ra_email_does_not_exist">RA\'s email does not exist</string>
+    <string name="error_email_in_use">This email is already in use</string>
+    <string name="error_generic">An unexpected error occurred.</string>
+
+    <string name="action_refresh">Refresh</string>
+    <string name="my_sas">My SAs</string>
+    <string name="hint_default">hint</string>
+
+    <string name="profile_feedback">Feedback Message</string>
+    <string name="profile_feedback_disclaimer">Please keep feedback to positives or constructive criticisms only.</string>
+    <string name="profile_feedback_subject_format">RA Finder: Anonymous feedback for %s</string>
+
+    <string name="content_description_search">Tap to search</string>
+    <string name="content_description_edit">Tap to edit</string>
+    <string name="content_description_profile_nav">Tap to go to this user\'s profile</string>
+    <string name="content_description_add_duty_roster_item">Add an item to the Duty Roster</string>
+    <string name="content_description_call">Tap to call this user</string>
+    <string name="content_description_email">Send an email to this user</string>
+    <string name="hint_name">name</string>
+</resources>

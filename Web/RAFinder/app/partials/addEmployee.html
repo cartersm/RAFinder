@@ -1,0 +1,70 @@
+<div id="addEmployee" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add an Employee</h4>
+            </div>
+            <div class="modal-body">
+                <form name="addEmployeeForm" role="form">
+                    <div class="form-group">
+                        <label>Employee Type
+                            <select ng-options="type for type in employeeTypes" ng-model="employeeType"></select>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label>Name
+                            <input type="text" name="name" ng-model="user.name" class="form-control"
+                                   placeholder="Name" required="" autofocus="">
+                        </label>
+                    </div>
+                    <div class="form-group"
+                         ng-class="{ 'has-error' : addEmployeeForm.email.$invalid }">
+                        <label>Email Address
+                            <input type="email" name="email" ng-model="user.email" class="form-control"
+                                   placeholder="Email address" required="" autofocus="">
+                        </label>
+
+                        <p class="help-block" ng-show="addEmployeeForm.email.$invalid">Enter a valid email.</p>
+                    </div>
+                    <div class="form-group"
+                         ng-class="{ 'has-error' : addEmployeeForm.phone.$invalid }">
+                        <label>Phone Number
+                            <input type="tel" name="phoneNumber" ng-model="user.phoneNumber" class="form-control"
+                                   placeholder="Phone Number" required="" autofocus="">
+                        </label>
+
+                        <p class="help-block" ng-show="addEmployeeForm.phoneNumber.$invalid">
+                            Enter a valid phone number.
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label>Residence Hall
+                                <select ng-options="hall.$id for hall in resHalls" ng-model="user.hall"></select>
+                            </label>
+                        </div>
+                    </div>
+                    <!-- CONSIDER: ng-class has-error for floor !in hall? -->
+                    <div class="form-group">
+                        <label>Floor
+                            <input type="number" name="floor" ng-model="user.floor" class="form-control"
+                                   placeholder="Floor" required="" autofocus="">
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label>Room Number
+                            <input type="number" name="room" ng-model="user.room" class="form-control"
+                                   placeholder="Room Number" required="" autofocus="">
+                        </label>
+                    </div>
+                    <button ng-click="addEmployee(user)"
+                            ng-disabled="!employeeType || !user.name || !user.email || !user.phoneNumber || !user.hall || !user.floor || ! user.room"
+                            class="btn btn-lg btn-primary" type="submit">
+                        Add Employee
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <title>Register - RAFinder</title>
+
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bootstrap_signin/signin.css" rel="stylesheet">
+
+    <link href="justified-nav.css" rel="stylesheet">
+
+</head>
+
+<body ng-controller="RegisterCtrl">
+
+<div class="container">
+    <div class="jumbotron" style="padding-bottom:0;">
+        <h2>Register for RAFinder</h2>
+    </div>
+    <form class="form-signin" name="regForm" role="form">
+        <div class="form-group" ng-class="{ 'has-error' : regForm.email.$invalid }">
+            <label>Email
+                <input type="email" name="email" class="form-control" ng-model="user.email"
+                       ng-required="true">
+            </label>
+
+            <p ng-show="regForm.email.$invalid">Enter a valid email.</p>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error' : regForm.password.$invalid }">
+            <label>Password
+                <input type="password" name="password" class="form-control" ng-model="user.password"
+                       ng-minlength="8" ng-required="true">
+            </label>
+
+            <p ng-show="regForm.password.$error.minlength">Min password length is 8 characters.</p>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error' : regForm.raEmail.$invalid }">
+            <label>Password
+                <input type="email" name="raEmail" class="form-control" ng-model="user.raEmail"
+                       ng-pattern="^[a-z1-9]*@rose-hulman\.edu$" ng-required="true" >
+            </label>
+
+            <p ng-show="regForm.password.$error.minlength"></p>
+        </div>
+        <button type="button" ng-click="signUp()"
+                ng-disabled="!user.email || !user.password || !user.raEmail"
+                class="btn btn-lg btn-primary btn-block">Register
+        </button>
+    </form>
+
+</div>
+
+</body>
+</html>

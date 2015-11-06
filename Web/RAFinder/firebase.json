@@ -1,0 +1,9 @@
+{
+  "firebase": "ra-finder",
+  "public": "./app",
+  "ignore": [
+    "firebase.json",
+    "**/.*",
+    "**/node_modules/**"
+  ]
+}

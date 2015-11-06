@@ -1,0 +1,38 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context="edu.rosehulman.rafinder.controller.HomeFragment">
+
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="edu.rosehulman.rafinder.controller.HomeFragmentSubsectionMyRA"
+        android:id="@+id/fragment"
+        android:layout_gravity="center_horizontal"
+        tools:layout="@layout/fragment_home_subsection_my_ra" />
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="edu.rosehulman.rafinder.controller.HomeFragmentSubsectionMySAs"
+        android:id="@+id/fragment2"
+        android:layout_gravity="center_horizontal"
+        tools:layout="@layout/fragment_home_subsection_my_sas" />
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="edu.rosehulman.rafinder.controller.HomeFragmentSubsectionMyHallRAs"
+        android:id="@+id/fragment3"
+        android:layout_gravity="center_horizontal"
+        tools:layout="@layout/fragment_home_subsection_my_hall_ras" />
+
+</LinearLayout>
+</ScrollView>
