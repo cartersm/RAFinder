@@ -3,78 +3,118 @@
         <h1>RAFinder</h1>
         <h4>Signed in as <b>{{username}}</b></h4>
     </div>
-    <p class="lead">Current Employees</p>
-    <table class="table-striped">
-        <thead>
-        <tr>
-            <th>Position</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Hall</th>
-            <th>Room</th>
-            <th>
-                <a class="btn btn-success" data-toggle="modal" data-target="#addEmployee">Add</a>
-            </th>
-        </tr>
-        </thead>
-        <tbody id="tbody_ras">
-        <tr ng-repeat="person in raData">
-            <td>Resident Assistant</td>
-            <td>{{person.name}}</td>
-            <td>{{person.email}}</td>
-            <td>{{person.hall}}</td>
-            <td>{{person.room}}</td>
-            <td>
-                <button class="btn btn-danger" ng-click="deleteEmployee('ra', person)">
-                    Delete
-                </button>
-            </td>
-        </tr>
-        </tbody>
-        <tbody id="tbody_sas">
-        <tr ng-repeat="person in saData">
-            <td>Sophomore Advisor</td>
-            <td>{{person.name}}</td>
-            <td>{{person.email}}</td>
-            <td>{{person.hall}}</td>
-            <td>{{person.room}}</td>
-            <td>
-                <button class="btn btn-danger" ng-click="deleteEmployee('sa', person)">
-                    Delete
-                </button>
-            </td>
-        </tr>
-        </tbody>
-        <tbody id="tbody_gas">
-        <tr ng-repeat="person in gaData">
-            <td>Graduate Assistant</td>
-            <td>{{person.name}}</td>
-            <td>{{person.email}}</td>
-            <td>{{person.hall}}</td>
-            <td>{{person.room}}</td>
-            <td>
-                <button class="btn btn-danger" ng-click="deleteEmployee('ga', person)">
-                    Delete
-                </button>
-            </td>
-        </tr>
-        </tbody>
-        <tbody id="tbody_admins">
-        <tr ng-repeat="person in adminData">
-            <td>Administrator</td>
-            <td>{{person.name}}</td>
-            <td>{{person.email}}</td>
-            <td>{{person.hall}}</td>
-            <td>{{person.room}}</td>
-            <td>
-                <button class="btn btn-danger" ng-click="deleteEmployee('admin', person)">
-                    Delete
-                </button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <p class="lead">
+        Current Employees
+        <a class="btn btn-success" data-toggle="modal" data-target="#addEmployee">Add</a>
+    </p>
+
+    <uib-accordion>
+        <uib-accordion-group heading="Resident Assistants" is-open="true">
+            <table class="table-striped">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Hall</th>
+                    <th>Room</th>
+                </tr>
+                </thead>
+                <tbody id="tbody-ras">
+                <tr ng-repeat="person in raData">
+                    <td>{{person.name}}</td>
+                    <td>{{person.email}}</td>
+                    <td>{{person.hall}}</td>
+                    <td>{{person.room}}</td>
+                    <td>
+                        <button class="btn btn-danger" ng-click="deleteEmployee('ra', person)">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </uib-accordion-group>
+
+        <uib-accordion-group heading="Sophomore Advisors" is-open="false">
+            <table class="table-striped">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Hall</th>
+                    <th>Room</th>
+                </tr>
+                </thead>
+                <tbody id="tbody-sas">
+                <tr ng-repeat="person in saData">
+                    <td>{{person.name}}</td>
+                    <td>{{person.email}}</td>
+                    <td>{{person.hall}}</td>
+                    <td>{{person.room}}</td>
+                    <td>
+                        <button class="btn btn-danger" ng-click="deleteEmployee('sa', person)">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </uib-accordion-group>
+
+        <uib-accordion-group heading="Graduate Assistants" is-open="false">
+            <table class="table-striped">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Hall</th>
+                    <th>Room</th>
+                </tr>
+                </thead>
+                <tbody id="tbody-gas">
+                <tr ng-repeat="person in gaData">
+                    <td>{{person.name}}</td>
+                    <td>{{person.email}}</td>
+                    <td>{{person.hall}}</td>
+                    <td>{{person.room}}</td>
+                    <td>
+                        <button class="btn btn-danger" ng-click="deleteEmployee('ga', person)">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </uib-accordion-group>
+
+        <uib-accordion-group heading="Administrators" is-open="false">
+            <table class="table-striped">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Hall</th>
+                    <th>Room</th>
+                </tr>
+                </thead>
+                <tbody id="tbody-admins">
+                <tr ng-repeat="person in adminData">
+                    <td>{{person.name}}</td>
+                    <td>{{person.email}}</td>
+                    <td>{{person.hall}}</td>
+                    <td>{{person.room}}</td>
+                    <td>
+                        <button class="btn btn-danger" ng-click="deleteEmployee('admin', person)">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </uib-accordion-group>
+    </uib-accordion>
 </div>
+
 <!-- TODO: move this to a partial with a modal service -->
 <div id="addEmployee" class="modal fade" role="dialog">
     <div class="modal-dialog">

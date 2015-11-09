@@ -2,6 +2,7 @@
 
 angular.module('RAFinder', [
     'ngRoute',
+    'ui.bootstrap',
     'RAFinder.login',
     'RAFinder.register',
     'RAFinder.employees'
