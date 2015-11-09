@@ -1,16 +1,17 @@
 'use strict';
 
-angular.module('RAFinder.home', [
+angular.module('RAFinder.login', [
     'ngRoute',
     "firebase"
 ])
-    .config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/home', {
-            templateUrl: 'login/login.html',
-            controller: 'HomeCtrl'
-        });
-    }])
-    .controller('HomeCtrl', ["$scope", "$firebaseAuth", "$location", "CommonProp",
+    .config(['$routeProvider',
+        function ($routeProvider) {
+            $routeProvider.when('/login', {
+                templateUrl: 'login/login.html',
+                controller: 'LoginCtrl'
+            });
+        }])
+    .controller('LoginCtrl', ["$scope", "$firebaseAuth", "$location", "CommonProp",
         function ($scope, $firebaseAuth, $location, CommonProp) {
             var firebase = new Firebase("https://ra-finder.firebaseio.com");
             var authObj = $firebaseAuth(firebase);
@@ -29,31 +30,12 @@ angular.module('RAFinder.home', [
                     email: username,
                     password: password
                 }).then(function (authData) {
-                    console.log("Logged in as: " + authData.uid);
+                    console.log("Logged in as: " + authData.password.email);
+                    CommonProp.setUser(authData.password.email);
                     $location.path("employees");
-                    CommonProp.setUser($scope.user.email);
                 }).catch(function (error) {
                     console.error("Authentication failed: ", error);
                 });
 
             }
-        }])
-    .service('CommonProp', ["$location", "$firebaseAuth", function ($location, $firebaseAuth) {
-        var user = "";
-        var firebase = new Firebase("https://ra-finder.firebaseio.com");
-        var authObj = $firebaseAuth(firebase);
-
-        return {
-            getUser: function () {
-                return user;
-            },
-            setUser: function (value) {
-                user = value;
-            },
-            logoutUser: function () {
-                authObj.$unauth();
-                console.log("Logout complete");
-                $location.path("/home");
-            }
-        }
-    }]);
+        }]);

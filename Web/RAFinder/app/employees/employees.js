@@ -10,11 +10,21 @@ angular.module('RAFinder.employees', [
             controller: 'EmployeesCtrl'
         });
     }])
-    .controller('EmployeesCtrl', ["$scope", "$firebaseAuth", "$location", "CommonProp", "$firebaseArray",
+    .controller('EmployeesCtrl', ['$scope', '$firebaseAuth', '$location', 'CommonProp', '$firebaseArray',
         function ($scope, $firebaseAuth, $location, CommonProp, $firebaseArray) {
             var firebase = new Firebase("https://ra-finder.firebaseio.com");
             var authObj = $firebaseAuth(firebase);
 
+            // check auth    TODO: find out whether this can be moved to app.js
+            var auth = authObj.$getAuth();
+            if (auth === null) {
+                $location.path("login");
+                return;
+            }
+            CommonProp.setUser(auth.password.email);
+            $scope.username = CommonProp.getUser();
+
+            // Populate employee data
             $firebaseArray(firebase.child("Employees/Resident Assistants"))
                 .$loaded()
                 .then(function (data) {
@@ -36,17 +46,7 @@ angular.module('RAFinder.employees', [
                     $scope.adminData = data;
                 });
 
-            if (authObj === null || authObj.$getAuth() === null) {
-                $location.path("home");
-            }
-
-            CommonProp.setUser(authObj.$getAuth().password.email);
-            $scope.username = CommonProp.getUser();
-
-            $scope.logout = function () {
-                CommonProp.logoutUser();
-            };
-
+            // FIXME: replace with modal service
             $('[data-toggle="popover"]').popover({
                 html: true,
                 content: function () {
@@ -56,11 +56,11 @@ angular.module('RAFinder.employees', [
 
             });
 
-            // Stuff for adding/deleting employees
-
+            // adding/deleting employees
             $scope.user = {};
             $scope.employeeType = "";
 
+            // Populate ResHall names
             $scope.resHalls = [];
             $firebaseArray(firebase.child("ResHalls"))
                 .$loaded()
@@ -68,6 +68,7 @@ angular.module('RAFinder.employees', [
                     $scope.resHalls = data;
                 });
             $scope.employeeTypes = ["Resident Assistant", "Sophomore Advisor", "Graduate Assistant", "Administrator"];
+
             $scope.addEmployee = function (user) {
                 // Set some defaults
                 user["status"] = "In My Room";
@@ -79,7 +80,7 @@ angular.module('RAFinder.employees', [
                 console.log(user);
                 $scope.employeeType += "s";
 
-                // FIXME: maybe have the admin specify a custom password, then immediately send an email with "temporary credentials"?
+                // FIXME: randomly generated password, then immediately send a "temporary credentials" email
                 authObj.$createUser({email: $scope.user.email, password: "test1234"})
                     .then(function (authData) {
                         console.log("successfully created user: " + authData.uid);
@@ -101,7 +102,7 @@ angular.module('RAFinder.employees', [
 
             $scope.deleteEmployee = function (type, person) {
                 // TODO: clunky; I'd prefer to have it in Bootstrap style
-                // UPDATE: can use a modal, but will come back to that later.
+                // TODO UPDATE: can use a modal. Requires functional Modal Service
                 var confirmed = window.confirm("are you sure you want to delete employee " + person.email + "?");
 
                 if (confirmed) {
@@ -128,4 +129,5 @@ angular.module('RAFinder.employees', [
                     }
                 }
             }
-        }]);
+        }
+    ]);
