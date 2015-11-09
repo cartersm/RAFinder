@@ -14,6 +14,8 @@ angular.module('RAFinder', [
         }])
     .controller('BlogNavCtrl', ['$scope', '$location', "CommonProp",
         function ($scope, $location, CommonProp) {
+
+
             $scope.isActive = function (viewLocation) {
                 return viewLocation === $location.path();
             };
@@ -23,7 +25,14 @@ angular.module('RAFinder', [
             };
 
             $scope.hasAuth = function () {
-                return !(CommonProp.getUser() === '');
+                var isAuthed = !(CommonProp.getUser() === '');
+                if (isAuthed) {
+                    // the navbar is forcibly hidden by default so that
+                    //     it doesn't appear on initial load.
+                    // Remove the 'hidden' class so ngShow can take over.
+                    $("#primary-navbar").removeClass("hidden");
+                }
+                return isAuthed;
             }
         }
     ])

@@ -25,7 +25,7 @@
 <!-- TODO: don't display me if we're not auth'ed, do display me if we are -->
 <div class="blog-masthead">
     <div class="container">
-        <nav class="blog-nav" ng-controller="BlogNavCtrl" ng-show="hasAuth()"> <!-- ng-show="hasAuth()" -->
+        <nav class="blog-nav hidden" id="primary-navbar" ng-controller="BlogNavCtrl" ng-show="hasAuth()"> <!-- ng-show="hasAuth()" -->
             <a ng-class="{ active: isActive('/employees') }" class="blog-nav-item active"
                href="#/employees">Employees</a>
             <!--<a ng-class="{ active: isActive('/duty_roster') }" class="blog-nav-item" href="#/duty_roster">Duty Roster</a>-->
