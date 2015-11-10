@@ -4,8 +4,8 @@ angular.module('RAFinder', [
     'ngRoute',
     'ui.bootstrap',
     'RAFinder.login',
-    'RAFinder.register',
-    'RAFinder.employees'
+    'RAFinder.employees',
+    "RAFinder.hallRoster"
 ])
     .config(['$routeProvider',
         function ($routeProvider) {
