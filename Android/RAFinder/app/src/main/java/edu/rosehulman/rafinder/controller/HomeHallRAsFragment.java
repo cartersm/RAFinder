@@ -14,43 +14,44 @@ import edu.rosehulman.rafinder.R;
 import edu.rosehulman.rafinder.adapter.EmployeeListArrayAdapter;
 import edu.rosehulman.rafinder.model.person.Employee;
 
-public class HomeFragmentSubsectionMySAs extends HomeFragmentSubsection
+public class HomeHallRAsFragment extends HomeSubsectionFragment
         implements EmployeeListArrayAdapter.EmployeeListArrayAdapterListener {
 
-    private HomeMySAListener mListener;
+    private HomeMyHallRAsListener mListener;
 
-    public static HomeFragmentSubsectionMySAs newInstance() {
-        return new HomeFragmentSubsectionMySAs();
+    public static HomeHallRAsFragment newInstance() {
+        return new HomeHallRAsFragment();
     }
 
-    public HomeFragmentSubsectionMySAs() {
+    public HomeHallRAsFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home_subsection_my_sas, container, false);
-        final ListView listView = (ListView) view.findViewById(R.id.mySAsView);
+        View view = inflater.inflate(R.layout.fragment_home_hall_ras, container, false);
+        final ListView listView = (ListView) view.findViewById(R.id.myHallRAsFragment);
 
-        List<Employee> hallSAs = mListener.getMySAs();
+        List<Employee> hallRAs = mListener.getMyHallRAs();
         EmployeeListArrayAdapter mAdapter2 = new EmployeeListArrayAdapter(
                 getActivity(),
                 R.layout.fragment_home,
-                hallSAs,
+                hallRAs,
                 this);
         listView.setAdapter(mAdapter2);
-        HomeFragmentSubsection.setListViewHeightBasedOnChildren(listView);
+        HomeSubsectionFragment.setListViewHeightBasedOnChildren(listView);
 
-        setToggleButtonListener(listView, (ToggleButton) view.findViewById(R.id.mySAExpander));
+        setToggleButtonListener(listView, (ToggleButton) view.findViewById(R.id.myHallExpander));
         return view;
+
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (HomeMySAListener) activity;
+            mListener = (HomeMyHallRAsListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement HomeMySAListener");
+            throw new ClassCastException(activity.toString() + " must implement HomeMyHallRAsListener");
         }
     }
 
@@ -65,7 +66,8 @@ public class HomeFragmentSubsectionMySAs extends HomeFragmentSubsection
         mListener.switchToProfile(employee);
     }
 
-    public interface HomeMySAListener extends HomeSubsectionListener {
-        public List<Employee> getMySAs();
+    public interface HomeMyHallRAsListener extends HomeSubsectionListener {
+        List<Employee> getMyHallRAs();
     }
+
 }

@@ -12,7 +12,7 @@ import edu.rosehulman.rafinder.R;
 import edu.rosehulman.rafinder.adapter.EmployeeListArrayAdapter;
 import edu.rosehulman.rafinder.model.person.Employee;
 
-public abstract class HomeFragmentSubsection extends Fragment
+public abstract class HomeSubsectionFragment extends Fragment
         implements EmployeeListArrayAdapter.EmployeeListArrayAdapterListener {
 
 

@@ -35,9 +35,9 @@ import edu.rosehulman.rafinder.controller.EditDutyRosterDialog;
 import edu.rosehulman.rafinder.controller.EmergencyContactsFragment;
 import edu.rosehulman.rafinder.controller.HallRosterFragment;
 import edu.rosehulman.rafinder.controller.HomeFragment;
-import edu.rosehulman.rafinder.controller.HomeFragmentSubsectionMyHallRAs;
-import edu.rosehulman.rafinder.controller.HomeFragmentSubsectionMyRA;
-import edu.rosehulman.rafinder.controller.HomeFragmentSubsectionMySAs;
+import edu.rosehulman.rafinder.controller.HomeHallRAsFragment;
+import edu.rosehulman.rafinder.controller.HomeRAFragment;
+import edu.rosehulman.rafinder.controller.HomeSAsFragment;
 import edu.rosehulman.rafinder.controller.LoadingFragment;
 import edu.rosehulman.rafinder.controller.LoginActivity;
 import edu.rosehulman.rafinder.controller.NavigationDrawerFragment;
@@ -66,9 +66,9 @@ public class MainActivity extends Activity implements
         DutyRosterFragment.DutyRosterListener,
         HallRosterFragment.HallRosterListener,
         ProfileFragment.StudentProfileListener,
-        HomeFragmentSubsectionMyHallRAs.HomeMyHallRAsListener,
-        HomeFragmentSubsectionMyRA.HomeMyRAListener,
-        HomeFragmentSubsectionMySAs.HomeMySAListener,
+        HomeHallRAsFragment.HomeMyHallRAsListener,
+        HomeRAFragment.HomeMyRAListener,
+        HomeSAsFragment.HomeMySAListener,
         Loader.LoaderListener,
         SearchFragment.SearchFragmentListener,
         EditDutyRosterDialog.EditDutyRosterDialogListener {

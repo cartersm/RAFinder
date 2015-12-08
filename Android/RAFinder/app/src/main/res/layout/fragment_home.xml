@@ -13,26 +13,26 @@
     <fragment
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:name="edu.rosehulman.rafinder.controller.HomeFragmentSubsectionMyRA"
+        android:name="edu.rosehulman.rafinder.controller.HomeRAFragment"
         android:id="@+id/fragment"
         android:layout_gravity="center_horizontal"
-        tools:layout="@layout/fragment_home_subsection_my_ra" />
+        tools:layout="@layout/fragment_home_ra" />
 
     <fragment
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:name="edu.rosehulman.rafinder.controller.HomeFragmentSubsectionMySAs"
+        android:name="edu.rosehulman.rafinder.controller.HomeSAsFragment"
         android:id="@+id/fragment2"
         android:layout_gravity="center_horizontal"
-        tools:layout="@layout/fragment_home_subsection_my_sas" />
+        tools:layout="@layout/fragment_home_sas" />
 
     <fragment
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:name="edu.rosehulman.rafinder.controller.HomeFragmentSubsectionMyHallRAs"
+        android:name="edu.rosehulman.rafinder.controller.HomeHallRAsFragment"
         android:id="@+id/fragment3"
         android:layout_gravity="center_horizontal"
-        tools:layout="@layout/fragment_home_subsection_my_hall_ras" />
+        tools:layout="@layout/fragment_home_hall_ras" />
 
 </LinearLayout>
 </ScrollView>

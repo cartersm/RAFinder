@@ -15,19 +15,19 @@ import edu.rosehulman.rafinder.R;
 import edu.rosehulman.rafinder.adapter.EmployeeListArrayAdapter;
 import edu.rosehulman.rafinder.model.person.Employee;
 
-public class HomeFragmentSubsectionMyRA extends HomeFragmentSubsection {
+public class HomeRAFragment extends HomeSubsectionFragment {
     private HomeMyRAListener mListener;
 
-    public static HomeFragmentSubsectionMyRA newInstance() {
-        return new HomeFragmentSubsectionMyRA();
+    public static HomeRAFragment newInstance() {
+        return new HomeRAFragment();
     }
 
-    public HomeFragmentSubsectionMyRA() {
+    public HomeRAFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home_subsection_my_ra, container, false);
+        View view = inflater.inflate(R.layout.fragment_home_ra, container, false);
         final ListView listView = (ListView) view.findViewById(R.id.myRAView);
 
         List<Employee> myRAs = mListener.getMyRAs();
@@ -40,7 +40,7 @@ public class HomeFragmentSubsectionMyRA extends HomeFragmentSubsection {
                 myRAs,
                 this);
         listView.setAdapter(mAdapter2);
-        HomeFragmentSubsection.setListViewHeightBasedOnChildren(listView);
+        HomeSubsectionFragment.setListViewHeightBasedOnChildren(listView);
 
         setToggleButtonListener(listView, (ToggleButton) view.findViewById(R.id.myRAExpander));
         return view;
