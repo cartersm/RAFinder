@@ -67,6 +67,7 @@ public abstract class Employee extends Resident {
         this.phoneNumber = phoneNumber;
         this.room = room;
         this.status = status;
+        this.statusDetail = statusDetail;
         this.profilePicture = profilePicture;
         userType = getEmployeeType();
     }

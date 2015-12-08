@@ -17,13 +17,13 @@ import edu.rosehulman.rafinder.model.person.ResidentAssistant;
 import edu.rosehulman.rafinder.model.person.SophomoreAdvisor;
 
 public class FloorRosterArrayAdapter extends ArrayAdapter<RoomEntry> {
-    public static final int MAX_ROOMMATES = 5;
+    public static final int MAX_ROOMMATES = 3;
     private final Context mContext;
     private final int mLayout;
 
     public FloorRosterArrayAdapter(Context context, int textViewResourceId, List<RoomEntry> objects) {
-        super(context, R.layout.layout_floor_roster_item, textViewResourceId, objects);
-        mLayout = R.layout.layout_floor_roster_item;
+        super(context, R.layout.layout_hall_roster_item, textViewResourceId, objects);
+        mLayout = R.layout.layout_hall_roster_item;
         mContext = context;
     }
 
@@ -37,9 +37,7 @@ public class FloorRosterArrayAdapter extends ArrayAdapter<RoomEntry> {
         TextView[] roommates = {
                 (TextView) view.findViewById(R.id.roommate1),
                 (TextView) view.findViewById(R.id.roommate2),
-                (TextView) view.findViewById(R.id.roommate3),
-                (TextView) view.findViewById(R.id.roommate4),
-                (TextView) view.findViewById(R.id.roommate5)
+                (TextView) view.findViewById(R.id.roommate3)
         };
         RoomEntry item = super.getItem(position);
         if (item instanceof RoomEntry.Lobby) {

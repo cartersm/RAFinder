@@ -11,7 +11,7 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public class Hall {
-    // HallRoster Firebase keys
+    // HallRoster Firebase key
     private static final String ROSTER = "Roster";
     private final HashMap<String, Floor> floors;
     private String name;
@@ -20,7 +20,8 @@ public class Hall {
         name = ds.getKey();
         floors = new HashMap<>();
         for (DataSnapshot child : ds.child(ROSTER).getChildren()) {
-            floors.put(child.getKey(), new Floor(child, name));
+            String floorNumber = child.getKey().substring(0, child.getKey().length() - 2);
+            floors.put(floorNumber, new Floor(child, name));
         }
     }
 
