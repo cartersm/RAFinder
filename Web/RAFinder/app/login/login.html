@@ -30,5 +30,6 @@
             Sign in
         </button>
     </form>
-    <p class="help-block alert-danger" ng-show="signinFailed">Invalid username or password</p>
+    <p class="help-block text-center alert-danger" ng-show="signinFailed">Invalid username or password</p>
+    <p class="help-block text-center alert-danger" ng-show="!isEmployee">Only designated employees may access this website.</p>
 </div>

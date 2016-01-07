@@ -12,7 +12,8 @@ angular.module('RAFinder', [
             // Always redirect to login page
             // Login will forward to home page if logged in
             $routeProvider.otherwise({redirectTo: '/login'});
-        }])
+        }
+    ])
     .controller('BlogNavCtrl', ['$scope', '$location', "CommonProp",
         function ($scope, $location, CommonProp) {
             $scope.isActive = function (viewLocation) {
@@ -35,16 +36,55 @@ angular.module('RAFinder', [
             }
         }
     ])
-    .service('CommonProp', ["$firebaseAuth", "$window",
-        function ($firebaseAuth, $window) {
+    .service('CommonProp', ["$firebaseAuth", "$window", "$firebaseObject",
+        function ($firebaseAuth, $window, $firebaseObject) {
             var user = "";
+            var isEmployee = false;
+            var isAdmin = false;
             var firebase = new Firebase("https://ra-finder.firebaseio.com");
             var authObj = $firebaseAuth(firebase);
 
-            var auth = authObj.$getAuth();
-            if (auth !== null) {
-                this.user = auth.password.email;
-            }
+            this.checkAuth = function (auth, callback) {
+                if (auth !== null) {
+                    //console.log(auth.uid);
+                    // Find out whether the user is an admin or other employee
+                    var obj = $firebaseObject(firebase.child("Employees/Administrators"));
+                    obj.$loaded().then(function () {
+                        angular.forEach(obj, function (value, key) {
+                            //console.log(key);
+                            if (key === auth.uid) {
+                                isAdmin = true;
+                                isEmployee = true;
+                            }
+                        });
+
+                        if (!isAdmin) {
+                            obj = $firebaseObject(firebase.child("Employees"));
+                            obj.$loaded().then(function () {
+                                angular.forEach(obj, function (child) {
+                                    angular.forEach(child, function (value, key) {
+                                        //console.log(key);
+                                        if (key === auth.uid) {
+                                            isEmployee = true;
+                                        }
+                                    })
+                                });
+                                if (!isEmployee) {
+                                    authObj.$unauth();
+                                    console.log("non-employee has been logged out");
+                                }
+                                callback();
+                            });
+                        } else {
+                            callback();
+                        }
+                    });
+                }
+            };
+
+            this.checkAuth(authObj.$getAuth(), function () {
+                user = auth.password.email;
+            });
 
             return {
                 getUser: function () {
@@ -58,6 +98,13 @@ angular.module('RAFinder', [
                     console.log("Logout complete");
                     // Force reload to hide the navbar
                     $window.location.reload();
-                }
+                },
+                isAdmin: function () {
+                    return isAdmin;
+                },
+                isEmployee: function () {
+                    return isEmployee;
+                },
+                checkAuth: this.checkAuth
             }
         }]);
