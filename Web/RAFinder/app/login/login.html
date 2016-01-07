@@ -22,9 +22,13 @@
             <p class="help-block" ng-show="signinForm.password.$error.minlength">Min password length
                 is 8 characters.</p>
         </div>
+        <label class="checkbox">
+            <a href="#/register">Sign Up</a>
+        </label>
         <button ng-click="SignIn($event)" ng-disabled="!user.email || !user.password"
                 class="btn btn-lg btn-primary btn-block" type="submit">
             Sign in
         </button>
     </form>
+    <p class="help-block alert-danger" ng-show="signinFailed">Invalid username or password</p>
 </div>

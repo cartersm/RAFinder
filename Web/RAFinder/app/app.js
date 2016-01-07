@@ -9,13 +9,12 @@ angular.module('RAFinder', [
 ])
     .config(['$routeProvider',
         function ($routeProvider) {
-            // Home Page
+            // Always redirect to login page
+            // Login will forward to home page if logged in
             $routeProvider.otherwise({redirectTo: '/login'});
         }])
     .controller('BlogNavCtrl', ['$scope', '$location', "CommonProp",
         function ($scope, $location, CommonProp) {
-
-
             $scope.isActive = function (viewLocation) {
                 return viewLocation === $location.path();
             };

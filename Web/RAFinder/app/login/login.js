@@ -13,6 +13,7 @@ angular.module('RAFinder.login', [
         }])
     .controller('LoginCtrl', ["$scope", "$firebaseAuth", "$location", "CommonProp",
         function ($scope, $firebaseAuth, $location, CommonProp) {
+            $scope.signinFailed = false;
             var firebase = new Firebase("https://ra-finder.firebaseio.com");
             var authObj = $firebaseAuth(firebase);
             $scope.user = {};
@@ -31,11 +32,13 @@ angular.module('RAFinder.login', [
                     password: password
                 }).then(function (authData) {
                     console.log("Logged in as: " + authData.password.email);
+                    $scope.signinFailed = false;
                     CommonProp.setUser(authData.password.email);
                     $location.path("employees");
                 }).catch(function (error) {
                     console.error("Authentication failed: ", error);
+                    $scope.signinFailed = true;
                 });
 
-            }
+            };
         }]);

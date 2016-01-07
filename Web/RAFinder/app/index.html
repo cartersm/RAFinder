@@ -1,11 +1,16 @@
 <!DOCTYPE html>
-
-<html lang="en" ng-app="RAFinder" class="no-js">
+<!--[if lt IE 7]>
+<html lang="en" ng-app="RAFinder" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html lang="en" ng-app="RAFinder" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html lang="en" ng-app="RAFinder" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en" ng-app="RAFinder" class="no-js"> <!--<![endif]-->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>RAFinder</title>
-    <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
@@ -16,14 +21,14 @@
     <link rel="stylesheet" href="bower_components/angular-bootstrap/ui-bootstrap-csp.css">
 
     <link rel="stylesheet" href="app.css">
-
+    <link rel="shortcut icon" href="favicon.ico">
 </head>
 <body>
+<!-- Navbar -->
 <div class="blog-masthead">
     <div class="container">
         <nav class="blog-nav hidden" id="primary-navbar" ng-controller="BlogNavCtrl" ng-show="hasAuth()">
-            <a ng-class="{ active: isActive('/employees') }" class="blog-nav-item active"
-               href="#/employees">Employees</a>
+            <a ng-class="{ active: isActive('/employees') }" class="blog-nav-item active" href="#/employees">Employees</a>
             <!--<a ng-class="{ active: isActive('/duty_roster') }" class="blog-nav-item" href="#/duty_roster">Duty Roster</a>-->
             <a ng-class="{ active: isActive('/hall_roster') }" class="blog-nav-item" href="#/hallRoster">Hall Roster</a>
             <a class="blog-nav-item" style="cursor:pointer;" ng-click="logout()">Logout</a>
@@ -31,7 +36,7 @@
     </div>
 </div>
 
-<!-- Container for other pages -->
+<!-- Container for partials -->
 <div ng-view ng-cloak></div>
 
 <!-- Libraries -->
