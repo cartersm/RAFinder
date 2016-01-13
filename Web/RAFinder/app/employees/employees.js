@@ -10,8 +10,8 @@ angular.module('RAFinder.employees', [
             controller: 'EmployeesCtrl'
         });
     }])
-    .controller('EmployeesCtrl', ['$scope', '$firebaseAuth', '$location', 'CommonProp', '$firebaseArray',
-        function ($scope, $firebaseAuth, $location, CommonProp, $firebaseArray) {
+    .controller('EmployeesCtrl', ['$scope', '$firebaseAuth', '$location', 'CommonProp', '$firebaseArray', 'ModalService',
+        function ($scope, $firebaseAuth, $location, CommonProp, $firebaseArray, ModalService) {
             var firebase = new Firebase("https://ra-finder.firebaseio.com");
             var authObj = $firebaseAuth(firebase);
 
@@ -24,39 +24,56 @@ angular.module('RAFinder.employees', [
             CommonProp.setUser(auth.password.email);
             $scope.username = CommonProp.getUser();
 
+            $scope.accordionData = [];
+
             // Populate employee data
+            $firebaseArray(firebase.child("Employees/Administrators"))
+                .$loaded()
+                .then(function (data) {
+                    $scope.adminData = data;
+                    $scope.accordionData.push({
+                        heading: "Administrators",
+                        type: "admin",
+                        data: $scope.adminData,
+                        showOnLoad: false
+                    });
+                });
             $firebaseArray(firebase.child("Employees/Resident Assistants"))
                 .$loaded()
                 .then(function (data) {
                     $scope.raData = data;
+                    $scope.accordionData.push({
+                        heading: "Resident Assistants",
+                        type: "ra",
+                        data: $scope.raData,
+                        showOnLoad: true
+                    });
                 });
             $firebaseArray(firebase.child("Employees/Sophomore Advisors"))
                 .$loaded()
                 .then(function (data) {
                     $scope.saData = data;
+                    $scope.accordionData.push({
+                        heading: "Sophomore Advisors",
+                        type: "sa",
+                        data: $scope.saData,
+                        showOnLoad: false
+                    });
                 });
             $firebaseArray(firebase.child("Employees/Graduate Assistants"))
                 .$loaded()
                 .then(function (data) {
                     $scope.gaData = data;
+                    $scope.accordionData.push({
+                        heading: "Graduate Assistants",
+                        type: "ga",
+                        data: $scope.gaData,
+                        showOnLoad: false
+                    });
                 });
-            $firebaseArray(firebase.child("Employees/Administrators"))
-                .$loaded()
-                .then(function (data) {
-                    $scope.adminData = data;
-                });
-
-            // FIXME: replace with modal service
-            $('[data-toggle="popover"]').popover({
-                html: true,
-                content: function () {
-                    return $('#addEmployee').html();
-                }
-            }).on('show.bs.popover', function () {
-
-            });
 
             // adding/deleting employees
+            // CONSIDER separating these into their own controllers
             $scope.user = {};
             $scope.employeeType = "";
 
@@ -68,6 +85,24 @@ angular.module('RAFinder.employees', [
                     $scope.resHalls = data;
                 });
             $scope.employeeTypes = ["Resident Assistant", "Sophomore Advisor", "Graduate Assistant", "Administrator"];
+
+            $scope.showAddEmployeeModal = function () {
+                var modalDefaults = {
+                    templateUrl: "employees/addEmployee.html"
+                };
+                var modalOptions = {
+                    headerText: "Add an Employee",
+                    actionButtonText: "Add Employee",
+                    closeButtonText: "Cancel"
+                };
+
+                ModalService.showModal(modalDefaults, modalOptions)
+                    .then(function (successResult) {
+                        $scope.addEmployee($scope.user);
+                    }, function (cancelResult) {
+                        $scope.user = {};
+                    });
+            };
 
             $scope.addEmployee = function (user) {
                 // Set some defaults
@@ -103,31 +138,45 @@ angular.module('RAFinder.employees', [
             $scope.deleteEmployee = function (type, person) {
                 // TODO: clunky; I'd prefer to have it in Bootstrap style
                 // TODO UPDATE: can use a modal. Requires functional Modal Service
-                var confirmed = window.confirm("are you sure you want to delete employee " + person.email + "?");
+                var modalDefaults = {
+                    templateUrl: "employees/deleteEmployee.html"
+                };
 
-                if (confirmed) {
-                    console.warn("Deleting user " + person.email);
-                    var data;
-                    switch (type) {
-                        case "ra":
-                            data = $scope.raData;
-                            break;
-                        case "sa":
-                            data = $scope.saData;
-                            break;
-                        case "ga":
-                            data = $scope.gaData;
-                            break;
-                        case "admin":
-                            data = $scope.adminData;
-                            break;
-                    }
-                    data.$remove(person);
-                    if (person.email.endsWith("@test.com")) {
-                        // This is a test entity created by a demo of the app; remove it from the Firebase's authorized users
-                        authObj.$removeUser({email: person.email, password: "test1234"});
-                    }
-                }
+                var modalOptions = {
+                    headerText: "Delete Employee?",
+                    bodyText: "Are you sure you want to delete " + person.email + "?",
+                    actionButtonText: "Confirm",
+                    closeButtonText: "Cancel"
+                };
+
+                ModalService.showModal(modalDefaults, modalOptions)
+                    .then(function (successResult) {
+                        console.warn("Deleting user " + person.email);
+                        var data;
+                        switch (type) {
+                            case "ra":
+                                data = $scope.raData;
+                                break;
+                            case "sa":
+                                data = $scope.saData;
+                                break;
+                            case "ga":
+                                data = $scope.gaData;
+                                break;
+                            case "admin":
+                                data = $scope.adminData;
+                                break;
+                        }
+                        data.$remove(person);
+                        if (person.email.endsWith("@test.com")) {
+                            // This is a test entity created by a demo of the app; remove it from the Firebase's authorized users
+                            authObj.$removeUser({email: person.email, password: "test1234"});
+                        }
+                    });
+            };
+
+            $scope.isAdmin = function () {
+                return CommonProp.isAdmin();
             }
         }
     ]);

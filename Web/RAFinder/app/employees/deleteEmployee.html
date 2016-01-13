@@ -1,0 +1,15 @@
+<!-- Modal template borrowed from http://weblogs.asp.net/dwahlin/building-an-angularjs-modal-service -->
+<div class="modal-header">
+    <h3>{{modalOptions.headerText}}</h3>
+</div>
+<div class="modal-body">
+    <p>{{modalOptions.bodyText}}</p>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary btn-large"
+            data-ng-click="modalOptions.ok();">{{modalOptions.actionButtonText}}
+    </button>
+    <button type="button" class="btn btn-large"
+            data-ng-click="modalOptions.close()">{{modalOptions.closeButtonText}}
+    </button>
+</div>
