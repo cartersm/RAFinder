@@ -8,7 +8,8 @@ angular.module('RAFinder.hallRoster', [
                 templateUrl: 'hall_roster/hallRoster.html',
                 controller: 'HallRosterCtrl'
             });
-        }])
+        }
+    ])
     .controller('HallRosterCtrl', ['$scope', '$location', '$firebaseAuth', "$firebaseObject", '$firebaseArray', 'CommonProp',
         function ($scope, $location, $firebaseAuth, $firebaseObject, $firebaseArray, CommonProp) {
             var firebase = new Firebase("https://ra-finder.firebaseio.com");
@@ -38,4 +39,5 @@ angular.module('RAFinder.hallRoster', [
                 });
                 return residents;
             };
-        }]);
+        }
+    ]);
