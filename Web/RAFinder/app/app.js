@@ -5,7 +5,8 @@ angular.module('RAFinder', [
     'ui.bootstrap',
     'RAFinder.login',
     'RAFinder.employees',
-    "RAFinder.hallRoster"
+    "RAFinder.hallRoster",
+    "RAFinder.dutyRoster"
 ])
     .config(['$routeProvider',
         function ($routeProvider) {

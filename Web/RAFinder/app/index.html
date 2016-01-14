@@ -29,7 +29,7 @@
     <div class="container">
         <nav class="blog-nav hidden" id="primary-navbar" ng-controller="BlogNavCtrl" ng-show="hasAuth()">
             <a ng-class="{ active: isActive('/employees') }" class="blog-nav-item active" href="#/employees">Employees</a>
-            <!--<a ng-class="{ active: isActive('/duty_roster') }" class="blog-nav-item" href="#/duty_roster">Duty Roster</a>-->
+            <a ng-class="{ active: isActive('/dutyRoster') }" class="blog-nav-item" href="#/dutyRoster">Duty Roster</a>
             <a ng-class="{ active: isActive('/hallRoster') }" class="blog-nav-item" href="#/hallRoster">Hall Roster</a>
             <a class="blog-nav-item" style="cursor:pointer;" ng-click="logout()">Logout</a>
         </nav>
@@ -55,6 +55,7 @@
 <script src="login/login.js"></script>
 <script src="employees/employees.js"></script>
 <script src="hall_roster/hallRoster.js"></script>
+<script src="duty_roster/dutyRoster.js"></script>
 
 </body>
 </html>
