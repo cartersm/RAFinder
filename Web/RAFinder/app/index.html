@@ -31,7 +31,7 @@
             <a ng-class="{ active: isActive('/employees') }" class="blog-nav-item active" href="#/employees">Employees</a>
             <a ng-class="{ active: isActive('/dutyRoster') }" class="blog-nav-item" href="#/dutyRoster">Duty Roster</a>
             <a ng-class="{ active: isActive('/hallRoster') }" class="blog-nav-item" href="#/hallRoster">Hall Roster</a>
-            <a class="blog-nav-item" style="cursor:pointer;" ng-click="logout()">Logout</a>
+            <a class="blog-nav-item" ng-click="logout()">Logout</a>
         </nav>
     </div>
 </div>
@@ -51,11 +51,12 @@
 <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 
 <!-- Sources -->
-<script src="app.js"></script>
-<script src="login/login.js"></script>
-<script src="employees/employees.js"></script>
-<script src="hall_roster/hallRoster.js"></script>
-<script src="duty_roster/dutyRoster.js"></script>
+<script type="text/javascript" src="app.js"></script>
+<script type="text/javascript" src="login/login.js"></script>
+<script type="text/javascript" src="employees/employees.js"></script>
+<script type="text/javascript" src="hall_roster/hallRoster.js"></script>
+<script type="text/javascript" src="duty_roster/dutyRoster.js"></script>
+<script type="text/javascript" src="services.js"></script>
 
 </body>
 </html>

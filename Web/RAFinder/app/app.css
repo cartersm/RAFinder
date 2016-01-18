@@ -17,6 +17,10 @@
     font-size: 21px;
 }
 
+.my-jumbotron {
+    padding-bottom:0;
+}
+
 td, th {
     padding: 5px 20px;
 }
@@ -84,6 +88,10 @@ body {
 .blog-description {
     font-size: 20px;
     color: #999;
+}
+
+.my-separator {
+    padding:30px;
 }
 
 /* Responsive: Portrait tablets and up */
