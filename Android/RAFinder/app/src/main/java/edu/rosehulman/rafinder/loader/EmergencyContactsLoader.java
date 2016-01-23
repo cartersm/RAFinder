@@ -23,10 +23,10 @@ public class EmergencyContactsLoader extends Loader {
     public EmergencyContactsLoader(LoaderListener listener) {
         mListener = listener;
         if (listener != null) {
-            Employee raOnDuty = listener.getDutyRoster().getOnDutyNow();
-            if (raOnDuty != null) {
-                mContacts.add(new EmergencyContact(raOnDuty, true));
-            }
+//            Employee raOnDuty = listener.getDutyRoster().getOnDutyNow();
+//            if (raOnDuty != null) {
+//                mContacts.add(new EmergencyContact(raOnDuty, true));
+//            }
 
             List<Employee> myRAs = listener.getMyRAs();
             for (Employee employee : myRAs) {

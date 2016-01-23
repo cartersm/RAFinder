@@ -2,7 +2,6 @@ package edu.rosehulman.rafinder;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
@@ -16,22 +15,16 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
 
 import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import edu.rosehulman.rafinder.controller.AddDutyRosterItemDialog;
 import edu.rosehulman.rafinder.controller.DutyRosterFragment;
-import edu.rosehulman.rafinder.controller.EditDutyRosterDialog;
 import edu.rosehulman.rafinder.controller.EmergencyContactsFragment;
 import edu.rosehulman.rafinder.controller.HallRosterFragment;
 import edu.rosehulman.rafinder.controller.HomeFragment;
@@ -63,7 +56,6 @@ public class MainActivity extends Activity implements
         NavigationDrawerFragment.NavigationDrawerCallbacks,
         HomeFragment.HomeListener,
         EmergencyContactsFragment.EmergencyContactsListener,
-        DutyRosterFragment.DutyRosterListener,
         HallRosterFragment.HallRosterListener,
         ProfileFragment.StudentProfileListener,
         HomeHallRAsFragment.HomeMyHallRAsListener,
@@ -71,7 +63,7 @@ public class MainActivity extends Activity implements
         HomeSAsFragment.HomeMySAListener,
         Loader.LoaderListener,
         SearchFragment.SearchFragmentListener,
-        EditDutyRosterDialog.EditDutyRosterDialogListener {
+        DutyRosterFragment.DutyRosterListener {
 
     private static final int LOADING = -1;
     private static final int SEARCH = 0;
@@ -200,7 +192,7 @@ public class MainActivity extends Activity implements
             fragment = EmergencyContactsFragment.newInstance();
             break;
         case DUTY_ROSTER:
-            fragment = DutyRosterFragment.newInstance(mHallName, mDate);
+            fragment = DutyRosterFragment.newInstance(mDate);
             break;
         case HALL_ROSTER_OR_RESIDENT_LOGOUT:
             if (mUserType.equals(UserType.RESIDENT)) {
@@ -317,17 +309,6 @@ public class MainActivity extends Activity implements
     }
 
     @Override
-    public String getMyHall() {
-        return mHallName;
-    }
-
-    @Override
-    public void showAddDialog() {
-        DialogFragment newFragment = AddDutyRosterItemDialog.newInstance(mDutyRoster.getEndDate(), mHallName);
-        newFragment.show(getFragmentManager(), "addRoster");
-    }
-
-    @Override
     public List<Employee> getMyRAs() {
         List<Employee> myRAs = new ArrayList<>();
         for (Employee ra : mAllRAs) {
@@ -389,7 +370,7 @@ public class MainActivity extends Activity implements
     @Override
     public void onDutyRosterLoadingComplete(boolean isEdit) {
         mDutyRoster = mDutyRosterLoader.getDutyRoster();
-        mDate = mDutyRosterLoader.getmDate();
+        mDate = mDutyRosterLoader.getDate();
         if (!isEdit) {
             mHallLoader = new HallLoader(mHallName, this);
         } else {
@@ -422,45 +403,6 @@ public class MainActivity extends Activity implements
         mEmergencyContactsLoader = new EmergencyContactsLoader(this);
     }
 
-    @Override
-    public void showEditDialog(DutyRosterItem item) {
-        mDutyRosterItem = item;
-        DialogFragment newFragment = EditDutyRosterDialog.newInstance(
-                item.getFriday(),
-                item.getFriDuty().getName(),
-                item.getSatDuty().getName());
-        newFragment.show(getFragmentManager(), "editRoster");
-    }
-
-    @SuppressWarnings("Convert2Lambda") // Left as-is for clarity
-    @Override
-    public void onEditConfirm(String fri, String sat) {
-        Employee friday = getRAForName(fri);
-        if (friday == null) {
-            Toast.makeText(this, "No such person: " + fri, Toast.LENGTH_LONG).show();
-            showEditDialog(mDutyRosterItem);
-            return;
-        }
-        final Employee saturday = getRAForName(sat);
-        if (saturday == null) {
-            Toast.makeText(this, "No such person: " + sat, Toast.LENGTH_LONG).show();
-            showEditDialog(mDutyRosterItem);
-            return;
-        }
-        final Firebase ref = new Firebase(mDutyRosterItem.getURL());
-        ref.child(DutyRosterItem.fridayKey).setValue(friday.getFirebaseKey(), new Firebase.CompletionListener() {
-            @Override
-            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                ref.child(DutyRosterItem.saturdayKey).setValue(saturday.getFirebaseKey(), new Firebase.CompletionListener() {
-                    @Override
-                    public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                        mDutyRosterLoader = new DutyRosterLoader(mHallName, MainActivity.this, mAllRAs, true);
-                    }
-                });
-            }
-        });
-    }
-
     private Employee getRAForName(String name) {
         for (Employee ra : mAllRAs) {
             if (ra.getName().equalsIgnoreCase(name)) {
@@ -480,23 +422,6 @@ public class MainActivity extends Activity implements
             }
         }
         return employees;
-    }
-
-    @Override
-    public void onAddDutyRosterItem(String hall, LocalDate friday, String fri, String sat) {
-        Firebase ref = new Firebase(ConfigKeys.FIREBASE_ROOT_URL +
-                                    "/" + DutyRosterLoader.DUTY_ROSTERS +
-                                    "/" + hall +
-                                    "/" + friday.toString(ConfigKeys.formatter));
-        Map<String, Object> rosterItem = new HashMap<>();
-        rosterItem.put(DutyRosterItem.fridayKey, getRAForName(fri).getFirebaseKey());
-        rosterItem.put(DutyRosterItem.saturdayKey, getRAForName(sat).getFirebaseKey());
-        ref.setValue(rosterItem, new Firebase.CompletionListener() {
-            @Override
-            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                mDutyRosterLoader = new DutyRosterLoader(mHallName, MainActivity.this, mAllRAs, true);
-            }
-        });
     }
 
     /**

@@ -19,31 +19,10 @@
         android:textSize="30sp"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/hallNameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/textView"
-        android:text="@string/res_hall_default"
-        android:textSize="20sp" />
-
-
-    <ListView
+    <ExpandableListView
         android:id="@+id/dutyRosterListView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/hallNameTextView"
-        android:layout_centerHorizontal="true" />
-
-    <ImageButton
-        android:id="@+id/addDutyButton"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:background="@mipmap/ic_edit"
-        android:contentDescription="@string/content_description_add_duty_roster_item" />
-
-
+        android:layout_below="@+id/textView"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

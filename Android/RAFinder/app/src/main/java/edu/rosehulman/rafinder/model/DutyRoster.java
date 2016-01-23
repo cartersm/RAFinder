@@ -2,51 +2,60 @@ package edu.rosehulman.rafinder.model;
 
 import com.firebase.client.DataSnapshot;
 
-import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import edu.rosehulman.rafinder.ConfigKeys;
 import edu.rosehulman.rafinder.model.person.Employee;
 
 public class DutyRoster {
-    private final HashMap<LocalDate, DutyRosterItem> roster;
+    private final Map<LocalDate, List<DutyRosterItem>> roster;
 
     public DutyRoster(DataSnapshot ds, LocalDate startDate, List<Employee> ras) {
-        roster = new HashMap<>();
+        // FIXME for new DB structure
+        this.roster = new HashMap<>();
         for (DataSnapshot child : ds.getChildren()) {
             LocalDate rosterDate = LocalDate.parse(child.getKey(), ConfigKeys.formatter);
+//            rosterDate = rosterDate.plusDays(1); // TODO: check me: add one day to correct for UTC error
             if (!rosterDate.isBefore(startDate)) {
-                DutyRosterItem item = new DutyRosterItem(child, ras);
-                roster.put(rosterDate, item);
+                List<DutyRosterItem> items = new ArrayList<>();
+                for (DataSnapshot hall : child.getChildren()) {
+                    DutyRosterItem item = new DutyRosterItem(hall, ras);
+                    items.add(item);
+                }
+                this.roster.put(rosterDate, items);
             }
         }
     }
 
-    public Employee getOnDutyNow() {
-        LocalDate now = LocalDate.now();
-        if (now.getDayOfWeek() != DateTimeConstants.FRIDAY && now.getDayOfWeek() != DateTimeConstants.SATURDAY) {
-            return null;
-        } else {
-            if (now.getDayOfWeek() == DateTimeConstants.SATURDAY) {
-                now = now.minusDays(1);
-            }
-            DutyRosterItem item = roster.get(now);
-            if (item == null) {
-                return null;
-            }
-            if (now.getDayOfWeek() == DateTimeConstants.FRIDAY) {
-                return item.getFriDuty();
-            } else {
-                return item.getSatDuty();
-            }
-        }
-    }
+//    public Employee getOnDutyNow() {
+//        LocalDate now = LocalDate.now();
+//        if (now.getDayOfWeek() != DateTimeConstants.FRIDAY && now.getDayOfWeek() != DateTimeConstants.SATURDAY) {
+//            return null;
+//        } else {
+//            if (now.getDayOfWeek() == DateTimeConstants.SATURDAY) {
+//                now = now.minusDays(1);
+//            }
+//            DutyRosterItem item = roster.get(now);
+//            if (item == null) {
+//                return null;
+//            }
+//            if (now.getDayOfWeek() == DateTimeConstants.FRIDAY) {
+//                return item.getFriDuty();
+//            } else {
+//                return item.getSatDuty();
+//            }
+//        }
+//    }
 
-    public HashMap<LocalDate, DutyRosterItem> getRoster() {
+    public Map<LocalDate, List<DutyRosterItem>> getRoster() {
         return roster;
     }
 
@@ -64,5 +73,21 @@ public class DutyRoster {
             }
         }
         return last;
+    }
+
+    /**
+     * Returns the duty roster as a list of lists of duty roster items, sorted by date.
+     */
+    public List<List<DutyRosterItem>> getRosterAsList() {
+        return new ArrayList<>(new TreeMap<>(roster).values());
+    }
+
+    /**
+     * Returns the duty roster as a list of lists of duty roster items, sorted by date.
+     */
+    public List<LocalDate> getRosterDatesAsList() {
+        ArrayList<LocalDate> localDates = new ArrayList<>(roster.keySet());
+        Collections.sort(localDates);
+        return localDates;
     }
 }

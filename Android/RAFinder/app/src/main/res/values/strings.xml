@@ -32,7 +32,7 @@
     <string name="my_ra">My RA</string>
     <string name="my_ras">My RAs</string>
     <string name="hall_ras">Other Hall RAs</string>
-    <string name="dates_default">Fri 7/10 - Sun 7/12</string>
+    <string name="date_default">Sat. 7/11</string>
     <string name="hall_roster_room_default">101</string>
     <string name="hall_roster">Hall Roster</string>
     <string name="content_description_profile_picture">The profile picture</string>

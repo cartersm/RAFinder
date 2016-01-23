@@ -25,16 +25,17 @@ public class DutyRosterLoader extends Loader {
     private LocalDate mDate;
 
     public DutyRosterLoader(String hallName, LoaderListener listener, List<Employee> ras, boolean isEdit) {
+        // FIXME for new DB structure
         mListener = listener;
         mRAs = ras;
         mIsEdit = isEdit;
 
-        loadData(new Firebase(ConfigKeys.FIREBASE_ROOT_URL + "/" + DUTY_ROSTERS + "/" + hallName));
+        loadData(new Firebase(ConfigKeys.FIREBASE_ROOT_URL + "/" + DUTY_ROSTERS));
     }
 
-    protected void loadData(Firebase firebase) {
+    protected void loadData(Firebase firebaseRef) {
         Log.d(ConfigKeys.LOG_TAG, "Loading Duty Roster data...");
-        firebase.addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mRoster = new DutyRoster(dataSnapshot, modifyDate(LocalDate.now()), mRAs);
@@ -44,7 +45,7 @@ public class DutyRosterLoader extends Loader {
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-
+                // ignored
             }
         });
     }
@@ -61,7 +62,7 @@ public class DutyRosterLoader extends Loader {
         return dt;
     }
 
-    public LocalDate getmDate() {
+    public LocalDate getDate() {
         return mDate;
     }
 

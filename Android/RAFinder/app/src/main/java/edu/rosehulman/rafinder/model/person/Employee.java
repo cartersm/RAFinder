@@ -24,7 +24,7 @@ public abstract class Employee extends Resident {
     private int floor;
     private String hall;
     private String phoneNumber;
-    private int room;
+    private String room;
     private String status;
     private String statusDetail;
     private Bitmap profilePicture;
@@ -39,7 +39,7 @@ public abstract class Employee extends Resident {
                 ds.child(ConfigKeys.employeeFloor).getValue(int.class),
                 ds.child(ConfigKeys.employeeHall).getValue(String.class),
                 ds.child(ConfigKeys.employeePhone).getValue(String.class),
-                ds.child(ConfigKeys.employeeRoom).getValue(int.class),
+                ds.child(ConfigKeys.employeeRoom).getValue(String.class),
                 ds.child(ConfigKeys.employeeStatus).getValue(String.class),
                 ds.child(ConfigKeys.employeeStatusDetail).getValue(String.class),
                 convertToBitmap(ds.child(ConfigKeys.employeePicture).getValue(String.class)),
@@ -55,7 +55,7 @@ public abstract class Employee extends Resident {
                      int floor,
                      String hall,
                      String phoneNumber,
-                     int room,
+                     String room,
                      String status,
                      String statusDetail,
                      Bitmap profilePicture,
@@ -153,11 +153,11 @@ public abstract class Employee extends Resident {
         this.phoneNumber = phoneNumber;
     }
 
-    public int getRoom() {
+    public String getRoom() {
         return room;
     }
 
-    public void setRoom(int room) {
+    public void setRoom(String room) {
         this.room = room;
     }
 
@@ -242,7 +242,7 @@ public abstract class Employee extends Resident {
                 setPhoneNumber(arg0.getValue(String.class));
                 break;
             case ConfigKeys.employeeRoom:
-                setRoom(arg0.getValue(int.class));
+                setRoom(arg0.getValue(String.class));
                 break;
             case ConfigKeys.employeeStatus:
                 setStatus(arg0.getValue(String.class));
