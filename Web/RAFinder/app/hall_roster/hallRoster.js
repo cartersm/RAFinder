@@ -10,17 +10,15 @@ angular.module('RAFinder.hallRoster', [
             });
         }
     ])
-    .controller('HallRosterCtrl', ['$scope', '$location', '$firebaseAuth', "$firebaseObject", '$firebaseArray', 'CommonProp',
-        function ($scope, $location, $firebaseAuth, $firebaseObject, $firebaseArray, CommonProp) {
-            var firebase = new Firebase("https://ra-finder.firebaseio.com");
-            var authObj = $firebaseAuth(firebase);
-
-            // check auth    TODO: find out whether this can be moved to app.js
-            if (authObj === null || authObj.$getAuth() === null) {
-                $location.path("login");
+    .controller('HallRosterCtrl', ['$scope', '$location', '$firebaseAuth', "$firebaseObject", '$firebaseArray', 'AuthService',
+        function ($scope, $location, $firebaseAuth, $firebaseObject, $firebaseArray, AuthService) {
+            AuthService.checkAuth();
+            if (!AuthService.isEmployee()) {
+                $location.path('/login');
+                return;
             }
-            CommonProp.setUser(authObj.$getAuth().password.email);
-            $scope.username = CommonProp.getUser();
+
+            var firebase = new Firebase("https://ra-finder.firebaseio.com");
 
             // Populate Hall Data
             var hallsRef = firebase.child('ResHalls');

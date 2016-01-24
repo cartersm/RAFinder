@@ -1,77 +1,91 @@
 'use strict';
 angular.module('RAFinder.services', [])
-    .service('CommonProp', ["$firebaseAuth", "$window", "$firebaseObject",
-        function ($firebaseAuth, $window, $firebaseObject) {
+    .service('AuthService', ["$firebaseAuth", "$window", "$firebaseObject", '$location',
+        function ($firebaseAuth, $window, $firebaseObject, $location) {
             var user = "";
             var isEmployee = false;
             var isAdmin = false;
             var firebase = new Firebase("https://ra-finder.firebaseio.com");
             var authObj = $firebaseAuth(firebase);
 
-            this.checkAuth = function (auth, callback) {
+            this.checkAuth = function (onSuccess) {
+                var auth = authObj.$getAuth();
                 if (auth !== null) {
-                    //console.log(auth.uid);
                     // Find out whether the user is an admin or other employee
                     var obj = $firebaseObject(firebase.child("Employees/Administrators"));
                     obj.$loaded().then(function () {
                         angular.forEach(obj, function (value, key) {
-                            //console.log(key);
                             if (key === auth.uid) {
                                 isAdmin = true;
                                 isEmployee = true;
                             }
                         });
 
-                        if (!isAdmin) {
-                            obj = $firebaseObject(firebase.child("Employees"));
-                            obj.$loaded().then(function () {
-                                angular.forEach(obj, function (child) {
-                                    angular.forEach(child, function (value, key) {
-                                        //console.log(key);
-                                        if (key === auth.uid) {
-                                            isEmployee = true;
-                                        }
-                                    })
-                                });
-                                if (!isEmployee) {
-                                    authObj.$unauth();
-                                    console.log("non-employee has been logged out");
-                                }
-                                callback();
-                            });
-                        } else {
-                            callback();
+                        if (isAdmin) {
+                            user = auth.password.email;
+                            console.log(typeof onSuccess);
+                            console.log(onSuccess);
+                            if (typeof onSuccess !== 'undefined') onSuccess();
+                            return;
                         }
-                    });
+                        obj = $firebaseObject(firebase.child("Employees"));
+                        obj.$loaded().then(function () {
+                            angular.forEach(obj, function (child) {
+                                angular.forEach(child, function (value, key) {
+                                    //console.log(key);
+                                    if (key === auth.uid) {
+                                        isEmployee = true;
+                                    }
+                                })
+                            });
+                            if (isEmployee) {
+                                user = auth.username.email;
+                                if (typeof onSuccess !== 'undefined') onSuccess();
+                                return;
+                            }
+                            authObj.$unauth();
+                            isEmployee = false;
+                            isAdmin = false;
+                            user = '';
+                            console.log("non-employee has been logged out");
+                            $location.path('/login');
+                        }.bind(this));
+
+                    }.bind(this));
                 }
-            };
+            }.bind(this);
+
+            this.getUser = function () {
+                return user;
+            }.bind(this);
+
+            this.setUser = function (value) {
+                user = value;
+            }.bind(this);
+
+            this.logoutUser = function () {
+                authObj.$unauth();
+                isEmployee = false;
+                isAdmin = false;
+                console.log("Logout complete");
+                // Force reload to hide the navbar
+                $window.location.reload();
+                $location.path('/login');
+            }.bind(this);
+
+            this.isAdmin = function () {
+                return isAdmin;
+            }.bind(this);
+
+            this.isEmployee = function () {
+                return isEmployee;
+            }.bind(this);
+
 
             var auth = authObj.$getAuth();
-            this.checkAuth(auth, function () {
+            this.checkAuth(function () {
                 user = auth.password.email;
             });
-
-            return {
-                getUser: function () {
-                    return user;
-                },
-                setUser: function (value) {
-                    user = value;
-                },
-                logoutUser: function () {
-                    authObj.$unauth();
-                    console.log("Logout complete");
-                    // Force reload to hide the navbar
-                    $window.location.reload();
-                },
-                isAdmin: function () {
-                    return isAdmin;
-                },
-                isEmployee: function () {
-                    return isEmployee;
-                },
-                checkAuth: this.checkAuth
-            }
         }
     ])
     // the following is borrowed from http://weblogs.asp.net/dwahlin/building-an-angularjs-modal-service

@@ -11,17 +11,18 @@ angular.module('RAFinder.login', [
                 controller: 'LoginCtrl'
             });
         }])
-    .controller('LoginCtrl', ["$scope", "$firebaseAuth", "$location", "CommonProp",
-        function ($scope, $firebaseAuth, $location, CommonProp) {
+    .controller('LoginCtrl', ["$scope", "$firebaseAuth", "$location", "AuthService",
+        function ($scope, $firebaseAuth, $location, AuthService) {
             $scope.signinFailed = false;
             $scope.isEmployee = true;
+
+            AuthService.checkAuth(function () {
+                $location.path('/employees');
+            });
+
             var firebase = new Firebase("https://ra-finder.firebaseio.com");
             var authObj = $firebaseAuth(firebase);
             $scope.user = {};
-
-            if (authObj.$getAuth() !== null) {
-                $location.path("employees");
-            }
 
             $scope.SignIn = function (event) {
                 event.preventDefault();
@@ -32,19 +33,17 @@ angular.module('RAFinder.login', [
                     email: username,
                     password: password
                 }).then(function (authData) {
-                    console.log("Logged in as: " + authData.password.email);
-                    CommonProp.checkAuth(authData,
-                        function () {
-                            $scope.signinFailed = false;
-                            $scope.isEmployee = CommonProp.isEmployee();
-                            if ($scope.isEmployee) {
-                                CommonProp.setUser(authData.password.email);
-                                console.log("auth check successful");
-                                $location.path("employees");
-                            } else {
-                                console.warn("auth check failure");
-                            }
-                        });
+                    AuthService.checkAuth(function () {
+                        $scope.signinFailed = false;
+                        $scope.isEmployee = AuthService.isEmployee();
+                        if ($scope.isEmployee) {
+                            AuthService.setUser(authData.password.email);
+                            console.log("auth check successful");
+                            $location.path("employees");
+                        } else {
+                            console.warn("auth check failure");
+                        }
+                    });
 
                 }).catch(function (error) {
                     console.error("Authentication failed: ", error);
@@ -52,4 +51,6 @@ angular.module('RAFinder.login', [
                 });
 
             };
-        }]);
+        }
+    ])
+;

@@ -16,25 +16,27 @@ angular.module('RAFinder', [
             $routeProvider.otherwise({redirectTo: '/login'});
         }
     ])
-    .controller('BlogNavCtrl', ['$scope', '$location', "CommonProp",
-        function ($scope, $location, CommonProp) {
+    .controller('RootCtrl', ['$scope', '$location', "AuthService",
+        function ($scope, $location, AuthService) {
             $scope.isActive = function (viewLocation) {
                 return viewLocation === $location.path();
             };
 
+            AuthService.checkAuth(function () {
+                // the navbar is forcibly hidden by default so that
+                //     it doesn't appear on initial load.
+                // Remove the 'hidden' class so ngShow can take over.
+                $("#primary-navbar").removeClass("hidden");
+                $("#page-header").removeClass("hidden");
+                $scope.username = AuthService.getUser();
+            });
+
             $scope.logout = function () {
-                CommonProp.logoutUser();
+                AuthService.logoutUser();
             };
 
             $scope.hasAuth = function () {
-                var isAuthed = !(CommonProp.getUser() === '');
-                if (isAuthed) {
-                    // the navbar is forcibly hidden by default so that
-                    //     it doesn't appear on initial load.
-                    // Remove the 'hidden' class so ngShow can take over.
-                    $("#primary-navbar").removeClass("hidden");
-                }
-                return isAuthed;
-            }
+                return AuthService.isEmployee();
+            };
         }
     ]);

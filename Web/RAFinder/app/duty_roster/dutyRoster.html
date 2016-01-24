@@ -8,9 +8,10 @@
     <h3>Duty Roster</h3>
 
     <uib-accordion>
-        <uib-accordion-group ng-repeat="roster in rosters" heading="{{getDate(roster.key) | date: 'MMM dd, yyyy'}}"
+        <uib-accordion-group ng-repeat="roster in rosters"
+                             heading="{{getDate(roster.key) | date: 'EEE, MMM dd, yyyy'}}"
                              is-open="false">
-            <table class="table-striped table-bordered">
+            <table class="table-striped">
                 <thead>
                 <tr>
                     <th>Hall</th>

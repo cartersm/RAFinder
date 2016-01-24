@@ -10,20 +10,15 @@ angular.module('RAFinder.employees', [
             controller: 'EmployeesCtrl'
         });
     }])
-    .controller('EmployeesCtrl', ['$scope', '$firebaseAuth', '$location', 'CommonProp', '$firebaseArray', 'ModalService',
-        function ($scope, $firebaseAuth, $location, CommonProp, $firebaseArray, ModalService) {
-            var firebase = new Firebase("https://ra-finder.firebaseio.com");
-            var authObj = $firebaseAuth(firebase);
-
-            // check auth    TODO: find out whether this can be moved to app.js
-            var auth = authObj.$getAuth();
-            if (auth === null) {
-                $location.path("login");
+    .controller('EmployeesCtrl', ['$scope', '$firebaseAuth', '$location', 'AuthService', '$firebaseArray', 'ModalService',
+        function ($scope, $firebaseAuth, $location, AuthService, $firebaseArray, ModalService) {
+            AuthService.checkAuth();
+            if (!AuthService.isEmployee()) {
+                $location.path('/login');
                 return;
             }
-            CommonProp.setUser(auth.password.email);
-            $scope.username = CommonProp.getUser();
 
+            var firebase = new Firebase("https://ra-finder.firebaseio.com");
             $scope.accordionData = [];
 
             // Populate employee data
@@ -176,7 +171,7 @@ angular.module('RAFinder.employees', [
             };
 
             $scope.isAdmin = function () {
-                return CommonProp.isAdmin();
+                return AuthService.isAdmin();
             }
         }
     ]);

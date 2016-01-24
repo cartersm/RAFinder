@@ -10,17 +10,14 @@ angular.module('RAFinder.dutyRoster', [
             });
         }
     ])
-    .controller("DutyRosterCtrl", ["$scope", '$location', '$firebaseAuth', '$firebaseObject', '$firebaseArray', 'CommonProp',
-        function ($scope, $location, $firebaseAuth, $firebaseObject, $firebaseArray, CommonProp) {
+    .controller("DutyRosterCtrl", ["$scope", '$location', '$firebaseAuth', '$firebaseObject', '$firebaseArray', 'AuthService',
+        function ($scope, $location, $firebaseAuth, $firebaseObject, $firebaseArray, AuthService) {
             var firebase = new Firebase("https://ra-finder.firebaseio.com");
-            var authObj = $firebaseAuth(firebase);
-
-            // check auth    TODO: find out whether this can be moved to app.js
-            if (authObj === null || authObj.$getAuth() === null) {
-                $location.path("login");
+            AuthService.checkAuth();
+            if (!AuthService.isEmployee()) {
+                $location.path('/login');
+                return;
             }
-            CommonProp.setUser(authObj.$getAuth().password.email);
-            $scope.username = CommonProp.getUser();
 
             $scope.rosterData = [];
 
@@ -50,14 +47,17 @@ angular.module('RAFinder.dutyRoster', [
                             }
                         });
                     });
-                    console.log(foo);
                     retArray.push(foo);
                 });
                 return retArray;
             };
 
             $scope.getDate = function (dateString) {
-                return new Date(dateString);
+                var date = new Date(dateString);
+                var oneDayMs = 1000 * 60 * 60 * 24;
+                // add one day to fix UTC offset
+                date.setTime(date.getTime() + oneDayMs);
+                return date;
             };
         }
     ]);
