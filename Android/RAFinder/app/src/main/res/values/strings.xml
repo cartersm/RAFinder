@@ -19,7 +19,7 @@
     <string name="email_default">publicjq@rose-hulman.edu</string>
     <string name="profile_email_format">Email: %s</string>
     <string name="profile_phone_format">Phone: %s</string>
-    <string name="profile_room_format">Room: %1$s %2$d</string>
+    <string name="profile_room_format">Room: %1$s %2$s</string>
     <string name="room_default_short">Apts E 201</string>
     <string name="off_duty">Off Duty</string>
     <string name="res_hall_default">Apartments East</string>

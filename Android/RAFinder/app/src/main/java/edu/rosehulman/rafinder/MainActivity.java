@@ -46,7 +46,6 @@ import edu.rosehulman.rafinder.model.DutyRosterItem;
 import edu.rosehulman.rafinder.model.Hall;
 import edu.rosehulman.rafinder.model.person.EmergencyContact;
 import edu.rosehulman.rafinder.model.person.Employee;
-import edu.rosehulman.rafinder.model.person.ResidentAssistant;
 
 /**
  * The container activity for the entire app.
@@ -79,7 +78,7 @@ public class MainActivity extends Activity implements
     private String mEmail;
     private String mRaEmail;
     private int mFloor;
-    private String mHallName;
+    private String mHallName = "";
 
     private EmployeeLoader mEmployeeLoader;
     private DutyRosterLoader mDutyRosterLoader;
@@ -97,7 +96,7 @@ public class MainActivity extends Activity implements
     private List<EmergencyContact> mEmergencyContacts;
     private Employee mSelectedEmployee;
     private Employee mUser;
-    private ResidentAssistant myRA;
+    private Employee myRA;
     private LocalDate mDate;
     private DutyRoster mDutyRoster;
     private Hall mHall;
@@ -342,10 +341,15 @@ public class MainActivity extends Activity implements
         return null;
     }
 
-    private ResidentAssistant getRA(String email) {
+    private Employee getRA(String email) {
         for (Employee ra : mAllRAs) {
             if (ra.getEmail().equals(email)) {
-                return (ResidentAssistant) ra;
+                return ra;
+            }
+        }
+        for (Employee admin : mAllAdmins) {
+            if (admin.getEmail().equals(email)) {
+                return admin;
             }
         }
         return null;
@@ -391,9 +395,9 @@ public class MainActivity extends Activity implements
     public void onEmployeeLoadingComplete() {
         setAllEmployees();
         myRA = getRA(mRaEmail);
+        mUser = getEmployee(mEmail);
         mHallName = myRA.getHall();
         mFloor = myRA.getFloor();
-        mUser = getEmployee(mEmail);
         mDutyRosterLoader = new DutyRosterLoader(mHallName, this, mAllRAs, false);
     }
 
