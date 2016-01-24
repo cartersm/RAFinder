@@ -12,11 +12,11 @@ angular.module('RAFinder.employees', [
     }])
     .controller('EmployeesCtrl', ['$scope', '$firebaseAuth', '$location', 'AuthService', '$firebaseArray', 'ModalService',
         function ($scope, $firebaseAuth, $location, AuthService, $firebaseArray, ModalService) {
-            AuthService.checkAuth();
-            if (!AuthService.isEmployee()) {
-                $location.path('/login');
-                return;
-            }
+            AuthService.checkAuth(function () {
+                if (!AuthService.isEmployee()) {
+                    $location.path('/login');
+                }
+            });
 
             var firebase = new Firebase("https://ra-finder.firebaseio.com");
             $scope.accordionData = [];

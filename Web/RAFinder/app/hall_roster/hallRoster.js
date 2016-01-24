@@ -12,11 +12,11 @@ angular.module('RAFinder.hallRoster', [
     ])
     .controller('HallRosterCtrl', ['$scope', '$location', '$firebaseAuth', "$firebaseObject", '$firebaseArray', 'AuthService',
         function ($scope, $location, $firebaseAuth, $firebaseObject, $firebaseArray, AuthService) {
-            AuthService.checkAuth();
-            if (!AuthService.isEmployee()) {
-                $location.path('/login');
-                return;
-            }
+            AuthService.checkAuth(function () {
+                if (!AuthService.isEmployee()) {
+                    $location.path('/login');
+                }
+            });
 
             var firebase = new Firebase("https://ra-finder.firebaseio.com");
 
@@ -26,7 +26,6 @@ angular.module('RAFinder.hallRoster', [
                 .$loaded()
                 .then(function (data) {
                     $scope.hallData = data;
-                    console.log(data[0].Roster[0]);
                 });
 
             $scope.getResidents = function (room) {

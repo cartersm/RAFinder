@@ -12,14 +12,14 @@ angular.module('RAFinder.dutyRoster', [
     ])
     .controller("DutyRosterCtrl", ["$scope", '$location', '$firebaseAuth', '$firebaseObject', '$firebaseArray', 'AuthService',
         function ($scope, $location, $firebaseAuth, $firebaseObject, $firebaseArray, AuthService) {
-            var firebase = new Firebase("https://ra-finder.firebaseio.com");
-            AuthService.checkAuth();
-            if (!AuthService.isEmployee()) {
-                $location.path('/login');
-                return;
-            }
+            AuthService.checkAuth(function () {
+                if (!AuthService.isEmployee()) {
+                    $location.path('/login');
+                }
+            });
 
             $scope.rosterData = [];
+            var firebase = new Firebase("https://ra-finder.firebaseio.com");
 
             $firebaseArray(firebase.child("DutyRosters"))
                 .$loaded()
