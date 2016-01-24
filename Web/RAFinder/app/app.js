@@ -22,12 +22,16 @@ angular.module('RAFinder', [
                 return viewLocation === $location.path();
             };
 
+            if ($location.path() !== "/employees") {
+                $("#default-link").removeClass("active");
+            }
+
             AuthService.checkAuth(function () {
                 // the navbar is forcibly hidden by default so that
                 //     it doesn't appear on initial load.
                 // Remove the 'hidden' class so ngShow can take over.
-                $("#primary-navbar").removeClass("hidden");
                 $("#page-header").removeClass("hidden");
+                $("#nav-bar").removeClass("hidden");
                 $scope.username = AuthService.getUser();
             });
 

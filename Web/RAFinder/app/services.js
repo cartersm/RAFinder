@@ -23,8 +23,6 @@ angular.module('RAFinder.services', [])
 
                         if (isAdmin) {
                             user = auth.password.email;
-                            console.log(typeof onSuccess);
-                            console.log(onSuccess);
                             if (typeof onSuccess !== 'undefined') onSuccess();
                             return;
                         }
@@ -69,7 +67,6 @@ angular.module('RAFinder.services', [])
                 isAdmin = false;
                 console.log("Logout complete");
                 // Force reload to hide the navbar
-                $window.location.reload();
                 $location.path('/login');
             }.bind(this);
 

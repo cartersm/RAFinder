@@ -25,16 +25,16 @@
 </head>
 <body>
 <!-- Navbar -->
-<div ng-controller="RootCtrl" ng-show="hasAuth()">
-    <div class="blog-masthead">
+<div id="page-header-and-nav" ng-controller="RootCtrl" ng-show="hasAuth()">
+    <div id="nav-bar" class="blog-masthead hidden">
         <div class="container">
-            <nav class="blog-nav hidden" id="primary-navbar">
-                <a ng-class="{ active: isActive('/employees') }" class="blog-nav-item active" href="#/employees">Employees</a>
+            <nav class="blog-nav">
+                <a id="default-link" ng-class="{ active: isActive('/employees') }" class="blog-nav-item active" href="#/employees">Employees</a>
                 <a ng-class="{ active: isActive('/dutyRoster') }" class="blog-nav-item" href="#/dutyRoster">Duty
                     Roster</a>
                 <a ng-class="{ active: isActive('/hallRoster') }" class="blog-nav-item" href="#/hallRoster">Hall
                     Roster</a>
-                <a class="blog-nav-item" ng-click="logout()">Logout</a>
+                <a class="blog-nav-item pointer" ng-click="logout()">Logout</a>
             </nav>
         </div>
     </div>

@@ -11,13 +11,14 @@ angular.module('RAFinder.login', [
                 controller: 'LoginCtrl'
             });
         }])
-    .controller('LoginCtrl', ["$scope", "$firebaseAuth", "$location", "AuthService",
-        function ($scope, $firebaseAuth, $location, AuthService) {
+    .controller('LoginCtrl', ["$scope", "$firebaseAuth", "$location", "$window", "AuthService",
+        function ($scope, $firebaseAuth, $location, $window, AuthService) {
             $scope.signinFailed = false;
             $scope.isEmployee = true;
 
             AuthService.checkAuth(function () {
                 $location.path('/employees');
+                $window.location.reload();
             });
 
             var firebase = new Firebase("https://ra-finder.firebaseio.com");
@@ -38,8 +39,9 @@ angular.module('RAFinder.login', [
                         $scope.isEmployee = AuthService.isEmployee();
                         if ($scope.isEmployee) {
                             AuthService.setUser(authData.password.email);
-                            console.log("auth check successful");
-                            $location.path("employees");
+                            $("#page-header").removeClass("hidden");
+                            $("#nav-bar").removeClass("hidden");
+                            $location.path("/employees");
                         } else {
                             console.warn("auth check failure");
                         }
@@ -52,5 +54,4 @@ angular.module('RAFinder.login', [
 
             };
         }
-    ])
-;
+    ]);
