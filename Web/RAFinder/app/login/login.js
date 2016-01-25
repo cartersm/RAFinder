@@ -2,7 +2,7 @@
 
 angular.module('RAFinder.login', [
     'ngRoute',
-    "firebase"
+    'firebase'
 ])
     .config(['$routeProvider',
         function ($routeProvider) {
@@ -11,7 +11,12 @@ angular.module('RAFinder.login', [
                 controller: 'LoginCtrl'
             });
         }])
-    .controller('LoginCtrl', ["$scope", "$firebaseAuth", "$location", "$window", "AuthService",
+    .controller('LoginCtrl', [
+        '$scope',
+        '$firebaseAuth',
+        '$location',
+        '$window',
+        'AuthService',
         function ($scope, $firebaseAuth, $location, $window, AuthService) {
             $scope.signinFailed = false;
             $scope.isEmployee = true;
@@ -21,7 +26,7 @@ angular.module('RAFinder.login', [
                 $window.location.reload();
             });
 
-            var firebase = new Firebase("https://ra-finder.firebaseio.com");
+            var firebase = new Firebase('https://ra-finder.firebaseio.com');
             var authObj = $firebaseAuth(firebase);
             $scope.user = {};
 
@@ -39,16 +44,16 @@ angular.module('RAFinder.login', [
                         $scope.isEmployee = AuthService.isEmployee();
                         if ($scope.isEmployee) {
                             AuthService.setUser(authData.password.email);
-                            $("#page-header").removeClass("hidden");
-                            $("#nav-bar").removeClass("hidden");
-                            $location.path("/employees");
+                            $('#page-header').removeClass('hidden');
+                            $('#nav-bar').removeClass('hidden');
+                            $location.path('/employees');
                         } else {
-                            console.warn("auth check failure");
+                            console.warn('auth check failure');
                         }
                     });
 
                 }).catch(function (error) {
-                    console.error("Authentication failed: ", error);
+                    console.error('Authentication failed: ', error);
                     $scope.signinFailed = true;
                 });
 

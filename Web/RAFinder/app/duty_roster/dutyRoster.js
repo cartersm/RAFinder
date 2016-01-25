@@ -2,15 +2,21 @@ angular.module('RAFinder.dutyRoster', [
     'ngRoute',
     'firebase'
 ])
-    .config(["$routeProvider",
+    .config(['$routeProvider',
         function ($routeProvider) {
-            $routeProvider.when("/dutyRoster", {
-                templateUrl: "duty_roster/dutyRoster.html",
-                controller: "DutyRosterCtrl"
+            $routeProvider.when('/dutyRoster', {
+                templateUrl: 'duty_roster/dutyRoster.html',
+                controller: 'DutyRosterCtrl'
             });
         }
     ])
-    .controller("DutyRosterCtrl", ["$scope", '$location', '$firebaseAuth', '$firebaseObject', '$firebaseArray', 'AuthService',
+    .controller('DutyRosterCtrl', [
+        '$scope',
+        '$location',
+        '$firebaseAuth',
+        '$firebaseObject',
+        '$firebaseArray',
+        'AuthService',
         function ($scope, $location, $firebaseAuth, $firebaseObject, $firebaseArray, AuthService) {
             AuthService.checkAuth(function () {
                 if (!AuthService.isEmployee()) {
@@ -19,9 +25,9 @@ angular.module('RAFinder.dutyRoster', [
             });
 
             $scope.rosterData = [];
-            var firebase = new Firebase("https://ra-finder.firebaseio.com");
+            var firebase = new Firebase('https://ra-finder.firebaseio.com');
 
-            $firebaseArray(firebase.child("DutyRosters"))
+            $firebaseArray(firebase.child('DutyRosters'))
                 .$loaded()
                 .then(function (data) {
                     $scope.rosterData = data;
@@ -36,7 +42,7 @@ angular.module('RAFinder.dutyRoster', [
                         entries: []
                     };
                     angular.forEach(value, function (value2, key2) {
-                        if (key2.startsWith("$")) return;
+                        if (key2.startsWith('$')) return;
 
                         foo.entries.push({
                             hall: key2,

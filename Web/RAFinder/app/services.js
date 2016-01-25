@@ -1,18 +1,22 @@
 'use strict';
 angular.module('RAFinder.services', [])
-    .service('AuthService', ["$firebaseAuth", "$window", "$firebaseObject", '$location',
+    .service('AuthService', [
+        '$firebaseAuth',
+        '$window',
+        '$firebaseObject',
+        '$location',
         function ($firebaseAuth, $window, $firebaseObject, $location) {
-            var user = "";
+            var user = '';
             var isEmployee = false;
             var isAdmin = false;
-            var firebase = new Firebase("https://ra-finder.firebaseio.com");
+            var firebase = new Firebase('https://ra-finder.firebaseio.com');
             var authObj = $firebaseAuth(firebase);
 
             this.checkAuth = function (onSuccess) {
                 var auth = authObj.$getAuth();
                 if (auth !== null) {
                     // Find out whether the user is an admin or other employee
-                    var obj = $firebaseObject(firebase.child("Employees/Administrators"));
+                    var obj = $firebaseObject(firebase.child('Employees/Administrators'));
                     obj.$loaded().then(function () {
                         angular.forEach(obj, function (value, key) {
                             if (key === auth.uid) {
@@ -26,7 +30,7 @@ angular.module('RAFinder.services', [])
                             if (typeof onSuccess !== 'undefined') onSuccess();
                             return;
                         }
-                        obj = $firebaseObject(firebase.child("Employees"));
+                        obj = $firebaseObject(firebase.child('Employees'));
                         obj.$loaded().then(function () {
                             angular.forEach(obj, function (child) {
                                 angular.forEach(child, function (value, key) {
@@ -34,7 +38,7 @@ angular.module('RAFinder.services', [])
                                     if (key === auth.uid) {
                                         isEmployee = true;
                                     }
-                                })
+                                });
                             });
                             if (isEmployee) {
                                 user = auth.username.email;
@@ -45,7 +49,7 @@ angular.module('RAFinder.services', [])
                             isEmployee = false;
                             isAdmin = false;
                             user = '';
-                            console.log("non-employee has been logged out");
+                            console.log('non-employee has been logged out');
                             $location.path('/login');
                         }.bind(this));
 
@@ -65,7 +69,7 @@ angular.module('RAFinder.services', [])
                 authObj.$unauth();
                 isEmployee = false;
                 isAdmin = false;
-                console.log("Logout complete");
+                console.log('Logout complete');
                 // Force reload to hide the navbar
                 $location.path('/login');
             }.bind(this);
@@ -78,7 +82,6 @@ angular.module('RAFinder.services', [])
                 return isEmployee;
             }.bind(this);
 
-
             var auth = authObj.$getAuth();
             this.checkAuth(function () {
                 user = auth.password.email;
@@ -86,7 +89,7 @@ angular.module('RAFinder.services', [])
         }
     ])
     // the following is borrowed from http://weblogs.asp.net/dwahlin/building-an-angularjs-modal-service
-    .service("ModalService", ['$uibModal',
+    .service('ModalService', ['$uibModal',
         function ($uibModal) {
             var modalDefaults = {
                 backdrop: true,
@@ -128,7 +131,7 @@ angular.module('RAFinder.services', [])
                         $scope.modalOptions.close = function (result) {
                             $uibModalInstance.dismiss('cancel');
                         };
-                    }
+                    };
                 }
 
                 return $uibModal.open(tempModalDefaults).result;

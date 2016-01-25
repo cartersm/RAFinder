@@ -29,11 +29,16 @@
     <div id="nav-bar" class="blog-masthead hidden">
         <div class="container">
             <nav class="blog-nav">
-                <a id="default-link" ng-class="{ active: isActive('/employees') }" class="blog-nav-item active" href="#/employees">Employees</a>
-                <a ng-class="{ active: isActive('/dutyRoster') }" class="blog-nav-item" href="#/dutyRoster">Duty
-                    Roster</a>
-                <a ng-class="{ active: isActive('/hallRoster') }" class="blog-nav-item" href="#/hallRoster">Hall
-                    Roster</a>
+                <a ng-class="{ active: isActive('/employees') }" class="blog-nav-item active" href="#/employees"
+                   id="default-link">
+                    Employees
+                </a>
+                <a ng-class="{ active: isActive('/dutyRoster') }" class="blog-nav-item" href="#/dutyRoster">
+                    Duty Roster
+                </a>
+                <a ng-class="{ active: isActive('/hallRoster') }" class="blog-nav-item" href="#/hallRoster">
+                    Hall Roster
+                </a>
                 <a class="blog-nav-item pointer" ng-click="logout()">Logout</a>
             </nav>
         </div>

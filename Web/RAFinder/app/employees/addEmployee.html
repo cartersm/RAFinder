@@ -59,7 +59,7 @@
 </div>
 <div class="modal-footer">
     <button ng-click="modalOptions.ok()" class="btn btn-lg btn-primary" type="submit"
-            ng-disabled="!employeeType || !user.name || !user.email || !user.phoneNumber || !user.hall || !user.floor || ! user.room">
+            ng-disabled="isUserInvalid(employeeType, user)">
         {{modalOptions.actionButtonText}}
     </button>
     <button ng-click="modalOptions.close()" class="btn btn-lg" type="button">

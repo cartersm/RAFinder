@@ -19,8 +19,9 @@
                        placeholder="Password" required="" ng-minlength="8">
             </label>
 
-            <p class="help-block" ng-show="signinForm.password.$error.minlength">Min password length
-                is 8 characters.</p>
+            <p class="help-block" ng-show="signinForm.password.$error.minlength">
+                Min password length is 8 characters.
+            </p>
         </div>
         <label class="checkbox">
             <a href="#/register">Sign Up</a>
@@ -31,5 +32,8 @@
         </button>
     </form>
     <p class="help-block text-center alert-danger" ng-show="signinFailed">Invalid username or password</p>
-    <p class="help-block text-center alert-danger" ng-show="!isEmployee">Only designated employees may access this website.</p>
+
+    <p class="help-block text-center alert-danger" ng-show="!isEmployee">
+        Only designated employees may access this website.
+    </p>
 </div>
