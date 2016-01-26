@@ -12,7 +12,7 @@ angular.module('RAFinder.services', [])
             var firebase = new Firebase('https://ra-finder.firebaseio.com');
             var authObj = $firebaseAuth(firebase);
 
-            this.checkAuth = function (onSuccess) {
+            this.checkAuth = function (onSuccess, onFailure) {
                 var auth = authObj.$getAuth();
                 if (auth !== null) {
                     // Find out whether the user is an admin or other employee
@@ -27,33 +27,34 @@ angular.module('RAFinder.services', [])
 
                         if (isAdmin) {
                             user = auth.password.email;
-                            if (typeof onSuccess !== 'undefined') onSuccess();
-                            return;
-                        }
-                        obj = $firebaseObject(firebase.child('Employees'));
-                        obj.$loaded().then(function () {
-                            angular.forEach(obj, function (child) {
-                                angular.forEach(child, function (value, key) {
-                                    //console.log(key);
-                                    if (key === auth.uid) {
-                                        isEmployee = true;
-                                    }
+                            if (typeof onSuccess === 'function') onSuccess();
+                        } else {
+                            obj = $firebaseObject(firebase.child('Employees'));
+                            obj.$loaded().then(function () {
+                                angular.forEach(obj, function (child) {
+                                    angular.forEach(child, function (value, key) {
+                                        //console.log(key);
+                                        if (key === auth.uid) {
+                                            isEmployee = true;
+                                        }
+                                    });
                                 });
-                            });
-                            if (isEmployee) {
-                                user = auth.username.email;
-                                if (typeof onSuccess !== 'undefined') onSuccess();
-                                return;
-                            }
-                            authObj.$unauth();
-                            isEmployee = false;
-                            isAdmin = false;
-                            user = '';
-                            console.log('non-employee has been logged out');
-                            $location.path('/login');
-                        }.bind(this));
-
+                                if (isEmployee) {
+                                    user = auth.username.email;
+                                    if (typeof onSuccess === 'function') onSuccess();
+                                } else {
+                                    user = '';
+                                    console.log('non-employee has been logged out');
+                                    this.logoutUser();
+                                    if (typeof onFailure === 'function') onFailure('non-employee attempted login');
+                                }
+                            }.bind(this));
+                        }
                     }.bind(this));
+                } else {
+                    // We're not logged in
+                    $location.path('/login');
+                    if (typeof onFailure === 'function') onFailure('not logged in');
                 }
             }.bind(this);
 
@@ -86,16 +87,23 @@ angular.module('RAFinder.services', [])
             this.checkAuth(function () {
                 user = auth.password.email;
             });
+
+            this.getAuthObject = function () {
+                return authObj;
+            };
         }
     ])
     // the following is borrowed from http://weblogs.asp.net/dwahlin/building-an-angularjs-modal-service
-    .service('ModalService', ['$uibModal',
-        function ($uibModal) {
+    .service('ModalService', [
+        '$uibModal',
+        '$rootScope',
+        function ($uibModal, $rootScope) {
             var modalDefaults = {
                 backdrop: true,
                 keyboard: true,
                 modalFade: true,
-                templateUrl: '/app/partials/modal.html'
+                templateUrl: '/app/partials/modal.html',
+                scope: $rootScope.$new()
             };
 
             var modalOptions = {
