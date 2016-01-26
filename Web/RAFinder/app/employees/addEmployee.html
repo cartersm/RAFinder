@@ -6,20 +6,20 @@
     <form name="addEmployeeForm" role="form">
         <div class="form-group">
             <label>Employee Type
-                <select ng-options="type for type in employeeTypes" ng-model="employeeType"></select>
+                <select ng-options="type for type in modalOptions.employeeTypes" ng-model="employeeType"></select>
             </label>
         </div>
         <div class="form-group">
             <label>Name
                 <input type="text" name="name" ng-model="user.name" class="form-control"
-                       placeholder="Name" required="" autofocus="">
+                       placeholder="Name" required autofocus>
             </label>
         </div>
         <div class="form-group"
              ng-class="{ 'has-error' : addEmployeeForm.email.$invalid }">
             <label>Email Address
                 <input type="email" name="email" ng-model="user.email" class="form-control"
-                       placeholder="Email address" required="" autofocus="">
+                       placeholder="Email address" required autofocus>
             </label>
 
             <p class="help-block" ng-show="addEmployeeForm.email.$invalid">Enter a valid email.</p>
@@ -28,7 +28,7 @@
              ng-class="{ 'has-error' : addEmployeeForm.phone.$invalid }">
             <label>Phone Number
                 <input type="tel" name="phoneNumber" ng-model="user.phoneNumber" class="form-control"
-                       placeholder="Phone Number" required="" autofocus="">
+                       placeholder="Phone Number" required autofocus>
             </label>
 
             <p class="help-block" ng-show="addEmployeeForm.phoneNumber.$invalid">
@@ -38,7 +38,7 @@
         <div class="form-group">
             <div class="form-group">
                 <label>Residence Hall
-                    <select ng-options="hall.$id for hall in resHalls" ng-model="user.hall"></select>
+                    <select ng-options="hall.$id for hall in modalOptions.resHalls" ng-model="user.hall"></select>
                 </label>
             </div>
         </div>
@@ -46,20 +46,20 @@
         <div class="form-group">
             <label>Floor
                 <input type="number" name="floor" ng-model="user.floor" class="form-control"
-                       placeholder="Floor" required="" autofocus="">
+                       placeholder="Floor" required autofocus>
             </label>
         </div>
         <div class="form-group">
             <label>Room Number
-                <input type="number" name="room" ng-model="user.room" class="form-control"
-                       placeholder="Room Number" required="" autofocus="">
+                <input type="text" name="room" ng-model="user.room" class="form-control"
+                       placeholder="Room Number" required autofocus>
             </label>
         </div>
     </form>
 </div>
 <div class="modal-footer">
-    <button ng-click="modalOptions.ok()" class="btn btn-lg btn-primary" type="submit"
-            ng-disabled="isUserInvalid(employeeType, user)">
+    <button ng-click="modalOptions.ok({type: employeeType, user: user})" class="btn btn-lg btn-primary" type="submit"
+            ng-disabled="modalOptions.isUserInvalid(employeeType, user)">
         {{modalOptions.actionButtonText}}
     </button>
     <button ng-click="modalOptions.close()" class="btn btn-lg" type="button">

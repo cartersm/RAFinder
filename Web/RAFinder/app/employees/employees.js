@@ -85,7 +85,6 @@ angular.module('RAFinder.employees', [
                 .then(function (data) {
                     $scope.resHalls = data;
                 });
-            $scope.employeeTypes = ['Resident Assistant', 'Sophomore Advisor', 'Graduate Assistant', 'Administrator'];
 
             $scope.showAddEmployeeModal = function () {
                 var modalDefaults = {
@@ -94,45 +93,53 @@ angular.module('RAFinder.employees', [
                 var modalOptions = {
                     headerText: 'Add an Employee',
                     actionButtonText: 'Add Employee',
-                    closeButtonText: 'Cancel'
+                    closeButtonText: 'Cancel',
+                    employeeTypes: ['Resident Assistant', 'Sophomore Advisor', 'Graduate Assistant', 'Administrator'],
+                    resHalls: $scope.resHalls,
+                    isUserInvalid: function (employeeType, user) {
+                        return !employeeType ||
+                            !user.name ||
+                            !user.email ||
+                            !user.phoneNumber ||
+                            !user.hall ||
+                            !user.floor ||
+                            !user.room;
+                    }
                 };
 
                 ModalService.showModal(modalDefaults, modalOptions)
                     .then(function (successResult) {
-                        $scope.addEmployee($scope.user);
-                    }, function (cancelResult) {
-                        $scope.user = {};
+                        console.log(successResult);
+                        $scope.addEmployee(successResult.type, successResult.user);
                     });
             };
 
-            $scope.addEmployee = function (user) {
+            $scope.addEmployee = function (employeeType, user) {
                 // Set some defaults
                 user.status = 'In My Room';
                 user.statusDetail = '';
                 user.profilePicture = '';
                 user.hall = user.hall.$id;
 
-                console.log('adding new ' + $scope.employeeType + ': ');
+                console.log('adding new ' + employeeType + ': ');
                 console.log(user);
-                $scope.employeeType += 's';
+                employeeType += 's';
 
                 // FIXME: randomly generated password, then immediately send a "temporary credentials" email
-                authObj.$createUser({email: $scope.user.email, password: 'test1234'})
+                var authObj = AuthService.getAuthObject();
+                authObj.$createUser({email: user.email, password: 'test1234'})
                     .then(function (authData) {
                         console.log('successfully created user: ' + authData.uid);
-                        firebase.child('Employees/' + $scope.employeeType + '/' + authData.uid)
-                            .set($scope.user, function (error) {
+                        firebase.child('Employees/' + employeeType + '/' + authData.uid)
+                            .set(user, function (error) {
                                 if (error != null) {
-                                    // TODO: figure out how to send feedback to the GUI
-                                    // TODO: if address already in use, invalidate the email field
+                                    // TODO: modal with error
+                                    // TODO: look into Rockwood's validation
                                     console.error(error);
-                                    // FIXME: push first, then add auth'ed user
-                                } else {
-                                    $('#addEmployee').modal('hide');
                                 }
                             });
                     }, function (error) {
-                        console.log('Error creating user: ' + error);
+                        console.error('Error creating user: ' + error);
                     });
             };
 
@@ -169,19 +176,10 @@ angular.module('RAFinder.employees', [
                         data.$remove(person);
                         if (person.email.endsWith('@test.com')) {
                             // This is a test entity created by a demo of the app; remove it from the Firebase's authorized users
+                            var authObj = AuthService.getAuthObject();
                             authObj.$removeUser({email: person.email, password: 'test1234'});
                         }
                     });
-            };
-
-            $scope.isUserInvalid = function (employeeType, user) {
-                return !employeeType ||
-                    !user.name ||
-                    !user.email ||
-                    !user.phoneNumber ||
-                    !user.hall ||
-                    !user.floor ||
-                    !user.room;
             };
 
             $scope.isAdmin = function () {
