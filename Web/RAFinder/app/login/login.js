@@ -22,13 +22,11 @@ angular.module('RAFinder.login', [
             $scope.isEmployee = true;
 
             AuthService.checkAuth(function () {
-                $location.path('/employees');
                 $window.location.reload();
+                $location.path('/employees');
             });
 
-            var firebase = new Firebase('https://ra-finder.firebaseio.com');
-            var authObj = $firebaseAuth(firebase);
-            $scope.user = {};
+            var authObj = AuthService.getAuthObject();
 
             $scope.SignIn = function (event) {
                 event.preventDefault();
@@ -46,17 +44,20 @@ angular.module('RAFinder.login', [
                             AuthService.setUser(authData.password.email);
                             $('#page-header').removeClass('hidden');
                             $('#nav-bar').removeClass('hidden');
+                            $window.location.reload();
                             $location.path('/employees');
                         } else {
                             console.warn('auth check failure');
                         }
+                    }, function (error) {
+                        console.warn(error);
+                        $scope.isEmployee = false;
                     });
 
                 }).catch(function (error) {
                     console.error('Authentication failed: ', error);
                     $scope.signinFailed = true;
                 });
-
             };
         }
     ]);
