@@ -22,8 +22,8 @@ public class FloorRosterArrayAdapter extends ArrayAdapter<RoomEntry> {
     private final int mLayout;
 
     public FloorRosterArrayAdapter(Context context, int textViewResourceId, List<RoomEntry> objects) {
-        super(context, R.layout.layout_hall_roster_item, textViewResourceId, objects);
-        mLayout = R.layout.layout_hall_roster_item;
+        super(context, R.layout.layout_room_entry, textViewResourceId, objects);
+        mLayout = R.layout.layout_room_entry;
         mContext = context;
     }
 

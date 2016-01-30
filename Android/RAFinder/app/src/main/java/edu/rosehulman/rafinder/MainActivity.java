@@ -99,7 +99,7 @@ public class MainActivity extends Activity implements
     private Employee myRA;
     private LocalDate mDate;
     private DutyRoster mDutyRoster;
-    private Hall mHall;
+    private List<Hall> mHalls;
 
     /**
      * Borrowed from {@link PhoneNumberUtils#normalizeNumber(String)}, for use on devices below API21
@@ -198,7 +198,7 @@ public class MainActivity extends Activity implements
                 logout();
                 return;
             } else {
-                fragment = HallRosterFragment.newInstance(mHallName, mFloor + "");
+                fragment = HallRosterFragment.newInstance();
                 break;
             }
         case EMPLOYEE_LOGOUT:
@@ -356,8 +356,8 @@ public class MainActivity extends Activity implements
     }
 
     @Override
-    public Hall getHall() {
-        return mHall;
+    public List<Hall> getHalls() {
+        return mHalls;
     }
 
     public Employee getUser() {
@@ -376,7 +376,7 @@ public class MainActivity extends Activity implements
         mDutyRoster = mDutyRosterLoader.getDutyRoster();
         mDate = mDutyRosterLoader.getDate();
         if (!isEdit) {
-            mHallLoader = new HallLoader(mHallName, this);
+            mHallLoader = new HallLoader(this);
         } else {
             onNavigationDrawerItemSelected(DUTY_ROSTER);
         }
@@ -398,12 +398,12 @@ public class MainActivity extends Activity implements
         mUser = getEmployee(mEmail);
         mHallName = myRA.getHall();
         mFloor = myRA.getFloor();
-        mDutyRosterLoader = new DutyRosterLoader(mHallName, this, mAllRAs, false);
+        mDutyRosterLoader = new DutyRosterLoader(this, mAllRAs, false);
     }
 
     @Override
     public void onHallRosterLoadingComplete() {
-        mHall = mHallLoader.getHall();
+        mHalls = mHallLoader.getHalls();
         mEmergencyContactsLoader = new EmergencyContactsLoader(this);
     }
 

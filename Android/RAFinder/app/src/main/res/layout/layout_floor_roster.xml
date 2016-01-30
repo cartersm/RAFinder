@@ -7,16 +7,19 @@
     tools:context="edu.rosehulman.rafinder.controller.HallRosterFragment">
 
     <TextView
+        android:id="@+id/floorTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:layout_marginStart="10dp"
-        android:text="@string/hall_roster"
+        android:text="@string/floor_default"
         android:textSize="30sp"
         android:textStyle="bold" />
 
-    <ExpandableListView
-        android:id="@+id/hallList"
+    <edu.rosehulman.rafinder.ExpandableHeightGridView
+        android:isScrollContainer="false"
+        android:id="@+id/roomList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:numColumns="2" />
 </LinearLayout>

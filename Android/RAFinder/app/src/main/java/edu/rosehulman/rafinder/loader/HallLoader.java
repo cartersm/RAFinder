@@ -7,18 +7,22 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.rosehulman.rafinder.ConfigKeys;
 import edu.rosehulman.rafinder.model.Hall;
 
 public class HallLoader extends Loader {
     private static final String RES_HALLS = "ResHalls";
 
-    private Hall mHall;
+    private List<Hall> mHalls;
     private final LoaderListener mListener;
 
-    public HallLoader(String hallName, LoaderListener listener) {
+    public HallLoader(LoaderListener listener) {
         mListener = listener;
-        loadData(new Firebase(ConfigKeys.FIREBASE_ROOT_URL + "/" + RES_HALLS + "/" + hallName));
+        mHalls = new ArrayList<>();
+        loadData(new Firebase(ConfigKeys.FIREBASE_ROOT_URL + "/" + RES_HALLS));
     }
 
     protected void loadData(Firebase firebase) {
@@ -26,7 +30,9 @@ public class HallLoader extends Loader {
         firebase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                mHall = new Hall(dataSnapshot);
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    mHalls.add(new Hall(child));
+                }
                 Log.d(ConfigKeys.LOG_TAG, "Finished loading Hall data.");
                 mListener.onHallRosterLoadingComplete();
             }
@@ -38,8 +44,8 @@ public class HallLoader extends Loader {
         });
     }
 
-    public Hall getHall() {
-        return mHall;
+    public List<Hall> getHalls() {
+        return mHalls;
     }
 
 }
