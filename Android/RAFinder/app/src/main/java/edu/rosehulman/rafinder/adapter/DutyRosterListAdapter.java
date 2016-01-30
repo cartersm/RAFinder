@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import org.joda.time.LocalDate;
 
+import java.util.List;
+
 import edu.rosehulman.rafinder.MainActivity;
 import edu.rosehulman.rafinder.R;
 import edu.rosehulman.rafinder.model.DutyRoster;
@@ -34,7 +36,7 @@ public class DutyRosterListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public Object getGroup(int groupPosition) {
+    public List<DutyRosterItem> getGroup(int groupPosition) {
         return mRoster.getRosterAsList().get(groupPosition);
     }
 
