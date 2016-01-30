@@ -24,7 +24,7 @@ public class DutyRosterLoader extends Loader {
     private DutyRoster mRoster;
     private LocalDate mDate;
 
-    public DutyRosterLoader(String hallName, LoaderListener listener, List<Employee> ras, boolean isEdit) {
+    public DutyRosterLoader(LoaderListener listener, List<Employee> ras, boolean isEdit) {
         // FIXME for new DB structure
         mListener = listener;
         mRAs = ras;
