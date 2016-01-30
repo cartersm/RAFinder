@@ -204,7 +204,7 @@ public abstract class Employee extends Resident {
                && floor == e.getFloor()
                && hall.equals(e.getHall())
                && phoneNumber.equals(e.getPhoneNumber())
-               && room == e.getRoom()
+               && room.equals(e.getRoom())
                && status.equals(e.getStatus())
                && statusDetail.equals(e.getStatusDetail())
                && userType.equals(e.userType);

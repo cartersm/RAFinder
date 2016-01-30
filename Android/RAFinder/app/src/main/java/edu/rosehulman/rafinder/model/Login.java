@@ -34,7 +34,7 @@ public class Login {
      * Verifies the user provided a valid email.
      */
     public static boolean isEmailValid(String email) {
-        return email.matches(".*?@.*?\\..*"); // TODO eventually: ensure it's a rose address
+        return email.matches(".*?@.*?\\..*"); // TODO: use Rockwood's Kerberos Auth validation
     }
 
     /**

@@ -11,11 +11,11 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class Floor {
     private int lobbyAfterRoomNumber;
-    private String number;
+    private String ordinal;
     private List<RoomEntry> rooms;
 
     public Floor(DataSnapshot ds, String hallName) {
-        number = ds.getKey();
+        ordinal = ds.getKey();
         rooms = new ArrayList<>();
         for (DataSnapshot child : ds.getChildren()) {
             rooms.add(new RoomEntry(child, hallName));
@@ -30,12 +30,12 @@ public class Floor {
         this.rooms = rooms;
     }
 
-    public String getNumber() {
-        return number;
+    public String getOrdinal() {
+        return ordinal;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public void setOrdinal(String ordinal) {
+        this.ordinal = ordinal;
     }
 
     public int getLobbyAfterRoomNumber() {

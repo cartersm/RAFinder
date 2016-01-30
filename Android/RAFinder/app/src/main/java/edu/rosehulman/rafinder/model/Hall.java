@@ -5,6 +5,7 @@ import com.firebase.client.DataSnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 
 /**
  * A Residence Hall.
@@ -35,21 +36,21 @@ public class Hall {
 
     public List<Floor> getFloors() {
         ArrayList<Floor> f = new ArrayList<>();
-        f.addAll(floors.values());
+        f.addAll(new TreeMap<>(floors).values());
         return f;
     }
 
     public void setFloors(List<Floor> floors) {
         this.floors.clear();
         for (Floor f : floors) {
-            this.floors.put(f.getNumber(), f);
+            this.floors.put(f.getOrdinal(), f);
         }
     }
 
     public String[] getFloorNumbers() {
         String[] floorNumbers = new String[floors.size()];
         for (int i = 0; i < floorNumbers.length; i++) {
-            floorNumbers[i] = floors.get(String.valueOf(i)).getNumber();
+            floorNumbers[i] = floors.get(String.valueOf(i)).getOrdinal();
         }
         return floorNumbers;
     }
