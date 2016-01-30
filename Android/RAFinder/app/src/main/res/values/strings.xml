@@ -1,10 +1,6 @@
 <resources>
     <string name="app_name">RAFinder</string>
 
-    <string name="fri">Fri:</string>
-    <string name="sat">Sat:</string>
-    <string name="edit_duty_roster">Edit Duty Roster</string>
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
@@ -77,10 +73,8 @@
     <string name="profile_feedback_subject_format">RA Finder: Anonymous feedback for %s</string>
 
     <string name="content_description_search">Tap to search</string>
-    <string name="content_description_edit">Tap to edit</string>
     <string name="content_description_profile_nav">Tap to go to this user\'s profile</string>
-    <string name="content_description_add_duty_roster_item">Add an item to the Duty Roster</string>
     <string name="content_description_call">Tap to call this user</string>
     <string name="content_description_email">Send an email to this user</string>
-    <string name="hint_name">name</string>
+    <string name="floor_default">First floor</string>
 </resources>
