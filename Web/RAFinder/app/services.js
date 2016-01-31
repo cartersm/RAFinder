@@ -98,14 +98,6 @@ angular.module('RAFinder.services', [])
         '$uibModal',
         '$rootScope',
         function ($uibModal, $rootScope) {
-            var modalDefaults = {
-                backdrop: true,
-                keyboard: true,
-                modalFade: true,
-                templateUrl: '/app/partials/modal.html',
-                scope: $rootScope.$new()
-            };
-
             var modalOptions = {
                 closeButtonText: 'Close',
                 actionButtonText: 'OK',
@@ -124,12 +116,21 @@ angular.module('RAFinder.services', [])
                 var tempModalDefaults = {};
                 var tempModalOptions = {};
 
-                //Map angular-ui modal custom defaults to modal defaults defined in service
-                angular.extend(tempModalDefaults, modalDefaults, customModalDefaults);
-
                 //Map modal.html $scope custom properties to defaults defined in service
                 angular.extend(tempModalOptions, modalOptions, customModalOptions);
+                var scope = $rootScope.$new();
+                scope.modalOptions = tempModalOptions;
 
+                var modalDefaults = {
+                    backdrop: true,
+                    keyboard: true,
+                    modalFade: true,
+                    templateUrl: '/app/partials/modal.html',
+                    scope: scope
+                };
+
+                //Map angular-ui modal custom defaults to modal defaults defined in service
+                angular.extend(tempModalDefaults, modalDefaults, customModalDefaults);
                 if (!tempModalDefaults.controller) {
                     tempModalDefaults.controller = function ($scope, $uibModalInstance) {
                         $scope.modalOptions = tempModalOptions;

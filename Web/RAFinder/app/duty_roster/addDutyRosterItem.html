@@ -1,0 +1,32 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h4 class="modal-title">{{modalOptions.headerText}}</h4>
+</div>
+<div class="modal-body">
+    <form name="addDutyRosterItemForm" role="form" novalidate>
+        <div class="form-group">
+            <label>Date</label>
+
+            <uib-datepicker class="well well-sm" ng-model="dt" datepicker-options="dateOptions"
+                            ng-required alt-input-formats="altInputFormats" show-weeks="false"
+                            date-disabled="disabled(date, mode)">
+            </uib-datepicker>
+        </div>
+        <div class='form-group' ng-repeat="hall in resHalls">
+            <label for="select{{hall}}">{{hall}}</label>
+            <select id="select{{hall}}" name="select{{hall}}" class="pull-right" style="width: 220px;"
+                    ng-options="ra.name for ra in getRAsForHall(hall)" ng-model="roster[hall]" required>
+                <option></option>
+            </select>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button ng-click="modalOptions.ok(dt, roster)" class="btn btn-lg btn-primary" type="submit"
+            ng-disabled="addDutyRosterItemForm.$invalid">
+        {{modalOptions.actionButtonText}}
+    </button>
+    <button ng-click="modalOptions.close()" class="btn btn-lg" type="button">
+        {{modalOptions.closeButtonText}}
+    </button>
+</div>

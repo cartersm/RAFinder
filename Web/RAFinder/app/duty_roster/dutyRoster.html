@@ -1,5 +1,9 @@
 <div class="container">
-    <h3>Duty Roster</h3>
+    <h3>Duty Roster
+        <button class="btn btn-success" ng-click="showAddDutyRosterItemModal()" ng-show="canAddDutyRosterItem()">
+            Add
+        </button>
+    </h3>
 
     <uib-accordion>
         <uib-accordion-group is-open="false" ng-repeat="roster in rosters"
