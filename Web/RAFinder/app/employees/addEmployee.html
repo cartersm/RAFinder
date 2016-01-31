@@ -45,7 +45,7 @@
         <!-- CONSIDER: ng-class has-error for floor !in hall? -->
         <div class="form-group">
             <label>Floor
-                <input type="number" name="floor" ng-model="user.floor" class="form-control"
+                <input type="number" min="0" max="4" name="floor" ng-model="user.floor" class="form-control"
                        placeholder="Floor" required autofocus>
             </label>
         </div>

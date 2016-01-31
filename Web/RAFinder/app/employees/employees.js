@@ -102,7 +102,7 @@ angular.module('RAFinder.employees', [
                             !user.email ||
                             !user.phoneNumber ||
                             !user.hall ||
-                            !user.floor ||
+                            (!user.floor && user.floor !== 0) ||
                             !user.room;
                     }
                 };
