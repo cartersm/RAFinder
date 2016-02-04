@@ -1,6 +1,6 @@
 'use strict';
-angular.module('RAFinder.services', [])
-    .service('AuthService', [
+angular.module('RAFinder.services.auth', [])
+    .service('Auth', [
         '$firebaseAuth',
         '$window',
         '$firebaseObject',
@@ -11,6 +11,8 @@ angular.module('RAFinder.services', [])
             var isAdmin = false;
             var firebase = new Firebase('https://ra-finder.firebaseio.com');
             var authObj = $firebaseAuth(firebase);
+
+            var self = this;
 
             this.checkAuth = function (onSuccess, onFailure) {
                 var auth = authObj.$getAuth();
@@ -45,26 +47,26 @@ angular.module('RAFinder.services', [])
                                 } else {
                                     user = '';
                                     console.log('non-employee has been logged out');
-                                    this.logoutUser();
+                                    self.logoutUser();
                                     if (typeof onFailure === 'function') onFailure('non-employee attempted login');
                                 }
-                            }.bind(this));
+                            });
                         }
-                    }.bind(this));
+                    });
                 } else {
                     // We're not logged in
                     $location.path('/login');
                     if (typeof onFailure === 'function') onFailure('not logged in');
                 }
-            }.bind(this);
+            };
 
             this.getUser = function () {
                 return user;
-            }.bind(this);
+            };
 
             this.setUser = function (value) {
                 user = value;
-            }.bind(this);
+            };
 
             this.logoutUser = function () {
                 authObj.$unauth();
@@ -73,15 +75,15 @@ angular.module('RAFinder.services', [])
                 console.log('Logout complete');
                 // Force reload to hide the navbar
                 $location.path('/login');
-            }.bind(this);
+            };
 
             this.isAdmin = function () {
                 return isAdmin;
-            }.bind(this);
+            };
 
             this.isEmployee = function () {
                 return isEmployee;
-            }.bind(this);
+            };
 
             var auth = authObj.$getAuth();
             this.checkAuth(function () {
@@ -91,59 +93,16 @@ angular.module('RAFinder.services', [])
             this.getAuthObject = function () {
                 return authObj;
             };
-        }
-    ])
-    // the following is borrowed from http://weblogs.asp.net/dwahlin/building-an-angularjs-modal-service
-    .service('ModalService', [
-        '$uibModal',
-        '$rootScope',
-        function ($uibModal, $rootScope) {
-            var modalOptions = {
-                closeButtonText: 'Close',
-                actionButtonText: 'OK',
-                headerText: 'Proceed?',
-                bodyText: 'Perform this action?'
-            };
 
-            this.showModal = function (customModalDefaults, customModalOptions) {
-                if (!customModalDefaults) customModalDefaults = {};
-                customModalDefaults.backdrop = 'static';
-                return this.show(customModalDefaults, customModalOptions);
-            };
-
-            this.show = function (customModalDefaults, customModalOptions) {
-                //Create temp objects to work with since we're in a singleton service
-                var tempModalDefaults = {};
-                var tempModalOptions = {};
-
-                //Map modal.html $scope custom properties to defaults defined in service
-                angular.extend(tempModalOptions, modalOptions, customModalOptions);
-                var scope = $rootScope.$new();
-                scope.modalOptions = tempModalOptions;
-
-                var modalDefaults = {
-                    backdrop: true,
-                    keyboard: true,
-                    modalFade: true,
-                    templateUrl: '/app/partials/modal.html',
-                    scope: scope
-                };
-
-                //Map angular-ui modal custom defaults to modal defaults defined in service
-                angular.extend(tempModalDefaults, modalDefaults, customModalDefaults);
-                if (!tempModalDefaults.controller) {
-                    tempModalDefaults.controller = function ($scope, $uibModalInstance) {
-                        $scope.modalOptions = tempModalOptions;
-                        $scope.modalOptions.ok = function (result) {
-                            $uibModalInstance.close(result);
-                        };
-                        $scope.modalOptions.close = function (result) {
-                            $uibModalInstance.dismiss('cancel');
-                        };
-                    };
-                }
-
-                return $uibModal.open(tempModalDefaults).result;
+            this.auth = function (username, password, callback) {
+                authObj.$authWithPassword({
+                    email: username,
+                    password: password
+                }).then(function (authData) {
+                    callback(null, authData);
+                }).catch(function (error) {
+                    callback(error, null);
+                });
             };
         }
     ]);

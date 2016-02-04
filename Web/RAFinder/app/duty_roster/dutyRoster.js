@@ -13,27 +13,23 @@ angular.module('RAFinder.dutyRoster', [
     .controller('DutyRosterCtrl', [
         '$scope',
         '$location',
-        '$firebaseObject',
-        '$firebaseArray',
-        'AuthService',
-        'ModalService',
-        function ($scope, $location, $firebaseObject, $firebaseArray, AuthService, ModalService) {
-            AuthService.checkAuth(function () {
-                if (!AuthService.isEmployee()) {
+        'Auth',
+        'Modal',
+        'Database',
+        function ($scope, $location, Auth, Modal, Database) {
+            Auth.checkAuth(function () {
+                if (!Auth.isEmployee()) {
                     $location.path('/login');
                 }
             });
 
             $scope.rosterData = [];
-            var firebase = new Firebase('https://ra-finder.firebaseio.com');
 
             var loadRosters = function () {
-                $firebaseArray(firebase.child('DutyRosters'))
-                    .$loaded()
-                    .then(function (data) {
-                        $scope.rosterData = data;
-                        $scope.rosters = $scope.getRosters();
-                    });
+                Database.getDutyRosters(function (data) {
+                    $scope.rosterData = data;
+                    $scope.rosters = $scope.getRosters();
+                });
             };
 
             loadRosters();
@@ -81,7 +77,7 @@ angular.module('RAFinder.dutyRoster', [
                     closeButtonText: 'Cancel'
                 };
 
-                ModalService.showModal(modalDefaults, modalOptions)
+                Modal.showModal(modalDefaults, modalOptions)
                     .then(function (successResult) {
                         console.log(successResult);
                         $scope.addDutyRosterItem(successResult.date, successResult.roster);
@@ -90,20 +86,19 @@ angular.module('RAFinder.dutyRoster', [
             };
 
             $scope.canAddDutyRosterItem = function () {
-                return AuthService.isAdmin(); // TODO: give GA privileges as well
+                return Auth.isAdmin(); // TODO: give GA privileges as well
             };
 
             $scope.addDutyRosterItem = function (date, roster) {
-                firebase.child('DutyRosters/' + date).set(roster);
+                Database.addDutyRosterItem(date, roster);
             };
         }
     ])
     .controller('AddDutyRosterItemCtrl', [
         '$scope',
         '$uibModalInstance',
-        '$firebaseArray',
-        function ($scope, $uibModalInstance, $firebaseArray) {
-            var firebase = new Firebase('https://ra-finder.firebaseio.com');
+        'Database',
+        function ($scope, $uibModalInstance, Database) {
             $scope.today = function () {
                 $scope.dt = new Date();
             };
@@ -142,20 +137,16 @@ angular.module('RAFinder.dutyRoster', [
             $scope.resHalls = [];
             $scope.roster = {};
 
-            $firebaseArray(firebase.child('ResHalls'))
-                .$loaded()
-                .then(function (data) {
-                    angular.forEach(data, function (resHall) {
-                        $scope.resHalls.push(resHall.$id);
-                        $scope.roster[resHall.$id] = '';
-                    });
+            Database.getResHalls(function (data) {
+                angular.forEach(data, function (resHall) {
+                    $scope.resHalls.push(resHall.$id);
+                    $scope.roster[resHall.$id] = '';
                 });
+            });
 
-            $firebaseArray(firebase.child('Employees/Resident Assistants'))
-                .$loaded()
-                .then(function (data) {
-                    $scope.ras = data;
-                });
+            Database.getRAs(function (data) {
+                $scope.ras = data;
+            });
 
             $scope.getRAsForHall = function (hall) {
                 var ras = [];
@@ -204,5 +195,4 @@ angular.module('RAFinder.dutyRoster', [
                 $uibModalInstance.dismiss('cancel');
             };
         }
-
     ]);

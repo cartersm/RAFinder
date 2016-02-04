@@ -3,7 +3,9 @@
 angular.module('RAFinder', [
     'ngRoute',
     'ui.bootstrap',
-    'RAFinder.services',
+    'RAFinder.services.auth',
+    'RAFinder.services.modal',
+    'RAFinder.services.database',
     'RAFinder.login',
     'RAFinder.employees',
     'RAFinder.hallRoster',
@@ -19,8 +21,8 @@ angular.module('RAFinder', [
     .controller('RootCtrl', [
         '$scope',
         '$location',
-        'AuthService',
-        function ($scope, $location, AuthService) {
+        'Auth',
+        function ($scope, $location, Auth) {
             $scope.isActive = function (viewLocation) {
                 return viewLocation === $location.path();
             };
@@ -29,21 +31,39 @@ angular.module('RAFinder', [
                 $('#default-link').removeClass('active');
             }
 
-            AuthService.checkAuth(function () {
+            Auth.checkAuth(function () {
                 // the navbar is forcibly hidden by default so that
                 //     it doesn't appear on initial load.
                 // Remove the 'hidden' class so ngShow can take over.
                 $('#page-header').removeClass('hidden');
                 $('#nav-bar').removeClass('hidden');
-                $scope.username = AuthService.getUser();
+                $scope.username = Auth.getUser();
             });
 
             $scope.logout = function () {
-                AuthService.logoutUser();
+                Auth.logoutUser();
             };
 
             $scope.hasAuth = function () {
-                return AuthService.isEmployee();
+                return Auth.isEmployee();
             };
         }
-    ]);
+    ])
+    /* Borrowed from http://www.tutorialspoint.com/angularjs/angularjs_upload_file.htm
+     * For watching the value of a file input and parsing it
+     */
+    .directive('fileModel', ['$parse', function ($parse) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                var model = $parse(attrs.fileModel);
+                var modelSetter = model.assign;
+
+                element.bind('change', function () {
+                    scope.$apply(function () {
+                        modelSetter(scope, element[0].files[0]);
+                    });
+                });
+            }
+        };
+    }]);

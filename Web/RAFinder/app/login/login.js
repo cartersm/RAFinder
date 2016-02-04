@@ -13,51 +13,47 @@ angular.module('RAFinder.login', [
         }])
     .controller('LoginCtrl', [
         '$scope',
-        '$firebaseAuth',
         '$location',
         '$window',
-        'AuthService',
-        function ($scope, $firebaseAuth, $location, $window, AuthService) {
+        'Auth',
+        function ($scope, $location, $window, Auth) {
             $scope.signinFailed = false;
             $scope.isEmployee = true;
 
-            AuthService.checkAuth(function () {
+            Auth.checkAuth(function () {
                 $window.location.reload();
                 $location.path('/employees');
             });
-
-            var authObj = AuthService.getAuthObject();
 
             $scope.SignIn = function (event) {
                 event.preventDefault();
                 var username = $scope.user.email;
                 var password = $scope.user.password;
 
-                authObj.$authWithPassword({
-                    email: username,
-                    password: password
-                }).then(function (authData) {
-                    AuthService.checkAuth(function () {
-                        $scope.signinFailed = false;
-                        $scope.isEmployee = AuthService.isEmployee();
-                        if ($scope.isEmployee) {
-                            AuthService.setUser(authData.password.email);
-                            $('#page-header').removeClass('hidden');
-                            $('#nav-bar').removeClass('hidden');
-                            $window.location.reload();
-                            $location.path('/employees');
-                        } else {
-                            console.warn('auth check failure');
+                Auth.auth(username, password,
+                    function (err, authData) {
+                        if (err) {
+                            console.error('Authentication failed: ', error);
+                            $scope.signinFailed = true;
+                            return;
                         }
-                    }, function (error) {
-                        console.warn(error);
-                        $scope.isEmployee = false;
+                        Auth.checkAuth(function () {
+                            $scope.signinFailed = false;
+                            $scope.isEmployee = Auth.isEmployee();
+                            if ($scope.isEmployee) {
+                                Auth.setUser(authData.password.email);
+                                $('#page-header').removeClass('hidden');
+                                $('#nav-bar').removeClass('hidden');
+                                $window.location.reload();
+                                $location.path('/employees');
+                            } else {
+                                console.warn('auth check failure');
+                            }
+                        }, function (error) {
+                            console.warn(error);
+                            $scope.isEmployee = false;
+                        });
                     });
-
-                }).catch(function (error) {
-                    console.error('Authentication failed: ', error);
-                    $scope.signinFailed = true;
-                });
             };
         }
     ]);

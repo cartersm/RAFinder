@@ -10,21 +10,20 @@ angular.module('RAFinder.hallRoster', [
             });
         }
     ])
-    .controller('HallRosterCtrl', ['$scope', '$location', '$firebaseAuth', '$firebaseObject', '$firebaseArray', 'AuthService',
-        function ($scope, $location, $firebaseAuth, $firebaseObject, $firebaseArray, AuthService) {
-            AuthService.checkAuth(function () {
-                if (!AuthService.isEmployee()) {
+    .controller('HallRosterCtrl', [
+        '$scope',
+        '$location',
+        'Auth',
+        'Database',
+        function ($scope, $location, Auth, Database) {
+            Auth.checkAuth(function () {
+                if (!Auth.isEmployee()) {
                     $location.path('/login');
                 }
             });
 
-            var firebase = new Firebase('https://ra-finder.firebaseio.com');
-
             // Populate Hall Data
-            var hallsRef = firebase.child('ResHalls');
-            $firebaseArray(hallsRef)
-                .$loaded()
-                .then(function (data) {
+            Database.getResHalls(function (data) {
                     $scope.hallData = data;
                 });
 

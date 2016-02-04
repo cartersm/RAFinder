@@ -12,79 +12,70 @@ angular.module('RAFinder.employees', [
     }])
     .controller('EmployeesCtrl', [
         '$scope',
-        '$firebaseAuth',
         '$location',
-        'AuthService',
-        '$firebaseArray',
-        'ModalService',
-        function ($scope, $firebaseAuth, $location, AuthService, $firebaseArray, ModalService) {
-            AuthService.checkAuth(function () {
-                if (!AuthService.isEmployee()) {
+        'Auth',
+        'Modal',
+        'Database',
+        function ($scope, $location, Auth, Modal, Database) {
+            Auth.checkAuth(function () {
+                if (!Auth.isEmployee()) {
                     $location.path('/login');
                 }
             });
 
-            var firebase = new Firebase('https://ra-finder.firebaseio.com');
             $scope.accordionData = [];
 
             // Populate employee data
-            $firebaseArray(firebase.child('Employees/Administrators'))
-                .$loaded()
-                .then(function (data) {
-                    $scope.adminData = data;
-                    $scope.accordionData.push({
-                        heading: 'Administrators',
-                        type: 'admin',
-                        data: $scope.adminData,
-                        showOnLoad: false
-                    });
+            Database.getRAs(function (data) {
+                $scope.raData = data;
+                $scope.accordionData.push({
+                    heading: 'Resident Assistants',
+                    type: 'ra',
+                    data: $scope.raData,
+                    showOnLoad: true
                 });
-            $firebaseArray(firebase.child('Employees/Resident Assistants'))
-                .$loaded()
-                .then(function (data) {
-                    $scope.raData = data;
-                    $scope.accordionData.push({
-                        heading: 'Resident Assistants',
-                        type: 'ra',
-                        data: $scope.raData,
-                        showOnLoad: true
-                    });
+            });
+
+            Database.getSAs(function (data) {
+                $scope.saData = data;
+                $scope.accordionData.push({
+                    heading: 'Sophomore Advisors',
+                    type: 'sa',
+                    data: $scope.saData,
+                    showOnLoad: false
                 });
-            $firebaseArray(firebase.child('Employees/Sophomore Advisors'))
-                .$loaded()
-                .then(function (data) {
-                    $scope.saData = data;
-                    $scope.accordionData.push({
-                        heading: 'Sophomore Advisors',
-                        type: 'sa',
-                        data: $scope.saData,
-                        showOnLoad: false
-                    });
+            });
+
+            Database.getGAs(function (data) {
+                $scope.gaData = data;
+                $scope.accordionData.push({
+                    heading: 'Graduate Assistants',
+                    type: 'ga',
+                    data: $scope.gaData,
+                    showOnLoad: false
                 });
-            $firebaseArray(firebase.child('Employees/Graduate Assistants'))
-                .$loaded()
-                .then(function (data) {
-                    $scope.gaData = data;
-                    $scope.accordionData.push({
-                        heading: 'Graduate Assistants',
-                        type: 'ga',
-                        data: $scope.gaData,
-                        showOnLoad: false
-                    });
+            });
+
+            Database.getAdmins(function (data) {
+                $scope.adminData = data;
+                $scope.accordionData.push({
+                    heading: 'Administrators',
+                    type: 'admin',
+                    data: $scope.adminData,
+                    showOnLoad: false
                 });
+            });
 
             // adding/deleting employees
-            // CONSIDER separating these into their own controllers
+            // TODO: separate these into their own controllers
             $scope.user = {};
             $scope.employeeType = '';
 
             // Populate ResHall names
             $scope.resHalls = [];
-            $firebaseArray(firebase.child('ResHalls'))
-                .$loaded()
-                .then(function (data) {
-                    $scope.resHalls = data;
-                });
+            Database.getResHalls(function (data) {
+                $scope.resHalls = data;
+            });
 
             $scope.showAddEmployeeModal = function () {
                 var modalDefaults = {
@@ -97,17 +88,12 @@ angular.module('RAFinder.employees', [
                     employeeTypes: ['Resident Assistant', 'Sophomore Advisor', 'Graduate Assistant', 'Administrator'],
                     resHalls: $scope.resHalls,
                     isUserInvalid: function (employeeType, user) {
-                        return !employeeType ||
-                            !user.name ||
-                            !user.email ||
-                            !user.phoneNumber ||
-                            !user.hall ||
-                            (!user.floor && user.floor !== 0) ||
-                            !user.room;
+                        return !employeeType || !user.name || !user.email || !user.phoneNumber || !user.hall ||
+                            (!user.floor && user.floor !== 0) || !user.room;
                     }
                 };
 
-                ModalService.showModal(modalDefaults, modalOptions)
+                Modal.showModal(modalDefaults, modalOptions)
                     .then(function (successResult) {
                         console.log(successResult);
                         $scope.addEmployee(successResult.type, successResult.user);
@@ -125,24 +111,11 @@ angular.module('RAFinder.employees', [
                 console.log(user);
                 employeeType += 's';
 
-                // FIXME: randomly generated password, then immediately send a "temporary credentials" email
-                var authObj = AuthService.getAuthObject();
-                authObj.$createUser({email: user.email, password: 'test1234'})
-                    .then(function (authData) {
-                        console.log('successfully created user: ' + authData.uid);
-                        firebase.child('Employees/' + employeeType + '/' + authData.uid)
-                            .set(user, function (error) {
-                                if (error != null) {
-                                    // TODO: modal with error
-                                    // TODO: look into Rockwood's validation
-                                    console.error(error);
-                                }
-                            });
-                    }, function (error) {
-                        console.error('Error creating user: ' + error);
-                    });
+                Database.addEmployee(employeeType, user);
             };
 
+            // FIXME: replace this with edit.
+            // We don't want to delete except when we overwrite with the CSV.
             $scope.deleteEmployee = function (type, person) {
                 var modalDefaults = {
                     templateUrl: 'employees/deleteEmployee.html'
@@ -155,35 +128,15 @@ angular.module('RAFinder.employees', [
                     closeButtonText: 'Cancel'
                 };
 
-                ModalService.showModal(modalDefaults, modalOptions)
+                Modal.showModal(modalDefaults, modalOptions)
                     .then(function (successResult) {
                         console.warn('Deleting user ' + person.email);
-                        var data;
-                        switch (type) {
-                            case 'ra':
-                                data = $scope.raData;
-                                break;
-                            case 'sa':
-                                data = $scope.saData;
-                                break;
-                            case 'ga':
-                                data = $scope.gaData;
-                                break;
-                            case 'admin':
-                                data = $scope.adminData;
-                                break;
-                        }
-                        data.$remove(person);
-                        if (person.email.endsWith('@test.com')) {
-                            // This is a test entity created by a demo of the app; remove it from the Firebase's authorized users
-                            var authObj = AuthService.getAuthObject();
-                            authObj.$removeUser({email: person.email, password: 'test1234'});
-                        }
+                        Database.removeEmployee(type, person);
                     });
             };
 
             $scope.isAdmin = function () {
-                return AuthService.isAdmin();
+                return Auth.isAdmin();
             };
         }
     ]);
