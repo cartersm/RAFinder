@@ -25,38 +25,9 @@ angular.module('RAFinder.dutyRoster', [
 
             $scope.rosterData = [];
 
-            var loadRosters = function () {
-                Database.getDutyRosters(function (data) {
-                    $scope.rosterData = data;
-                    $scope.rosters = $scope.getRosters();
-                });
-            };
-
-            loadRosters();
-
-            $scope.getRosters = function () {
-                var retArray = [];
-                angular.forEach($scope.rosterData, function (value) {
-                    var foo = {
-                        key: value.$id,
-                        entries: []
-                    };
-                    angular.forEach(value, function (value2, key2) {
-                        if (key2.startsWith('$')) return;
-
-                        foo.entries.push({
-                            hall: key2,
-                            employee: {
-                                name: value2.name,
-                                email: value2.email,
-                                phoneNumber: value2.phoneNumber
-                            }
-                        });
-                    });
-                    retArray.push(foo);
-                });
-                return retArray;
-            };
+            Database.getDutyRosters(function (data) {
+                $scope.rosterData = data;
+            });
 
             $scope.getDate = function (dateString) {
                 var date = new Date(dateString);
@@ -81,7 +52,6 @@ angular.module('RAFinder.dutyRoster', [
                     .then(function (successResult) {
                         console.log(successResult);
                         $scope.addDutyRosterItem(successResult.date, successResult.roster);
-                        loadRosters();
                     });
             };
 
@@ -178,16 +148,18 @@ angular.module('RAFinder.dutyRoster', [
                 }
                 date = dateObj.getFullYear() + '-' + monthStr + '-' + dateOfMonthStr;
 
+                result.roster = [];
+
                 angular.forEach(roster, function (value, key) {
-                    roster[key] = {
+                    result.roster.push({
+                        hall: key,
                         email: value.email,
                         name: value.name,
                         phoneNumber: value.phoneNumber,
                         uid: value.$id
-                    };
+                    });
                 });
 
-                result.roster = roster;
                 result.date = date;
                 $uibModalInstance.close(result);
             };

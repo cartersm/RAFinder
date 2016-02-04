@@ -10,9 +10,9 @@ import edu.rosehulman.rafinder.model.person.Employee;
  * A single item in the Duty Roster.
  */
 public class DutyRosterItem {
-    private String hall;
     private Employee ra;
 
+    private String hall;
     private String email;
     private String name;
     private String phoneNumber;
@@ -20,7 +20,7 @@ public class DutyRosterItem {
 
 
     public DutyRosterItem(DataSnapshot ds, List<Employee> ras) {
-        this.hall = ds.getKey();
+        this.hall = ds.child("hall").getValue(String.class);
         this.email = ds.child("email").getValue(String.class);
         this.name = ds.child("name").getValue(String.class);
         this.phoneNumber = ds.child("phoneNumber").getValue(String.class);

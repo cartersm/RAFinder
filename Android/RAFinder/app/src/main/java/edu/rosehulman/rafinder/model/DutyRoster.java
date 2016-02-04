@@ -19,15 +19,14 @@ public class DutyRoster {
     private final Map<LocalDate, List<DutyRosterItem>> roster;
 
     public DutyRoster(DataSnapshot ds, LocalDate startDate, List<Employee> ras) {
-        // FIXME for new DB structure
         this.roster = new HashMap<>();
-        for (DataSnapshot child : ds.getChildren()) {
-            LocalDate rosterDate = LocalDate.parse(child.getKey(), ConfigKeys.formatter);
+        for (DataSnapshot rosterSnapshot : ds.getChildren()) {
+            LocalDate rosterDate = LocalDate.parse(rosterSnapshot.child("date").getValue(String.class), ConfigKeys.formatter);
 //            rosterDate = rosterDate.plusDays(1); // TODO: check me: add one day to correct for UTC error
             if (!rosterDate.isBefore(startDate)) {
                 List<DutyRosterItem> items = new ArrayList<>();
-                for (DataSnapshot hall : child.getChildren()) {
-                    DutyRosterItem item = new DutyRosterItem(hall, ras);
+                for (DataSnapshot hallSnapshot : rosterSnapshot.child("roster").getChildren()) {
+                    DutyRosterItem item = new DutyRosterItem(hallSnapshot, ras);
                     items.add(item);
                 }
                 this.roster.put(rosterDate, items);

@@ -78,7 +78,7 @@ public class DutyRosterListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup viewGroup) {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = convertView != null ? convertView : inflater.inflate(R.layout.fragment_duty_roster_item, null);
+        View view = convertView != null ? convertView : inflater.inflate(R.layout.layout_duty_roster_item, null);
 
         final DutyRosterItem item = mRoster.getRosterAsList().get(groupPosition).get(childPosition);
 

@@ -20,7 +20,6 @@ import edu.rosehulman.rafinder.model.DutyRoster;
  * The RA view of the Duty Roster (which is editable for RAs, but not for SAs).
  */
 public class DutyRosterFragment extends Fragment {
-    // FIXME for new layout and ExpandableListView
     private DutyRosterListener mListener;
     private DutyRoster mRoster;
 

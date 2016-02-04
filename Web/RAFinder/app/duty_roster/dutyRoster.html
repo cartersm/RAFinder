@@ -6,8 +6,8 @@
     </h3>
 
     <uib-accordion>
-        <uib-accordion-group is-open="false" ng-repeat="roster in rosters"
-                             heading="{{getDate(roster.key) | date: 'EEE, MMM dd, yyyy'}}">
+        <uib-accordion-group is-open="false" ng-repeat="roster in rosterData"
+                             heading="{{getDate(roster.date) | date: 'EEE, MMM dd, yyyy'}}">
             <table class="table-striped">
                 <thead>
                 <tr>
@@ -18,11 +18,11 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="entry in roster.entries">
-                    <td>{{entry.hall}}</td>
-                    <td>{{entry.employee.name}}</td>
-                    <td>{{entry.employee.email}}</td>
-                    <td>{{entry.employee.phoneNumber}}</td>
+                <tr ng-repeat="item in roster.roster">
+                    <td>{{item.hall}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.email}}</td>
+                    <td>{{item.phoneNumber}}</td>
                 </tr>
                 </tbody>
             </table>
