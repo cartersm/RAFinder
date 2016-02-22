@@ -6,6 +6,10 @@ angular.module('RAFinder.services.auth', [])
         '$firebaseObject',
         '$location',
         function ($firebaseAuth, $window, $firebaseObject, $location) {
+            // registry token for RoseFire
+            const REGISTRY_TOKEN = 'f5bed5423c49f86cb1999207180b6520a0091e516e4135eb34e035fcf2da85748f8d8176c4c0da3' +
+                '3055f57c6d042821fJXiBojbwBpJ9pabFlFE7RYn/yukoVvJLJ9RveyCVfmBWAFinaQi1a7toTpqn3rsN0U1Eyf3kphf1faL9k' +
+                'BDkBgTAcay8Jwx+01DFViPYYoCiRAK8R6J09RJlzo10lZ8Z';
             var user = '';
             var isEmployee = false;
             var isAdmin = false;
@@ -106,6 +110,28 @@ angular.module('RAFinder.services.auth', [])
                 }).catch(function (error) {
                     callback(error, null);
                 });
+
+                // TODO: Rosefire auth - this will require either adding '@rose-hulman.edu' or checking against username only
+                //var data = {
+                //    registryToken: REGISTRY_TOKEN,
+                //    email: username,
+                //    password: password
+                //};
+                //
+                //$window.Rosefire.getToken(data, function (err, token) {
+                //    if (err) {
+                //        callback(error, null);
+                //        return;
+                //    }
+                //    authObj.$authWithCustomToken({
+                //        email: username,
+                //        password: password
+                //    }).then(function (authData) {
+                //        callback(null, authData);
+                //    }).catch(function (error) {
+                //        callback(error, null);
+                //    });
+                //});
             };
         }
     ]);
