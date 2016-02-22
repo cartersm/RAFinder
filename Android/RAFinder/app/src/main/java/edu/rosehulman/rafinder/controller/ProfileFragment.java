@@ -15,15 +15,12 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.InputType;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.io.ByteArrayOutputStream;
 
 import edu.rosehulman.rafinder.MainActivity;
 import edu.rosehulman.rafinder.R;
@@ -82,7 +79,7 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
                 cursor.close();
 
                 Bitmap bmp = BitmapFactory.decodeFile(picturePath);
-                employee.setProfilePicture(bmp);
+                employee.setProfilePictureFromBitmap(bmp);
                 ((ImageView) getActivity().findViewById(R.id.profileImageView))
                         .setImageBitmap(bmp);
                 saveProfilePictureToDatabase();
@@ -129,7 +126,7 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
         statusTextView.setText(getString(R.string.status_format, employee.getStatus()));
         statusDetailTextView.setText(getString(R.string.status_detail_format, employee.getStatusDetail()));
 
-        Bitmap profilePicture = employee.getProfilePicture();
+        Bitmap profilePicture = employee.getProfilePictureAsBitmap();
         if (profilePicture != null) {
             imageView.setImageBitmap(profilePicture);
         } else {
@@ -294,12 +291,8 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
     }
 
     private void saveProfilePictureToDatabase() {
-        Bitmap bmp = employee.getProfilePicture();
-        ByteArrayOutputStream bYtE = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.PNG, 100, bYtE);
-        byte[] byteArray = bYtE.toByteArray();
-        String imageFile = Base64.encodeToString(byteArray, Base64.DEFAULT);
-        employee.getFirebase().child("profilePicture").setValue(imageFile);
+        String image = employee.getProfilePicture();
+        employee.getFirebase().child("profilePicture").setValue(image);
     }
 
     private void showFeedbackDialog() {

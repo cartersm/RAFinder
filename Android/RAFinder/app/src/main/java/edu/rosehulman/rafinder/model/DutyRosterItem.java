@@ -27,7 +27,7 @@ public class DutyRosterItem {
         this.uid = ds.child("uid").getValue(String.class);
 
         for (Employee ra : ras) {
-            if (ra.getFirebaseKey().equals(this.uid)) {
+            if (ra.getUid().equals(this.uid)) {
                 this.ra = ra;
                 break;
             }

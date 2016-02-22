@@ -40,25 +40,33 @@ public class EmployeeLoader extends Loader {
                     switch (child.getKey()) {
                     case ConfigKeys.Administrators:
                         for (DataSnapshot adminDS : child.getChildren()) {
-                            Administrator admin = new Administrator(adminDS);
+                            Administrator admin = adminDS.getValue(Administrator.class);
+                            admin.setUid(adminDS.getKey());
+                            admin.setFirebase(adminDS.getRef());
                             mAdmins.add(admin);
                         }
                         break;
                     case ConfigKeys.GraduateAssistants:
                         for (DataSnapshot gaDS : child.getChildren()) {
-                            GraduateAssistant ga = new GraduateAssistant(gaDS);
+                            GraduateAssistant ga = gaDS.getValue(GraduateAssistant.class);
+                            ga.setUid(gaDS.getKey());
+                            ga.setFirebase(gaDS.getRef());
                             mGAs.add(ga);
                         }
                         break;
                     case ConfigKeys.ResidentAssistants:
                         for (DataSnapshot raDS : child.getChildren()) {
-                            ResidentAssistant ra = new ResidentAssistant(raDS);
+                            ResidentAssistant ra = raDS.getValue(ResidentAssistant.class);
+                            ra.setUid(raDS.getKey());
+                            ra.setFirebase(raDS.getRef());
                             mRAs.add(ra);
                         }
                         break;
                     case ConfigKeys.SophomoreAdvisors:
                         for (DataSnapshot saDS : child.getChildren()) {
-                            SophomoreAdvisor sa = new SophomoreAdvisor(saDS);
+                            SophomoreAdvisor sa = saDS.getValue(SophomoreAdvisor.class);
+                            sa.setUid(saDS.getKey());
+                            sa.setFirebase(saDS.getRef());
                             mSAs.add(sa);
                         }
                         break;

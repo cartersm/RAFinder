@@ -1,20 +1,17 @@
 package edu.rosehulman.rafinder.model.person;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.firebase.client.DataSnapshot;
 
 import edu.rosehulman.rafinder.ConfigKeys;
 
-@SuppressWarnings("unused")
 public class Resident {
     private String name;
+    @JsonIgnore
     private String uid;
 
-    Resident() {
-    }
+    public Resident() {
 
-    Resident(String name, String uid) {
-        this.name = name;
-        this.uid = uid;
     }
 
     public Resident(DataSnapshot ds) {

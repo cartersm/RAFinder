@@ -5,11 +5,13 @@ import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.util.Log;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 
 import edu.rosehulman.rafinder.ConfigKeys;
@@ -18,7 +20,6 @@ import edu.rosehulman.rafinder.UserType;
 /**
  * Any Residence Life employee.
  */
-@SuppressWarnings("unused")
 public abstract class Employee extends Resident {
     private String email;
     private int floor;
@@ -27,10 +28,15 @@ public abstract class Employee extends Resident {
     private String room;
     private String status;
     private String statusDetail;
-    private Bitmap profilePicture;
+    private String profilePicture;
+    @JsonIgnore
     private Firebase firebase;
+    @JsonIgnore
     private UserType userType;
-    private String firebaseKey;
+
+    public Employee() {
+        userType = getEmployeeType();
+    }
 
     public Employee(DataSnapshot ds) {
         this(
@@ -42,25 +48,22 @@ public abstract class Employee extends Resident {
                 ds.child(ConfigKeys.employeeRoom).getValue(String.class),
                 ds.child(ConfigKeys.employeeStatus).getValue(String.class),
                 ds.child(ConfigKeys.employeeStatusDetail).getValue(String.class),
-                convertToBitmap(ds.child(ConfigKeys.employeePicture).getValue(String.class)),
-                ds.getKey()
+                ds.child(ConfigKeys.employeePicture).getValue(String.class)
         );
-        firebaseKey = ds.getKey();
         firebase = new Firebase(ConfigKeys.FIREBASE_ROOT_URL + ds.getRef().getPath().toString());
-        firebase.addChildEventListener(new GetEmployeesListener());
+        firebase.addChildEventListener(new EmployeeChangedListener());
     }
 
-    private Employee(String name,
-                     String email,
-                     int floor,
-                     String hall,
-                     String phoneNumber,
-                     String room,
-                     String status,
-                     String statusDetail,
-                     Bitmap profilePicture,
-                     String uid) {
-        super(name, uid);
+    protected Employee(String name,
+                       String email,
+                       int floor,
+                       String hall,
+                       String phoneNumber,
+                       String room,
+                       String status,
+                       String statusDetail,
+                       String profilePicture) {
+        super(name);
         this.email = email;
         this.floor = floor;
         this.hall = hall;
@@ -70,17 +73,6 @@ public abstract class Employee extends Resident {
         this.statusDetail = statusDetail;
         this.profilePicture = profilePicture;
         userType = getEmployeeType();
-    }
-
-    public Employee(String name, String uid) {
-        super(name, uid);
-        userType = getEmployeeType();
-    }
-
-    public Employee(Firebase firebase) {
-        userType = getEmployeeType();
-        this.firebase = firebase;
-        this.firebase.addChildEventListener(new GetEmployeesListener());
     }
 
     public Employee(String name) {
@@ -111,15 +103,6 @@ public abstract class Employee extends Resident {
     public void setUserType(UserType userType) {
         this.userType = userType;
     }
-
-    public String getFirebaseKey() {
-        return firebaseKey;
-    }
-
-    public void setFirebaseKey(String firebaseKey) {
-        this.firebaseKey = firebaseKey;
-    }
-
 
     public String getEmail() {
         return email;
@@ -183,14 +166,27 @@ public abstract class Employee extends Resident {
 
     public void setFirebase(Firebase firebase) {
         this.firebase = firebase;
+        // FIXME: there has to be a better way to do this
+        this.firebase.addChildEventListener(new EmployeeChangedListener());
     }
 
-    public Bitmap getProfilePicture() {
+    public String getProfilePicture() {
         return profilePicture;
     }
 
-    public void setProfilePicture(Bitmap profilePicture) {
+    public Bitmap getProfilePictureAsBitmap() {
+        return convertToBitmap(this.profilePicture);
+    }
+
+    public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
+    }
+
+    public void setProfilePictureFromBitmap(Bitmap profilePicture) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        profilePicture.compress(Bitmap.CompressFormat.PNG, 100, out);
+        byte[] byteArray = out.toByteArray();
+        this.profilePicture = Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
     @Override
@@ -212,7 +208,7 @@ public abstract class Employee extends Resident {
 
     @Override
     public String toString() {
-        return Arrays.asList(
+        return this.getClass().getSimpleName() + ": " + Arrays.asList(
                 getUid(),
                 getName(),
                 email,
@@ -226,7 +222,7 @@ public abstract class Employee extends Resident {
         ).toString();
     }
 
-    private class GetEmployeesListener implements ChildEventListener {
+    private class EmployeeChangedListener implements ChildEventListener {
         public void onChildChanged(DataSnapshot arg0, String arg1) {
             switch (arg0.getKey()) {
             case ConfigKeys.employeeEmail:

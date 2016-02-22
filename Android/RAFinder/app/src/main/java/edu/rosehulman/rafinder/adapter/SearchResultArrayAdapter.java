@@ -47,7 +47,7 @@ public class SearchResultArrayAdapter extends ArrayAdapter<Employee> {
         nameText.setText(employee.getName());
         roomText.setText(mContext.getString(R.string.profile_room_format, employee.getHall(), employee.getRoom()));
         statusText.setText(employee.getStatus());
-        typeIcon.setImageBitmap(employee.getProfilePicture());
+        typeIcon.setImageBitmap(employee.getProfilePictureAsBitmap());
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

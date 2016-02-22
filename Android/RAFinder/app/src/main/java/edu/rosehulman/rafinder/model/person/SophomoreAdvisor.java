@@ -1,29 +1,30 @@
 package edu.rosehulman.rafinder.model.person;
 
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-
 import edu.rosehulman.rafinder.UserType;
 
 /**
  * An SA (like an RA, but with limited privileges).
  */
-@SuppressWarnings("unused")
 public class SophomoreAdvisor extends Employee {
-    public SophomoreAdvisor(DataSnapshot ds) {
-        super(ds);
-    }
 
-    public SophomoreAdvisor(String name, String uid) {
-        super(name, uid);
-    }
+    public SophomoreAdvisor() {
 
-    public SophomoreAdvisor(Firebase firebase) {
-        super(firebase);
     }
 
     public SophomoreAdvisor(String name) {
         super(name);
+    }
+
+    public SophomoreAdvisor(String name,
+                            String email,
+                            int floor,
+                            String hall,
+                            String phoneNumber,
+                            String room,
+                            String status,
+                            String statusDetail,
+                            String profilePicture) {
+        super(name, email, floor, hall, phoneNumber, room, status, statusDetail, profilePicture);
     }
 
     @Override
