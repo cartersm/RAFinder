@@ -16,7 +16,15 @@ angular.module('RAFinder.services.auth', [])
 
             this.checkAuth = function (onSuccess, onFailure) {
                 var auth = authObj.$getAuth();
-                if (auth !== null) {
+                if (auth === null || auth.expires <= Date.now() / 1000) {
+                    if (auth) {
+                        // The auth has expired
+                        self.logoutUser();
+                    }
+                    // We're not logged in
+                    $location.path('/login');
+                    if (onFailure) onFailure('not logged in');
+                } else {
                     // Find out whether the user is an admin or other employee
                     var obj = $firebaseObject(firebase.child('Employees/Administrators'));
                     obj.$loaded().then(function () {
@@ -35,7 +43,6 @@ angular.module('RAFinder.services.auth', [])
                             obj.$loaded().then(function () {
                                 angular.forEach(obj, function (child) {
                                     angular.forEach(child, function (value, key) {
-                                        //console.log(key);
                                         if (key === auth.uid) {
                                             isEmployee = true;
                                         }
@@ -43,20 +50,16 @@ angular.module('RAFinder.services.auth', [])
                                 });
                                 if (isEmployee) {
                                     user = auth.username.email;
-                                    if (typeof onSuccess === 'function') onSuccess();
+                                    if (onSuccess) onSuccess();
                                 } else {
                                     user = '';
                                     console.log('non-employee has been logged out');
                                     self.logoutUser();
-                                    if (typeof onFailure === 'function') onFailure('non-employee attempted login');
+                                    if (onFailure) onFailure('non-employee attempted login');
                                 }
                             });
                         }
                     });
-                } else {
-                    // We're not logged in
-                    $location.path('/login');
-                    if (typeof onFailure === 'function') onFailure('not logged in');
                 }
             };
 
