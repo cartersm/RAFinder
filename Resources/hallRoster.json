@@ -1,0 +1,21 @@
+/* This format avoids using names as keys */
+"ResHalls": {
+    "<UID>": {
+        /* This is one hall */
+        "hall": "Lakeside",
+        "<UID>": {
+            /* This is one floor */
+            "floor": "1",
+            "<UID>": {
+                /* This is one room */
+                "number": "<room number, e.g. 101A>",
+                "<UID>": {
+                    /* This is one resident */
+                    "name": "Foo Bar",
+                    "type": "resident",
+                    "image": "<some base64-encoded image string>"
+                }
+            }
+        }
+    }
+}
