@@ -33,7 +33,7 @@ angular.module('RAFinder.login', [
                 Auth.auth(username, password,
                     function (err, authData) {
                         if (err) {
-                            console.error('Authentication failed: ', error);
+                            console.error('Authentication failed: ', err);
                             $scope.signinFailed = true;
                             return;
                         }

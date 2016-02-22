@@ -33,7 +33,6 @@
   "disallowMixedSpacesAndTabs": true,
   "disallowTrailingWhitespace": true,
   "disallowSpaceAfterPrefixUnaryOperators": true,
-  "disallowMultipleVarDecl": true,
   "disallowKeywordsOnNewLine": [
     "else"
   ],
