@@ -1,8 +1,13 @@
 <div class="container">
     <h3>Hall Roster</h3>
 
+    <div ng-show="isLoading">
+        <h2>Loading All Students... </h2>
+        <h1 class='glyphicon glyphicon-refresh spinning'></h1>
+    </div>
+
     <uib-accordion>
-        <uib-accordion-group ng-repeat="hall in hallData" heading="{{hall.$id}}" is-open="false">
+        <uib-accordion-group ng-repeat="hall in hallData" heading="{{hall.hall}}" is-open="false">
             <table class="table-striped table-bordered">
                 <thead>
                 <tr>
@@ -12,10 +17,10 @@
                     <th>Resident 3</th>
                 </tr>
                 </thead>
-                <tbody id="tbody-residents" ng-repeat="floor in hall.Roster" ng-if="floor !== null">
-                <tr ng-repeat="room in floor">
+                <tbody id="tbody-residents" ng-repeat="floor in hall.floors">
+                <tr ng-repeat="room in floor.rooms">
                     <td>{{room.number}}</td>
-                    <td ng-repeat="resident in getResidents(room)">{{resident}}</td>
+                    <td ng-repeat="resident in room.residents">{{resident.name}}</td>
                 </tr>
                 <!-- FIXME: bad style here -->
                 <tr colspan=4><td class="separator my-separator"></td></tr>

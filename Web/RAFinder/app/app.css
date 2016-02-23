@@ -18,7 +18,7 @@
 }
 
 .my-jumbotron {
-    padding-bottom:0;
+    padding-bottom: 0;
 }
 
 td, th {
@@ -91,11 +91,11 @@ body {
 }
 
 .my-separator {
-    padding:30px;
+    padding: 30px;
 }
 
 .pointer {
-    cursor:pointer;
+    cursor: pointer;
 }
 
 /* Responsive: Portrait tablets and up */
@@ -106,5 +106,32 @@ body {
     .footer {
         padding-right: 0;
         padding-left: 0;
+    }
+}
+
+/* borrowed from
+http://stackoverflow.com/questions/14793367/how-to-add-a-spinner-icon-to-button-when-its-in-the-loading-state */
+.glyphicon.spinning {
+    animation: spin 1s infinite linear;
+    -webkit-animation: spin2 1s infinite linear;
+    /*display: flex;*/
+    /*margin: 0 auto;*/
+}
+
+@keyframes spin {
+    from {
+        transform: scale(1) rotate(0deg);
+    }
+    to {
+        transform: scale(1) rotate(360deg);
+    }
+}
+
+@-webkit-keyframes spin2 {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
     }
 }

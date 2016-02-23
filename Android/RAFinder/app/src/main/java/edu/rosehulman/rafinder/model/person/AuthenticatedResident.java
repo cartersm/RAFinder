@@ -5,21 +5,21 @@ import com.firebase.client.DataSnapshot;
 
 import edu.rosehulman.rafinder.ConfigKeys;
 
-public class Resident {
+public class AuthenticatedResident {
     private String name;
     @JsonIgnore
     private String uid;
 
-    public Resident() {
+    public AuthenticatedResident() {
 
     }
 
-    public Resident(DataSnapshot ds) {
+    public AuthenticatedResident(DataSnapshot ds) {
         name = ds.child(ConfigKeys.employeeName).getValue(String.class);
         uid = ds.getKey();
     }
 
-    public Resident(String name) {
+    public AuthenticatedResident(String name) {
         this.name = name;
     }
 

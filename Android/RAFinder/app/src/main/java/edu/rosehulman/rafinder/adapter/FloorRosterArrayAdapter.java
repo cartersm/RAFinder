@@ -10,18 +10,15 @@ import android.widget.TextView;
 import java.util.List;
 
 import edu.rosehulman.rafinder.R;
-import edu.rosehulman.rafinder.model.RoomEntry;
-import edu.rosehulman.rafinder.model.person.GraduateAssistant;
-import edu.rosehulman.rafinder.model.person.Resident;
-import edu.rosehulman.rafinder.model.person.ResidentAssistant;
-import edu.rosehulman.rafinder.model.person.SophomoreAdvisor;
+import edu.rosehulman.rafinder.model.reshall.Resident;
+import edu.rosehulman.rafinder.model.reshall.Room;
 
-public class FloorRosterArrayAdapter extends ArrayAdapter<RoomEntry> {
+public class FloorRosterArrayAdapter extends ArrayAdapter<Room> {
     public static final int MAX_ROOMMATES = 3;
     private final Context mContext;
     private final int mLayout;
 
-    public FloorRosterArrayAdapter(Context context, int textViewResourceId, List<RoomEntry> objects) {
+    public FloorRosterArrayAdapter(Context context, int textViewResourceId, List<Room> objects) {
         super(context, R.layout.layout_room_entry, textViewResourceId, objects);
         mLayout = R.layout.layout_room_entry;
         mContext = context;
@@ -39,35 +36,28 @@ public class FloorRosterArrayAdapter extends ArrayAdapter<RoomEntry> {
                 (TextView) view.findViewById(R.id.roommate2),
                 (TextView) view.findViewById(R.id.roommate3)
         };
-        RoomEntry item = super.getItem(position);
-        if (item instanceof RoomEntry.Lobby) {
-            for (TextView textView : roommates) {
-                textView.setVisibility(View.INVISIBLE);
-            }
-            roomNumberTextView.setTextSize(42);
-        } else {
-            final Resident[] residents = item.getResidents();
-            int numResidents = residents.length;
-            for (int i = 0; i < MAX_ROOMMATES; i++) {
-                if (numResidents <= i) {
-                    roommates[i].setVisibility(View.INVISIBLE);
-                } else {
-                    roommates[i].setText(residents[i].getName());
-                    if (residents[i] instanceof ResidentAssistant) {
-                        roommates[i].setTextColor(mContext.getResources().getColor(R.color.red));
-                        roommates[i].setText(roommates[i].getText() + " (RA)");
-                    } else if (residents[i] instanceof SophomoreAdvisor) {
-                        roommates[i].setTextColor(mContext.getResources().getColor(R.color.blue));
-                        roommates[i].setText(roommates[i].getText() + " (SA)");
-                    } else if (residents[i] instanceof GraduateAssistant) {
-                        roommates[i].setTextColor(mContext.getResources().getColor(R.color.green));
-                        roommates[i].setText(roommates[i].getText() + " (GA)");
-                    }
+        Room item = super.getItem(position);
+        final List<Resident> residents = item.getResidents();
+        int numResidents = residents.size();
+        for (int i = 0; i < MAX_ROOMMATES; i++) {
+            if (numResidents <= i) {
+                roommates[i].setVisibility(View.INVISIBLE);
+            } else {
+                roommates[i].setText(residents.get(i).getName());
+                if (residents.get(i).getType().equals("Resident Assistant")) {
+                    roommates[i].setTextColor(mContext.getResources().getColor(R.color.red));
+                    roommates[i].setText(roommates[i].getText() + " (RA)");
+                } else if (residents.get(i).getType().equals("Sophomore Advisor")) {
+                    roommates[i].setTextColor(mContext.getResources().getColor(R.color.blue));
+                    roommates[i].setText(roommates[i].getText() + " (SA)");
+                } else if (residents.get(i).getType().equals("Graduate Assistant")) {
+                    roommates[i].setTextColor(mContext.getResources().getColor(R.color.green));
+                    roommates[i].setText(roommates[i].getText() + " (GA)");
                 }
             }
         }
 
-        roomNumberTextView.setText(item.getRoomNumber());
+        roomNumberTextView.setText(item.getNumber());
         view.refreshDrawableState();
         return view;
     }

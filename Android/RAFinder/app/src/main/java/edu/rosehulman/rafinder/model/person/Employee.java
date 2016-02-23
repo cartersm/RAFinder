@@ -20,7 +20,7 @@ import edu.rosehulman.rafinder.UserType;
 /**
  * Any Residence Life employee.
  */
-public abstract class Employee extends Resident {
+public abstract class Employee extends AuthenticatedResident {
     private String email;
     private int floor;
     private String hall;

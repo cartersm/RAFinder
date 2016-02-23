@@ -13,13 +13,13 @@ import java.util.List;
 
 import edu.rosehulman.rafinder.R;
 import edu.rosehulman.rafinder.adapter.HallRosterListAdapter;
-import edu.rosehulman.rafinder.model.Hall;
+import edu.rosehulman.rafinder.model.reshall.ResHall;
 
 /**
  * The RA's view of a listing for a floor's residents
  */
 public class HallRosterFragment extends Fragment {
-    private List<Hall> mHalls;
+    private List<ResHall> mHalls;
 
     private int floorIndex; //not necessarily the floor number
     private HallRosterListener mListener;
@@ -80,7 +80,7 @@ public class HallRosterFragment extends Fragment {
     }
 
     public interface HallRosterListener {
-        public List<Hall> getHalls();
+        public List<ResHall> getHalls();
     }
 
 }

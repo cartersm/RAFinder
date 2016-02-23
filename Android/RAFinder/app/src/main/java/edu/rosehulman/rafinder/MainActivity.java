@@ -43,7 +43,7 @@ import edu.rosehulman.rafinder.loader.HallLoader;
 import edu.rosehulman.rafinder.loader.Loader;
 import edu.rosehulman.rafinder.model.DutyRoster;
 import edu.rosehulman.rafinder.model.DutyRosterItem;
-import edu.rosehulman.rafinder.model.Hall;
+import edu.rosehulman.rafinder.model.reshall.ResHall;
 import edu.rosehulman.rafinder.model.person.EmergencyContact;
 import edu.rosehulman.rafinder.model.person.Employee;
 
@@ -99,7 +99,7 @@ public class MainActivity extends Activity implements
     private Employee myRA;
     private LocalDate mDate;
     private DutyRoster mDutyRoster;
-    private List<Hall> mHalls;
+    private List<ResHall> mHalls;
 
     /**
      * Borrowed from {@link PhoneNumberUtils#normalizeNumber(String)}, for use on devices below API21
@@ -356,7 +356,7 @@ public class MainActivity extends Activity implements
     }
 
     @Override
-    public List<Hall> getHalls() {
+    public List<ResHall> getHalls() {
         return mHalls;
     }
 

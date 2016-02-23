@@ -16,6 +16,7 @@ angular.module('RAFinder.hallRoster', [
         'Auth',
         'Database',
         function ($scope, $location, Auth, Database) {
+            $scope.isLoading = true;
             Auth.checkAuth(function () {
                 if (!Auth.isEmployee()) {
                     $location.path('/login');
@@ -25,6 +26,7 @@ angular.module('RAFinder.hallRoster', [
             // Populate Hall Data
             Database.getResHalls(function (data) {
                     $scope.hallData = data;
+                    $scope.isLoading = false;
                 });
 
             $scope.getResidents = function (room) {

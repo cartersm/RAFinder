@@ -11,16 +11,16 @@ import java.util.List;
 
 import edu.rosehulman.rafinder.ExpandableHeightGridView;
 import edu.rosehulman.rafinder.R;
-import edu.rosehulman.rafinder.model.Floor;
-import edu.rosehulman.rafinder.model.Hall;
-import edu.rosehulman.rafinder.model.RoomEntry;
+import edu.rosehulman.rafinder.model.reshall.Floor;
+import edu.rosehulman.rafinder.model.reshall.ResHall;
+import edu.rosehulman.rafinder.model.reshall.Room;
 
 public class HallRosterListAdapter extends BaseExpandableListAdapter {
     private static final int MAX_ROOMMATES = 3;
     private Context mContext;
-    private List<Hall> mHalls;
+    private List<ResHall> mHalls;
 
-    public HallRosterListAdapter(Context context, List<Hall> halls) {
+    public HallRosterListAdapter(Context context, List<ResHall> halls) {
         mContext = context;
         mHalls = halls;
     }
@@ -36,7 +36,7 @@ public class HallRosterListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public Hall getGroup(int groupPosition) {
+    public ResHall getGroup(int groupPosition) {
         return mHalls.get(groupPosition);
     }
 
@@ -67,7 +67,7 @@ public class HallRosterListAdapter extends BaseExpandableListAdapter {
                     convertView :
                     inflater.inflate(android.R.layout.simple_expandable_list_item_1, null);
 
-        ((TextView) view.findViewById(android.R.id.text1)).setText(mHalls.get(groupPosition).getName());
+        ((TextView) view.findViewById(android.R.id.text1)).setText(mHalls.get(groupPosition).getHall());
 
         return view;
     }
@@ -81,10 +81,10 @@ public class HallRosterListAdapter extends BaseExpandableListAdapter {
 
         Floor floor = mHalls.get(groupPosition).getFloors().get(childPosition);
 
-        String floorString = floor.getOrdinal() + " Floor";
+        String floorString = floor.getFloor() + " Floor";
         ((TextView) view.findViewById(R.id.floorTextView)).setText(floorString);
 
-        List<RoomEntry> rooms = floor.getRooms();
+        List<Room> rooms = floor.getRooms();
         ExpandableHeightGridView roomList = (ExpandableHeightGridView) view.findViewById(R.id.roomList);
         roomList.setExpanded(true);
         roomList.setAdapter(new FloorRosterArrayAdapter(mContext, android.R.id.text1, rooms));
