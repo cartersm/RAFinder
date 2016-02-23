@@ -42,18 +42,6 @@ public class EmergencyContactArrayAdapter extends ArrayAdapter<EmergencyContact>
         final EmergencyContact selected = mObjects.get(position);
         String name = selected.getName();
         switch (selected.getUserType()) {
-        case RESIDENT_ASSISTANT:
-            name += " (RA)";
-            if (selected.getPriority() == EmergencyContact.Priority.ON_DUTY) {
-                name += " (On Duty)";
-            }
-            break;
-        case SOPHOMORE_ADVISOR:
-            name += " (SA)";
-            break;
-        case GRADUATE_ASSISTANT:
-            name += " (GA)";
-            break;
         case ADMINISTRATOR:
             name += " (Office of ResLife)";
             break;

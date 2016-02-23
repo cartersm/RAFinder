@@ -2,7 +2,9 @@ package edu.rosehulman.rafinder.model;
 
 import com.firebase.client.DataSnapshot;
 
+import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,16 +18,20 @@ import edu.rosehulman.rafinder.ConfigKeys;
 import edu.rosehulman.rafinder.model.person.Employee;
 
 public class DutyRoster {
+    public static final String DATE = "date";
+    public static final String ROSTER = "roster";
+    private static final int SEVEN_PM = 19;
+    private static final int NOON = 12;
+    private static final int EIGHT_AM = 8;
     private final Map<LocalDate, List<DutyRosterItem>> roster;
 
     public DutyRoster(DataSnapshot ds, LocalDate startDate, List<Employee> ras) {
         this.roster = new HashMap<>();
         for (DataSnapshot rosterSnapshot : ds.getChildren()) {
-            LocalDate rosterDate = LocalDate.parse(rosterSnapshot.child("date").getValue(String.class), ConfigKeys.formatter);
-//            rosterDate = rosterDate.plusDays(1); // TODO: check me: add one day to correct for UTC error
+            LocalDate rosterDate = LocalDate.parse(rosterSnapshot.child(DATE).getValue(String.class), ConfigKeys.formatter);
             if (!rosterDate.isBefore(startDate)) {
                 List<DutyRosterItem> items = new ArrayList<>();
-                for (DataSnapshot hallSnapshot : rosterSnapshot.child("roster").getChildren()) {
+                for (DataSnapshot hallSnapshot : rosterSnapshot.child(ROSTER).getChildren()) {
                     DutyRosterItem item = new DutyRosterItem(hallSnapshot, ras);
                     items.add(item);
                 }
@@ -34,25 +40,31 @@ public class DutyRoster {
         }
     }
 
-//    public Employee getOnDutyNow() {
-//        LocalDate now = LocalDate.now();
-//        if (now.getDayOfWeek() != DateTimeConstants.FRIDAY && now.getDayOfWeek() != DateTimeConstants.SATURDAY) {
-//            return null;
-//        } else {
-//            if (now.getDayOfWeek() == DateTimeConstants.SATURDAY) {
-//                now = now.minusDays(1);
-//            }
-//            DutyRosterItem item = roster.get(now);
-//            if (item == null) {
-//                return null;
-//            }
-//            if (now.getDayOfWeek() == DateTimeConstants.FRIDAY) {
-//                return item.getFriDuty();
-//            } else {
-//                return item.getSatDuty();
-//            }
-//        }
-//    }
+    public List<DutyRosterItem> getOnDutyNow() {
+        LocalDateTime now = LocalDateTime.now();
+        boolean isWeekend = now.getDayOfWeek() == DateTimeConstants.FRIDAY ||
+                            now.getDayOfWeek() == DateTimeConstants.SATURDAY ||
+                            now.getDayOfWeek() == DateTimeConstants.SUNDAY;
+        if (!isWeekend) {
+            return null;
+        } else {
+            boolean isFriDuty = (now.getDayOfWeek() == DateTimeConstants.FRIDAY && now.getHourOfDay() >= SEVEN_PM) ||
+                                (now.getDayOfWeek() == DateTimeConstants.SATURDAY && now.getHourOfDay() < NOON);
+            boolean isSatDuty = (now.getDayOfWeek() == DateTimeConstants.SATURDAY && now.getHourOfDay() >= NOON) ||
+                                (now.getDayOfWeek() == DateTimeConstants.SUNDAY && now.getHourOfDay() < EIGHT_AM);
+
+            if ((now.getDayOfWeek() == DateTimeConstants.SATURDAY && isFriDuty) ||
+                (now.getDayOfWeek() == DateTimeConstants.SUNDAY && isSatDuty)) {
+                // we're on the latter day of the duty shift
+                now = now.minusDays(1);
+            }
+            List<DutyRosterItem> items = roster.get(now.toLocalDate());
+            if (items == null || items.isEmpty()) {
+                return null;
+            }
+            return items;
+        }
+    }
 
     public Map<LocalDate, List<DutyRosterItem>> getRoster() {
         return roster;

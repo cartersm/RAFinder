@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.rosehulman.rafinder.ConfigKeys;
+import edu.rosehulman.rafinder.model.DutyRosterItem;
 import edu.rosehulman.rafinder.model.person.EmergencyContact;
 import edu.rosehulman.rafinder.model.person.Employee;
 
@@ -23,10 +24,12 @@ public class EmergencyContactsLoader extends Loader {
     public EmergencyContactsLoader(LoaderListener listener) {
         mListener = listener;
         if (listener != null) {
-//            Employee raOnDuty = listener.getDutyRoster().getOnDutyNow();
-//            if (raOnDuty != null) {
-//                mContacts.add(new EmergencyContact(raOnDuty, true));
-//            }
+            List<DutyRosterItem> rasOnDuty = listener.getDutyRoster().getOnDutyNow();
+            if (rasOnDuty != null) {
+                for (DutyRosterItem item : rasOnDuty) {
+                    mContacts.add(new EmergencyContact(item));
+                }
+            }
 
             List<Employee> myRAs = listener.getMyRAs();
             for (Employee employee : myRAs) {

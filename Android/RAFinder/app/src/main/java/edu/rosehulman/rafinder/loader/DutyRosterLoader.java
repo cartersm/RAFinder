@@ -25,7 +25,6 @@ public class DutyRosterLoader extends Loader {
     private LocalDate mDate;
 
     public DutyRosterLoader(LoaderListener listener, List<Employee> ras, boolean isEdit) {
-        // FIXME for new DB structure
         mListener = listener;
         mRAs = ras;
         mIsEdit = isEdit;
@@ -45,7 +44,7 @@ public class DutyRosterLoader extends Loader {
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-                // ignored
+                // unused
             }
         });
     }

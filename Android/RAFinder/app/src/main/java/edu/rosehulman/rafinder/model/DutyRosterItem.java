@@ -10,6 +10,11 @@ import edu.rosehulman.rafinder.model.person.Employee;
  * A single item in the Duty Roster.
  */
 public class DutyRosterItem {
+    public static final String HALL = "hall";
+    public static final String EMAIL = "email";
+    public static final String NAME = "name";
+    public static final String PHONE_NUMBER = "phoneNumber";
+    public static final String UID = "uid";
     private Employee ra;
 
     private String hall;
@@ -20,11 +25,11 @@ public class DutyRosterItem {
 
 
     public DutyRosterItem(DataSnapshot ds, List<Employee> ras) {
-        this.hall = ds.child("hall").getValue(String.class);
-        this.email = ds.child("email").getValue(String.class);
-        this.name = ds.child("name").getValue(String.class);
-        this.phoneNumber = ds.child("phoneNumber").getValue(String.class);
-        this.uid = ds.child("uid").getValue(String.class);
+        this.hall = ds.child(HALL).getValue(String.class);
+        this.email = ds.child(EMAIL).getValue(String.class);
+        this.name = ds.child(NAME).getValue(String.class);
+        this.phoneNumber = ds.child(PHONE_NUMBER).getValue(String.class);
+        this.uid = ds.child(UID).getValue(String.class);
 
         for (Employee ra : ras) {
             if (ra.getUid().equals(this.uid)) {
