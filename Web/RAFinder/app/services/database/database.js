@@ -169,7 +169,6 @@ angular.module('RAFinder.services.database', [
                     .then(function (data) {
                         self.dutyRosters = data;
                         callback(self.dutyRosters);
-                        console.log(self.dutyRosters);
                     });
             };
 
@@ -186,10 +185,13 @@ angular.module('RAFinder.services.database', [
             this.addDutyRosterItem = function (date, roster) {
                 self.dutyRosters.$add({date: date})
                     .then(function (ref) {
-                        var newRoster = self.dutyRosters.$getRecord(ref.key());
-                        // CONSIDER pushing these individually so they have UIDs
-                        newRoster.roster = roster;
-                        self.dutyRosters.$save(newRoster);
+                        $firebaseArray(ref.child('roster'))
+                            .$loaded()
+                            .then(function (newRoster) {
+                                angular.forEach(roster, function (item) {
+                                    newRoster.$add(item);
+                                });
+                            });
                     });
             };
         }

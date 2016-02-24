@@ -109,8 +109,8 @@ angular.module('RAFinder.dutyRoster', [
 
             Database.getResHalls(function (data) {
                 angular.forEach(data, function (resHall) {
-                    $scope.resHalls.push(resHall.$id);
-                    $scope.roster[resHall.$id] = '';
+                    $scope.resHalls.push(resHall.hall);
+                    $scope.roster[resHall.hall] = '';
                 });
             });
 
