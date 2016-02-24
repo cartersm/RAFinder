@@ -1,16 +1,16 @@
 'use strict';
 
 angular.module('RAFinder', [
-    'ngRoute',
-    'ui.bootstrap',
-    'RAFinder.services.auth',
-    'RAFinder.services.modal',
-    'RAFinder.services.database',
-    'RAFinder.login',
-    'RAFinder.employees',
-    'RAFinder.hallRoster',
-    'RAFinder.dutyRoster'
-])
+        'ngRoute',
+        'ui.bootstrap',
+        'RAFinder.services.auth',
+        'RAFinder.services.modal',
+        'RAFinder.services.database',
+        'RAFinder.login',
+        'RAFinder.employees',
+        'RAFinder.hallRoster',
+        'RAFinder.dutyRoster'
+    ])
     .config(['$routeProvider',
         function ($routeProvider) {
             // Always redirect to login page
@@ -49,20 +49,40 @@ angular.module('RAFinder', [
             };
         }
     ])
-    /* Borrowed from http://www.tutorialspoint.com/angularjs/angularjs_upload_file.htm
-     * For watching the value of a file input and parsing it
-     */
-    .directive('fileModel', ['$parse', function ($parse) {
+    /* borrowed from http://stackoverflow.com/a/34001254 */
+    .directive('fileSelect', ['$window', function ($window) {
         return {
             restrict: 'A',
-            link: function (scope, element, attrs) {
-                var model = $parse(attrs.fileModel);
-                var modelSetter = model.assign;
+            require: 'ngModel',
+            link: function (scope, el, attr, ctrl) {
+                var fileReader = new $window.FileReader();
 
-                element.bind('change', function () {
-                    scope.$apply(function () {
-                        modelSetter(scope, element[0].files[0]);
-                    });
+                fileReader.onload = function () {
+                    ctrl.$setViewValue(fileReader.result);
+
+                    if ('fileLoaded' in attr) {
+                        scope.$eval(attr.fileLoaded);
+                    }
+                };
+
+                fileReader.onprogress = function (event) {
+                    if ('fileProgress' in attr) {
+                        scope.$eval(attr.fileProgress, {'$total': event.total, '$loaded': event.loaded});
+                    }
+                };
+
+                fileReader.onerror = function () {
+                    if ('fileError' in attr) {
+                        scope.$eval(attr.fileError, {'$error': fileReader.error});
+                    }
+                };
+
+                var fileType = attr.fileSelect;
+
+                el.bind('change', function (e) {
+                    var fileName = e.target.files[0];
+
+                    fileReader.readAsText(fileName);
                 });
             }
         };

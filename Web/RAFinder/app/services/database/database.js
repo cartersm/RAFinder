@@ -1,12 +1,14 @@
 'use strict';
 angular.module('RAFinder.services.database', [
-    'firebase'
-])
+        'firebase',
+        'RAFinder.services.fileReader'
+    ])
     .service('Database', [
         '$firebaseObject',
         '$firebaseArray',
         'Auth',
-        function ($firebaseObject, $firebaseArray, Auth) {
+        'FileReader',
+        function ($firebaseObject, $firebaseArray, Auth, fileReader) {
             var firebase = new Firebase('https://ra-finder.firebaseio.com');
 
             this.employees = {
@@ -95,6 +97,101 @@ angular.module('RAFinder.services.database', [
                     });
                 } else {
                     callback(self.employees.admins);
+                }
+            };
+
+            this.parseEmployeeCsv = function (data, overwrite) {
+                var ras = [];
+                var sas = [];
+                var gas = [];
+                var admins = [];
+                //var fraternityPresidents = [];
+
+                fileReader.readFile(data,
+                    function (lineData) {
+                        var toAdd = angular.copy(lineData);
+
+                        toAdd.email = toAdd.username + '@rose-hulman.edu';
+                        delete toAdd.username;
+                        if (toAdd.room.length === 1) {
+                            // leading zeros were stripped, add them back
+                            toAdd.room = '00' + toAdd.room;
+                        } else if (toAdd.room.length === 2) {
+                            // leading zero was stripped, add it back
+                            toAdd.room = '0' + toAdd.room;
+                        }
+                        toAdd.floor = toAdd.room.substring(0, 1);
+                        delete toAdd.type;
+
+                        toAdd.hall = normalizeHall(toAdd.hall);
+
+                        toAdd.profilePicture = '';
+                        toAdd.status = 'In My Room';
+                        toAdd.statusDetail = '';
+
+                        if (lineData.type === 'Resident Assistant') {
+                            ras.push(toAdd);
+                        } else if (lineData.type === 'Sophomore Adviser') {
+                            sas.push(toAdd);
+                        } else if (lineData.type === 'Graduate Assistant') {
+                            gas.push(toAdd);
+                        } else if (lineData.type === 'Administrator') {
+                            admins.push(toAdd);
+                        }
+                        //else if (lineData.type === 'Fraternity President') {
+                        //    fraternityPresidents.push(toAdd);
+                        //}
+                    },
+                    function () {
+                        if (overwrite) {
+                            firebase.child('Employees/Resident Assistants').remove();
+                            firebase.child('Employees/Sophomore Advisors').remove();
+                            firebase.child('Employees/Graduate Assistants').remove();
+                            //firebase.child('Employees/Administrators').remove();
+                        }
+                        angular.forEach(ras, function (ra) {
+                            self.employees.ras.$add(ra);
+                        });
+
+                        angular.forEach(sas, function (sa) {
+                            self.employees.sas.$add(sa);
+                        });
+
+                        angular.forEach(gas, function (ga) {
+                            self.employees.gas.$add(ga);
+                        });
+
+                        angular.forEach(admins, function (admin) {
+                            self.employees.admins.$add(admin);
+                        });
+
+                        //angular.forEach(fraternityPresidents, function (pres) {
+                        //    self.employees.fraternityPresidents.$add(pres);
+                        //});
+                    });
+            };
+
+            var normalizeHall = function (hall) {
+                if (hall === 'APT. STYLE - EAST') {
+                    return 'Apartments East';
+                } else if (hall === 'APT. STYLE - WEST') {
+                    return 'Apartments West';
+                } else if (hall === 'BAUR-SAMES-BOGART HALL') {
+                    return 'BSB';
+                } else if (hall === 'BLUMBERG HALL') {
+                    return 'Blumberg';
+                } else if (hall === 'DEMING HALL') {
+                    return 'Deming';
+                } else if (hall === 'MEES HALL') {
+                    return 'Mees';
+                } else if (hall === 'PERCOPO HALL') {
+                    return 'Percopo';
+                } else if (hall === 'SCHARPENBERG HALL') {
+                    return 'Scharpenberg';
+                } else if (hall === 'LAKESIDE HALL') {
+                    return 'Lakeside';
+                } else if (hall === 'SPEED HALL') {
+                    return 'Speed';
                 }
             };
 

@@ -1,8 +1,19 @@
 <div class="container">
     <h3>
         Current Employees
-        <button class="btn btn-success" ng-click="showAddEmployeeModal()" ng-show="isAdmin()">Add</button>
     </h3>
+    <div class="bottom-margin">
+        <button class="btn btn-success" ng-click="showAddEmployeeModal()" ng-show="isAdmin()">Add</button>
+        <span class="btn btn-default btn-primary btn-file">
+            Upload CSV
+            <input class="btn btn-primary" type="file" ng-model="file.data" file-select="data"
+                   file-loaded="onCsvLoaded()" file-error="onCsvError($error)">
+        </span>
+        <label class="alert-danger">
+            <input type="checkbox" name="overwriteEmployees" ng-model="overwriteEmployees">
+            Overwrite Existing Employees
+        </label>
+    </div>
 
     <uib-accordion>
         <uib-accordion-group ng-repeat="data in accordionData" heading="{{data.heading}}" is-open="data.showOnLoad">
@@ -23,9 +34,9 @@
                     <td>{{person.room}}</td>
                     <!-- TODO: allow editing, vary available fields based on admin or active employee -->
                     <!--<td ng-show="isAdmin() || isActiveUser(person)">-->
-                        <!--<button class="btn btn-danger" ng-click="showEditEmployeeModal(person)">-->
-                            <!--Edit-->
-                        <!--</button>-->
+                    <!--<button class="btn btn-danger" ng-click="showEditEmployeeModal(person)">-->
+                    <!--Edit-->
+                    <!--</button>-->
                     <!--</td>-->
                     <td ng-show="isAdmin()">
                         <button class="btn btn-danger" ng-click="deleteEmployee(data.type, person)">

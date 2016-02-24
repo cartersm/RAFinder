@@ -17,5 +17,6 @@
     "start": "http-server -a localhost -p 8000 -c-1"
   },
   "dependencies": {
+    "csv-parser": "^1.9.3"
   }
 }

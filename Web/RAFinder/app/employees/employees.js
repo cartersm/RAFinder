@@ -70,6 +70,10 @@ angular.module('RAFinder.employees', [
             // TODO: separate these into their own controllers
             $scope.user = {};
             $scope.employeeType = '';
+            $scope.file = {
+                data: ''
+            };
+            $scope.overwriteEmployees = false;
 
             // Populate ResHall names
             $scope.resHalls = [];
@@ -112,6 +116,15 @@ angular.module('RAFinder.employees', [
                 employeeType += 's';
 
                 Database.addEmployee(employeeType, user);
+            };
+
+            $scope.onCsvLoaded = function () {
+                Database.parseEmployeeCsv($scope.file.data, $scope.overwriteEmployees);
+                $scope.overwriteEmployees = false;
+            };
+
+            $scope.onCsvError = function (error) {
+                console.error('problem uploading CSV', error);
             };
 
             // FIXME: replace this with edit.
