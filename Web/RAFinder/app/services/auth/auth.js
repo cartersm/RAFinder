@@ -13,6 +13,7 @@ angular.module('RAFinder.services.auth', [])
             var user = '';
             var isEmployee = false;
             var isAdmin = false;
+            var isGA = false;
             var firebase = new Firebase('https://ra-finder.firebaseio.com');
             var authObj = $firebaseAuth(firebase);
 
@@ -31,8 +32,9 @@ angular.module('RAFinder.services.auth', [])
                 } else {
                     // Find out whether the user is an admin or other employee
                     var obj = $firebaseObject(firebase.child('Employees/Administrators'));
-                    obj.$loaded().then(function () {
-                        angular.forEach(obj, function (value, key) {
+                    obj.$loaded().then(function (data) {
+                        angular.forEach(data, function (value, key) {
+                            // TODO: this'll break RoseFire auth
                             if (key === auth.uid) {
                                 isAdmin = true;
                                 isEmployee = true;
@@ -43,26 +45,44 @@ angular.module('RAFinder.services.auth', [])
                             user = auth.password.email;
                             if (typeof onSuccess === 'function') onSuccess();
                         } else {
-                            obj = $firebaseObject(firebase.child('Employees'));
-                            obj.$loaded().then(function () {
-                                angular.forEach(obj, function (child) {
-                                    angular.forEach(child, function (value, key) {
-                                        if (key === auth.uid) {
-                                            isEmployee = true;
+                            var obj = $firebaseObject(firebase.child('Employees/Graduate Assistants'));
+                            obj.$loaded().then(function (data) {
+                                angular.forEach(data, function (value, key) {
+                                    // TODO: this'll break RoseFire auth
+                                    if (key === auth.uid) {
+                                        isGA = true;
+                                        isEmployee = true;
+                                    }
+                                });
+
+                                if (isGA) {
+                                    user = auth.password.email;
+                                    if (typeof onSuccess === 'function') onSuccess();
+                                } else {
+                                    obj = $firebaseObject(firebase.child('Employees'));
+                                    obj.$loaded().then(function (data) {
+                                        angular.forEach(data, function (child) {
+                                            angular.forEach(child, function (value, key) {
+                                                // TODO: this'll break RoseFire auth
+                                                if (key === auth.uid) {
+                                                    isEmployee = true;
+                                                }
+                                            });
+                                        });
+                                        if (isEmployee) {
+                                            user = auth.password.email;
+                                            if (onSuccess) onSuccess();
+                                        } else {
+                                            user = '';
+                                            console.log('non-employee has been logged out');
+                                            self.logoutUser();
+                                            if (onFailure) onFailure('non-employee attempted login');
                                         }
                                     });
-                                });
-                                if (isEmployee) {
-                                    user = auth.username.email;
-                                    if (onSuccess) onSuccess();
-                                } else {
-                                    user = '';
-                                    console.log('non-employee has been logged out');
-                                    self.logoutUser();
-                                    if (onFailure) onFailure('non-employee attempted login');
                                 }
                             });
                         }
+
                     });
                 }
             };
@@ -86,6 +106,10 @@ angular.module('RAFinder.services.auth', [])
 
             this.isAdmin = function () {
                 return isAdmin;
+            };
+
+            this.isGA = function () {
+                return isGA;
             };
 
             this.isEmployee = function () {
