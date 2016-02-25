@@ -25,16 +25,17 @@ angular.module('RAFinder.services.database', [
 
             // Employees
             var loadRAs = function (callback) {
-                $firebaseArray(firebase.child('Employees/Resident Assistants'))
+                $firebaseArray(firebase.child('Employees/Resident Assistants').orderByChild('hall'))
                     .$loaded()
                     .then(function (data) {
+
                         self.employees.ras = data;
                         callback(self.employees.ras);
                     });
             };
 
             var loadSAs = function (callback) {
-                $firebaseArray(firebase.child('Employees/Sophomore Advisors'))
+                $firebaseArray(firebase.child('Employees/Sophomore Advisors').orderByChild('hall'))
                     .$loaded()
                     .then(function (data) {
                         self.employees.sas = data;
@@ -43,7 +44,7 @@ angular.module('RAFinder.services.database', [
             };
 
             var loadGAs = function (callback) {
-                $firebaseArray(firebase.child('Employees/Graduate Assistants'))
+                $firebaseArray(firebase.child('Employees/Graduate Assistants').orderByChild('hall'))
                     .$loaded()
                     .then(function (data) {
                         self.employees.gas = data;
@@ -52,7 +53,7 @@ angular.module('RAFinder.services.database', [
             };
 
             var loadAdmins = function (callback) {
-                $firebaseArray(firebase.child('Employees/Administrators'))
+                $firebaseArray(firebase.child('Employees/Administrators').orderByChild('hall'))
                     .$loaded()
                     .then(function (data) {
                         self.employees.admins = data;
@@ -107,11 +108,15 @@ angular.module('RAFinder.services.database', [
                 var admins = [];
                 //var fraternityPresidents = [];
 
-                fileReader.readFile(data,
+                fileReader.readCsv(data,
                     function (lineData) {
                         var toAdd = angular.copy(lineData);
 
-                        toAdd.email = toAdd.username + '@rose-hulman.edu';
+                        if (toAdd.username.indexOf('@') < 0) {
+                            toAdd.email = toAdd.username + '@rose-hulman.edu';
+                        } else {
+                            toAdd.email = toAdd.username;
+                        }
                         delete toAdd.username;
                         if (toAdd.room.length === 1) {
                             // leading zeros were stripped, add them back
@@ -120,7 +125,7 @@ angular.module('RAFinder.services.database', [
                             // leading zero was stripped, add it back
                             toAdd.room = '0' + toAdd.room;
                         }
-                        toAdd.floor = toAdd.room.substring(0, 1);
+                        toAdd.floor = parseInt(toAdd.room.substring(0, 1));
                         delete toAdd.type;
 
                         toAdd.hall = normalizeHall(toAdd.hall);
@@ -290,6 +295,133 @@ angular.module('RAFinder.services.database', [
                                 });
                             });
                     });
+            };
+
+            this.parseDutyRosterFile = function (data, overwrite) {
+                var rosters = [];
+                var roster = roster = {
+                    date: '',
+                    roster: []
+                };
+                var lines = data.split('\n');
+                var rollover = lines.length / 11;
+                var count = 0;
+                var nTriplets = 0;
+
+                if (overwrite) {
+                    firebase.child('DutyRosters').remove();
+                }
+
+                var headers = lines.slice(rollover * 10);
+                if (self.employees.admins.length === 0) {
+                    self.getAdmins(function (ignored) {
+                        if (self.employees.ras.length === 0) {
+                            self.getRAs(function (ignored) {
+                                if (self.employees.gas.length === 0) {
+                                    self.getGAs(function (ignored) {
+                                        fileReader.readLines(data, dataCallback, endCallback);
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+                var dataCallback = function (line) {
+                    if (count == rollover) {
+                        count = 0;
+                        rosters.push(angular.copy(roster));
+                        roster = {
+                            date: '',
+                            roster: []
+                        };
+                        nTriplets = 0;
+                    }
+                    if (line in headers) return;
+                    if (!isNaN(line)) {
+                        roster.date =
+                            line.slice(4, 8) + '-' + // YYYY
+                            line.slice(0, 2) + '-' + // MM
+                            line.slice(2, 4);        // DD
+                    } else {
+                        var employee = getEmployeeRecordForDutyRoster(line);
+                        if (employee) {
+                            if (employee.hall === 'Mees' ||
+                                employee.hall === 'Scharpenberg' ||
+                                employee.hall === 'Blumberg') {
+                                nTriplets++;
+                                employee.hall = 'Triplets ' + nTriplets;
+                            }
+                            roster.roster.push({
+                                email: employee.email,
+                                hall: employee.hall,
+                                name: employee.name,
+                                phoneNumber: employee.phoneNumber,
+                                uid: employee.uid
+                            });
+                        }
+                    }
+                    count++;
+                };
+                var endCallback = function () {
+                    angular.forEach(rosters, function (roster) {
+                        self.addDutyRosterItem(roster.date, roster.roster);
+                    });
+
+                };
+            };
+
+            var getEmployeeRecordForDutyRoster = function (name) {
+                var found = null;
+                angular.forEach(self.employees.admins, function (admin) {
+                    if (found) return;
+                    if (admin.name === name) {
+                        found = angular.copy(admin);
+                        found.hall = 'OCP';
+                        found.uid = admin.$id;
+                    }
+                });
+
+                if (found) return found;
+
+                angular.forEach(self.employees.gas, function (ga) {
+                    if (found) return;
+                    if (ga.name === name) {
+                        found = angular.copy(ga);
+                        found.hall = 'GA';
+                        found.uid = ga.$id;
+                    }
+                });
+
+                if (found) return found;
+
+                angular.forEach(self.employees.ras, function (ra) {
+                    if (found) return;
+                    if (ra.name === name) {
+                        found = angular.copy(ra);
+                        found.uid = ra.$id;
+                    }
+                });
+
+                return found;
+            };
+
+            this.formatDate = function (dateStr) {
+                var dateObj = new Date(Date.parse(dateStr));
+                var month = (dateObj.getMonth() + 1);
+                var monthStr;
+                if (month < 10) {
+                    monthStr = '0' + month;
+                } else {
+                    monthStr = '' + month;
+                }
+                var dateOfMonth = dateObj.getDate();
+                var dateOfMonthStr;
+                if (dateOfMonth < 10) {
+                    dateOfMonthStr = '0' + dateOfMonth;
+                } else {
+                    dateOfMonthStr = '' + dateOfMonth;
+                }
+                return dateObj.getFullYear() + '-' + monthStr + '-' + dateOfMonthStr;
             };
         }
     ]);

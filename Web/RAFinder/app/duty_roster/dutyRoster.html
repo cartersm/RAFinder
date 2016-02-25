@@ -1,9 +1,17 @@
 <div class="container">
-    <h3>Duty Roster
-        <button class="btn btn-success" ng-click="showAddDutyRosterItemModal()" ng-show="canAddDutyRosterItem()">
-            Add
-        </button>
-    </h3>
+    <h3>Duty Roster</h3>
+    <div class="bottom-margin" ng-show="canAddDutyRosterItem()">
+        <button class="btn btn-success" ng-click="showAddDutyRosterItemModal()">Add</button>
+        <span class="btn btn-default btn-primary btn-file">
+            Upload TXT
+            <input class="btn btn-primary" type="file" ng-model="file.data" file-select="data"
+                   file-loaded="onFileLoaded()" file-error="onFileError($error)">
+        </span>
+        <label class="alert-danger">
+            <input type="checkbox" name="overwriteRosters" ng-model="overwriteRosters">
+            Overwrite Existing Duty Rosters
+        </label>
+    </div>
 
     <uib-accordion>
         <uib-accordion-group is-open="false" ng-repeat="roster in rosterData"

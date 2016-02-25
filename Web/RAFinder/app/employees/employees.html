@@ -2,8 +2,8 @@
     <h3>
         Current Employees
     </h3>
-    <div class="bottom-margin">
-        <button class="btn btn-success" ng-click="showAddEmployeeModal()" ng-show="isAdmin()">Add</button>
+    <div class="bottom-margin" ng-show="isAdmin()">
+        <button class="btn btn-success" ng-click="showAddEmployeeModal()">Add</button>
         <span class="btn btn-default btn-primary btn-file">
             Upload CSV
             <input class="btn btn-primary" type="file" ng-model="file.data" file-select="data"

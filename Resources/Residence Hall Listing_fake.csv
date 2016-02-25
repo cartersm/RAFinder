@@ -1,0 +1,55 @@
+type,hall,name,room,phoneNumber,username
+Resident Assistant,APT. STYLE - EAST,Galen Sarratt,106,555-789-4231,sarrattgd
+Resident Assistant,APT. STYLE - EAST,Linwood Machesky,306,555-789-4233,macheslr
+Resident Assistant,APT. STYLE - WEST,Stefan McRaven,106,555-789-4234,mcravesl
+Resident Assistant,APT. STYLE - WEST,Cammy Rhyne,206,555-789-4235,rhyneco
+Resident Assistant,BAUR-SAMES-BOGART HALL,Shizuko Tindal,124,555-789-4237,tindalsj
+Resident Assistant,BAUR-SAMES-BOGART HALL,Rosette Winslett,324,555-789-4239,winslerr
+Resident Assistant,BLUMBERG HALL,Collene Bancroft,206,555-789-4240,bancrocd
+Resident Assistant,DEMING HALL,Weston Ghelfi,112,555-789-4243,ghelfiwf
+Resident Assistant,DEMING HALL,Hunter Alder,215,555-789-4244,alderhk
+Resident Assistant,DEMING HALL,Thaddeus Byrn,304,555-789-4245,byrntk
+Resident Assistant,MEES HALL,Hal Frakes,406,555-789-4247,frakesha
+Resident Assistant,PERCOPO HALL,Calista Hartjen,123,555-789-4248,hartjecw
+Resident Assistant,PERCOPO HALL,Wyatt Barick,215,555-789-4249,barickwm
+Resident Assistant,SCHARPENBERG HALL,Augustus Nesheim,406,555-789-4252,nesheiax
+Resident Assistant,LAKESIDE HALL,Jeneva Ryen,207,555-789-4254,ryenjc
+Resident Assistant,LAKESIDE HALL,Jennell Linkovich,307,555-789-4255,linkovjv
+Resident Assistant,LAKESIDE HALL,Arlen Ocano,407,555-789-4256,ocanoar
+Resident Assistant,SPEED HALL,Diego Castiglione,104,555-789-4257,castigdg
+Resident Assistant,SPEED HALL,Colby Voight,206,555-789-4258,voightck
+Sophomore Adviser,BAUR-SAMES-BOGART HALL,Eowyn Durheim,112,555-789-4260,iAmNoMan@rohan.com
+Sophomore Adviser,BAUR-SAMES-BOGART HALL,Harley Quinn,112,555-789-4261,jesterAndJoker@gothamcity.net
+Sophomore Adviser,BAUR-SAMES-BOGART HALL,Ianto Jones,212,555-789-4262,battleButler@torchwood.co.uk
+Sophomore Adviser,BAUR-SAMES-BOGART HALL,Jack Harkness,212,555-789-4263,wheresMyWatch@torchwood.co.uk
+Sophomore Adviser,BAUR-SAMES-BOGART HALL,Lecia Graydon,312,555-789-4264,graydolg
+Sophomore Adviser,BAUR-SAMES-BOGART HALL,Tayna Stasny,312,555-789-4265,stasnyte
+Sophomore Adviser,BLUMBERG HALL,Wyatt Jackstadt,306,555-789-4266,jackstwd
+Sophomore Adviser,BLUMBERG HALL,Winford Watrous,306,555-789-4267,watrouwn
+Sophomore Adviser,BLUMBERG HALL,Allyn Jackstadt,406,555-789-4268,jackstad
+Sophomore Adviser,BLUMBERG HALL,Rosette Woldt,406,555-789-4269,woldtre
+Sophomore Adviser,DEMING HALL,Hikaru Sulu,21,555-789-4270,sulu@enterprise.starfleet.com
+Sophomore Adviser,DEMING HALL,Pavel Chekov,21,555-789-4271,chekov@enterprise.starfleet.com
+Sophomore Adviser,DEMING HALL,Maxwell Yueh,107,555-789-4272,yuehmx
+Sophomore Adviser,DEMING HALL,Lynwood Foxwell,107,555-789-4273,foxwellh
+Sophomore Adviser,DEMING HALL,Harlan Bentzen,207,555-789-4274,bentzeh
+Sophomore Adviser,DEMING HALL,German Nakada,207,555-789-4275,nakadage
+Sophomore Adviser,DEMING HALL,Dirk Byrn,309,555-789-4276,byrndg
+Sophomore Adviser,DEMING HALL,Kendrick Tindal,309,555-789-4277,tindalkk
+Sophomore Adviser,MEES HALL,Jean-Luc Picard,207,555-789-4278,picard@enterprise.starfleet.com
+Sophomore Adviser,MEES HALL,William T. Riker,207,555-789-4279,riker@enterprise.starfleet.com
+Sophomore Adviser,MEES HALL,Ai Melchor,307,555-789-4280,melchoaj
+Sophomore Adviser,MEES HALL,Edra Barick,307,555-789-4281,barickeq
+Sophomore Adviser,SCHARPENBERG HALL,Warder Bardaye,307,555-789-4282,bardaywv
+Sophomore Adviser,SCHARPENBERG HALL,Gryany Ferre,307,555-789-4283,ferrega
+Sophomore Adviser,SCHARPENBERG HALL,Deanna Troi,407,555-789-4284,iAmAnEmpath@enterprise.starfleet.com
+Sophomore Adviser,SCHARPENBERG HALL,Beverly Crusher,407,555-789-4285,theDoctor@enterprise.starfleet.com
+Sophomore Adviser,SPEED HALL,Werner Webb,108,555-789-4286,webbws
+Sophomore Adviser,SPEED HALL,Benjiman Halsey,108,555-789-4287,halseybe
+Sophomore Adviser,SPEED HALL,Thomas Swindon,210,555-789-4288,swindota
+Sophomore Adviser,SPEED HALL,Welton Doyle,210,555-789-4289,doylewf
+Sophomore Adviser,SPEED HALL,Lawrence Garland,310,555-789-4290,garlanlb
+Sophomore Adviser,SPEED HALL,Leopold Thornton,310,555-789-4291,thorntla
+Graduate Assistant,APT. STYLE - WEST,"Leonard ""Bones"" McCoy",109,555-789-9999,bones@enterprise.starfleet.com
+Graduate Assistant,DEMING HALL,Nina Webb,101,555-789-4293,webbnd
+Graduate Assistant,PERCOPO HALL,Kathlyn Forster,17,555-789-4294,forstekn

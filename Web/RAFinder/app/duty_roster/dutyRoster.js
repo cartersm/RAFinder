@@ -56,12 +56,26 @@ angular.module('RAFinder.dutyRoster', [
             };
 
             $scope.canAddDutyRosterItem = function () {
-                return Auth.isAdmin(); // TODO: give GA privileges as well
+                return Auth.isAdmin() || Auth.isGA();
             };
 
             $scope.addDutyRosterItem = function (date, roster) {
                 Database.addDutyRosterItem(date, roster);
             };
+
+            $scope.file = {
+                data: ''
+            };
+            $scope.overwriteRosters = false;
+
+            $scope.onFileLoaded = function () {
+                Database.parseDutyRosterFile($scope.file.data, $scope.overwriteRosters);
+            };
+
+            $scope.onFileError = function (error) {
+                console.error('Error uploading Duty Roster', error);
+            };
+
         }
     ])
     .controller('AddDutyRosterItemCtrl', [
@@ -131,22 +145,7 @@ angular.module('RAFinder.dutyRoster', [
             $scope.modalOptions.ok = function (date, roster) {
                 var result = {};
 
-                var dateObj = new Date(Date.parse(date));
-                var month = (dateObj.getMonth() + 1);
-                var monthStr;
-                if (month < 10) {
-                    monthStr = '0' + month;
-                } else {
-                    monthStr = '' + month;
-                }
-                var dateOfMonth = dateObj.getDate();
-                var dateOfMonthStr;
-                if (dateOfMonth < 10) {
-                    dateOfMonthStr = '0' + dateOfMonth;
-                } else {
-                    dateOfMonthStr = '' + dateOfMonth;
-                }
-                date = dateObj.getFullYear() + '-' + monthStr + '-' + dateOfMonthStr;
+                date = Database.formatDate(date);
 
                 result.roster = [];
 
