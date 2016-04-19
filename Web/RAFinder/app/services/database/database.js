@@ -297,6 +297,10 @@ angular.module('RAFinder.services.database', [
                     });
             };
 
+            this.editDutyRosterItem = function (roster) {
+                self.dutyRosters.$save(roster);
+            };
+
             this.parseDutyRosterFile = function (data, overwrite) {
                 var rosters = [];
                 var roster = roster = {

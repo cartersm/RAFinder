@@ -163,3 +163,7 @@ http://stackoverflow.com/questions/14793367/how-to-add-a-spinner-icon-to-button-
     cursor: inherit;
     display: block;
 }
+
+select {
+    width: 220px;
+}
