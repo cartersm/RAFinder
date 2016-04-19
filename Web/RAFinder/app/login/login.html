@@ -27,7 +27,7 @@
             <a href="#/register">Sign Up</a>
         </label>
         <button ng-click="SignIn($event)" ng-disabled="!user.email || !user.password || !isEmployee"
-                class="btn btn-lg btn-primary btn-block" type="submit">
+                class="btn btn-lg btn-primary btn-block" type="submit" hotkey="{enter: SignIn}">
             Sign in
         </button>
     </form>

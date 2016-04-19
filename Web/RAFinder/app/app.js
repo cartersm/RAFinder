@@ -3,6 +3,7 @@
 angular.module('RAFinder', [
         'ngRoute',
         'ui.bootstrap',
+        'cfp.hotkeys',
         'RAFinder.services.auth',
         'RAFinder.services.modal',
         'RAFinder.services.database',

@@ -4,6 +4,7 @@
   "description": "The Rose-Hulman RAFinder App",
   "main": "app.js",
   "dependencies": {
+    "bower": "^1.7.9",
     "csv-parser": "^1.9.3"
   },
   "devDependencies": {
