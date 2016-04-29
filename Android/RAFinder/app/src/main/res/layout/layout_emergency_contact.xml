@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:columnCount="5"
     android:orientation="vertical"
-    tools:context="edu.rosehulman.rafinder.controller.EmergencyContactItem">
+    tools:context=".controller.EmergencyContactItem">
 
     <TextView
         android:id="@+id/nameTextView"

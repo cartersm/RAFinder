@@ -7,7 +7,7 @@
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:weightSum="1"
-    tools:context="edu.rosehulman.rafinder.controller.DutyRosterFragment">
+    tools:context=".controller.DutyRosterFragment">
 
     <TextView
         android:id="@+id/hallTextView"

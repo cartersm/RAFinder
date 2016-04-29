@@ -43,9 +43,9 @@ import edu.rosehulman.rafinder.loader.HallLoader;
 import edu.rosehulman.rafinder.loader.Loader;
 import edu.rosehulman.rafinder.model.DutyRoster;
 import edu.rosehulman.rafinder.model.DutyRosterItem;
-import edu.rosehulman.rafinder.model.reshall.ResHall;
 import edu.rosehulman.rafinder.model.person.EmergencyContact;
 import edu.rosehulman.rafinder.model.person.Employee;
+import edu.rosehulman.rafinder.model.reshall.ResHall;
 
 /**
  * The container activity for the entire app.

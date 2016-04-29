@@ -21,8 +21,8 @@ import android.widget.TextView;
 import com.firebase.client.Firebase;
 
 import edu.rosehulman.rafinder.ConfigKeys;
-import edu.rosehulman.rafinder.MainActivity;
 import edu.rosehulman.rafinder.R;
+import edu.rosehulman.rafinder.MainActivity;
 import edu.rosehulman.rafinder.UserType;
 import edu.rosehulman.rafinder.model.Login;
 
