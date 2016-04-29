@@ -8,8 +8,9 @@ angular.module('RAFinder.services.database', [
         '$firebaseArray',
         'Auth',
         'FileReader',
-        function ($firebaseObject, $firebaseArray, Auth, fileReader) {
-            var firebase = new Firebase('https://ra-finder.firebaseio.com');
+        'EnvConfig',
+        function ($firebaseObject, $firebaseArray, Auth, FileReader, EnvConfig) {
+            var firebase = new Firebase(EnvConfig.url);
 
             this.employees = {
                 ras: [],
@@ -28,7 +29,6 @@ angular.module('RAFinder.services.database', [
                 $firebaseArray(firebase.child('Employees/Resident Assistants').orderByChild('hall'))
                     .$loaded()
                     .then(function (data) {
-
                         self.employees.ras = data;
                         callback(self.employees.ras);
                     });
@@ -108,7 +108,7 @@ angular.module('RAFinder.services.database', [
                 var admins = [];
                 //var fraternityPresidents = [];
 
-                fileReader.readCsv(data,
+                FileReader.readCsv(data,
                     function (lineData) {
                         var toAdd = angular.copy(lineData);
 
@@ -323,7 +323,7 @@ angular.module('RAFinder.services.database', [
                             self.getRAs(function (ignored) {
                                 if (self.employees.gas.length === 0) {
                                     self.getGAs(function (ignored) {
-                                        fileReader.readLines(data, dataCallback, endCallback);
+                                        FileReader.readLines(data, dataCallback, endCallback);
                                     });
                                 }
                             });

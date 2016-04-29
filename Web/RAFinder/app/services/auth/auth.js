@@ -5,7 +5,8 @@ angular.module('RAFinder.services.auth', [])
         '$window',
         '$firebaseObject',
         '$location',
-        function ($firebaseAuth, $window, $firebaseObject, $location) {
+        'EnvConfig',
+        function ($firebaseAuth, $window, $firebaseObject, $location, EnvConfig) {
             // registry token for RoseFire
             const REGISTRY_TOKEN = 'f5bed5423c49f86cb1999207180b6520a0091e516e4135eb34e035fcf2da85748f8d8176c4c0da3' +
                 '3055f57c6d042821fJXiBojbwBpJ9pabFlFE7RYn/yukoVvJLJ9RveyCVfmBWAFinaQi1a7toTpqn3rsN0U1Eyf3kphf1faL9k' +
@@ -14,7 +15,7 @@ angular.module('RAFinder.services.auth', [])
             var isEmployee = false;
             var isAdmin = false;
             var isGA = false;
-            var firebase = new Firebase('https://ra-finder.firebaseio.com');
+            var firebase = new Firebase(EnvConfig.url);
             var authObj = $firebaseAuth(firebase);
 
             var self = this;
@@ -114,6 +115,11 @@ angular.module('RAFinder.services.auth', [])
 
             this.isEmployee = function () {
                 return isEmployee;
+            };
+
+            this.isOwnRecord = function (record) {
+                // TODO: test me
+                return record.email === user;
             };
 
             var auth = authObj.$getAuth();

@@ -7,6 +7,7 @@ angular.module('RAFinder', [
         'RAFinder.services.auth',
         'RAFinder.services.modal',
         'RAFinder.services.database',
+        'RAFinder.services.environment',
         'RAFinder.login',
         'RAFinder.employees',
         'RAFinder.hallRoster',
@@ -19,6 +20,7 @@ angular.module('RAFinder', [
             $routeProvider.otherwise({redirectTo: '/login'});
         }
     ])
+    .constant('ENV', 'dev') // CONSIDER: change per DB
     .controller('RootCtrl', [
         '$scope',
         '$location',

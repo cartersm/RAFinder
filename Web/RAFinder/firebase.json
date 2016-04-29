@@ -1,5 +1,5 @@
 {
-  "firebase": "ra-finder",
+  "firebase": "ra-finder-dev",
   "public": "./app",
   "ignore": [
     "firebase.json",
