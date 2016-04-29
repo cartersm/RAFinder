@@ -33,4 +33,13 @@ android {
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/LICENSE.txt'
     }
+    productFlavors {
+        prod {
+            applicationId "edu.rosehulman.rafinder.prod"
+
+        }
+        dev {
+            applicationId "edu.rosehulman.rafinder.dev"
+        }
+    }
 }
