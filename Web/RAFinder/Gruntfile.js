@@ -1,4 +1,4 @@
-module.exports = function(grunt) {
+module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         watch: {
@@ -6,7 +6,7 @@ module.exports = function(grunt) {
                 files: ['app/*.js', 'app/*.html']
             },
             dev: {
-                files: [ 'Gruntfile.js', 'app/*.js', 'app/*.html'],
+                files: ['Gruntfile.js', 'app/*.js', 'app/*.html'],
                 options: {
                     atBegin: true
                 }
@@ -43,13 +43,34 @@ module.exports = function(grunt) {
                     ENV: 'prod'
                 }
             }
+        },
+        browserify: {
+            main: {
+                src: './app/services/file_reader/fileReader.js',
+                dest: './app/services/file_reader/fileReader.browserify.js',
+                options: {
+                    banner: '// Source changes should be made in fileReader.js, then compiled with \'grunt browserify\'.',
+                    require: ['stream', 'csv-parser']
+                }
+            }
         }
     });
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-ng-constant');
+    grunt.loadNpmTasks('grunt-browserify');
 
-    grunt.registerTask('dev', ['ngconstant:dev', 'connect:server', 'watch:app']);
-    grunt.registerTask('prod', ['ngconstant:prod', 'connect:server', 'watch:app']);
-    // CONSIDER whether we can do firebase here
+    grunt.registerTask('dev', [
+        'ngconstant:dev',
+        'connect:server',
+        'watch:app'
+    ]);
+    grunt.registerTask('prod', [
+        'ngconstant:prod',
+        'connect:server',
+        'watch:app'
+    ]);
+    grunt.registerTask('browserify', [
+        'browserify:main'
+    ]);
 };
