@@ -13,6 +13,7 @@
     "grunt-bower-task": "^0.4.0",
     "grunt-contrib-connect": "^1.0.2",
     "grunt-contrib-watch": "^1.0.0",
+    "grunt-ng-constant": "^2.0.1",
     "jscs": "^2.10.1",
     "jscs-angular": "^1.2.2",
     "shelljs": "^0.2.6"
@@ -21,7 +22,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "bower install",
     "prestart": "npm install",
-    "start-dev": "grunt dev",
+    "start": "grunt dev",
     "start-prod": "grunt prod",
     "deploy-dev": "firebase deploy",
     "deploy-prod": "firebase deploy -f ra-finder"

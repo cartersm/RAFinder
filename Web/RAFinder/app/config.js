@@ -2,6 +2,6 @@
 
 angular.module('RAFinder.config', [])
 
-.constant('ENV', 'prod')
+.constant('ENV', 'dev')
 
 ;
