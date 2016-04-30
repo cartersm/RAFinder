@@ -132,6 +132,29 @@ angular.module('RAFinder.services.auth', [])
             };
 
             this.auth = function (username, password, callback) {
+                // TODO: Rosefire auth - this will require either adding '@rose-hulman.edu' or checking against username only
+                // if (EnvConfig.env === 'prod') {
+                //     var data = {
+                //         registryToken: REGISTRY_TOKEN,
+                //         email: username,
+                //         password: password
+                //     };
+                //
+                //     $window.Rosefire.getToken(data, function (err, token) {
+                //         if (err) {
+                //             callback(error, null);
+                //             return;
+                //         }
+                //         authObj.$authWithCustomToken({
+                //             email: username,
+                //             password: password
+                //         }).then(function (authData) {
+                //             callback(null, authData);
+                //         }).catch(function (error) {
+                //             callback(error, null);
+                //         });
+                //     });
+                // } else {
                 authObj.$authWithPassword({
                     email: username,
                     password: password
@@ -140,28 +163,7 @@ angular.module('RAFinder.services.auth', [])
                 }).catch(function (error) {
                     callback(error, null);
                 });
-
-                // TODO: Rosefire auth - this will require either adding '@rose-hulman.edu' or checking against username only
-                //var data = {
-                //    registryToken: REGISTRY_TOKEN,
-                //    email: username,
-                //    password: password
-                //};
-                //
-                //$window.Rosefire.getToken(data, function (err, token) {
-                //    if (err) {
-                //        callback(error, null);
-                //        return;
-                //    }
-                //    authObj.$authWithCustomToken({
-                //        email: username,
-                //        password: password
-                //    }).then(function (authData) {
-                //        callback(null, authData);
-                //    }).catch(function (error) {
-                //        callback(error, null);
-                //    });
-                //});
+                // }
             };
         }
     ]);
