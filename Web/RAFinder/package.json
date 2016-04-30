@@ -4,11 +4,15 @@
   "description": "The Rose-Hulman RAFinder App",
   "main": "app.js",
   "dependencies": {
-    "bower": "^1.7.9",
-    "csv-parser": "^1.9.3"
+    "csv-parser": "^1.9.3",
+    "lodash": "~3.10.0"
   },
   "devDependencies": {
     "bower": "^1.7.7",
+    "grunt": "^1.0.1",
+    "grunt-bower-task": "^0.4.0",
+    "grunt-contrib-connect": "^1.0.2",
+    "grunt-contrib-watch": "^1.0.0",
     "jscs": "^2.10.1",
     "jscs-angular": "^1.2.2",
     "shelljs": "^0.2.6"
