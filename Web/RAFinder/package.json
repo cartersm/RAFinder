@@ -21,7 +21,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "bower install",
     "prestart": "npm install",
-    "start": "http-server -a localhost -p 8000 -c-1"
+    "start-dev": "grunt dev",
+    "start-prod": "grunt prod",
+    "deploy-dev": "firebase deploy",
+    "deploy-prod": "firebase deploy -f ra-finder"
   },
   "repository": {
     "type": "git",
