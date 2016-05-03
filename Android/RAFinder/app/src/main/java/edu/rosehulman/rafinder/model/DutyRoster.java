@@ -22,7 +22,6 @@ public class DutyRoster {
         this.roster = new HashMap<>();
         for (DataSnapshot rosterSnapshot : ds.getChildren()) {
             LocalDate rosterDate = LocalDate.parse(rosterSnapshot.child("date").getValue(String.class), ConfigKeys.formatter);
-//            rosterDate = rosterDate.plusDays(1); // TODO: check me: add one day to correct for UTC error
             if (!rosterDate.isBefore(startDate)) {
                 List<DutyRosterItem> items = new ArrayList<>();
                 for (DataSnapshot hallSnapshot : rosterSnapshot.child("roster").getChildren()) {

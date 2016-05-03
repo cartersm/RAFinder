@@ -7,42 +7,41 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
-import org.joda.time.LocalDate;
-
-import java.util.List;
-
 import edu.rosehulman.rafinder.MainActivity;
 import edu.rosehulman.rafinder.R;
-import edu.rosehulman.rafinder.model.DutyRoster;
-import edu.rosehulman.rafinder.model.DutyRosterItem;
+import edu.rosehulman.rafinder.model.EmployeeList;
+import edu.rosehulman.rafinder.model.person.Employee;
 
-public class DutyRosterListAdapter extends BaseExpandableListAdapter {
+/**
+ * An expandable list adapter for various employee types.
+ */
+public class EmployeeListAdapter extends BaseExpandableListAdapter {
     private Context mContext;
-    private DutyRoster mRoster;
+    private EmployeeList mEmployees;
 
-    public DutyRosterListAdapter(Context context, DutyRoster roster) {
-        mContext = context;
-        mRoster = roster;
+    public EmployeeListAdapter(Context context, EmployeeList employees) {
+        this.mContext = context;
+        this.mEmployees = employees;
     }
 
     @Override
     public int getGroupCount() {
-        return mRoster.getRoster().size();
+        return mEmployees.getEmployees().size();
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return mRoster.getRosterAsList().get(groupPosition).size();
+        return mEmployees.getEmployees().get(groupPosition).size();
     }
 
     @Override
-    public List<DutyRosterItem> getGroup(int groupPosition) {
-        return mRoster.getRosterAsList().get(groupPosition);
+    public Object getGroup(int groupPosition) {
+        return mEmployees.getEmployees().get(groupPosition);
     }
 
     @Override
-    public DutyRosterItem getChild(int groupPosition, int childPosition) {
-        return mRoster.getRosterAsList().get(groupPosition).get(childPosition);
+    public Object getChild(int groupPosition, int childPosition) {
+        return mEmployees.getEmployees().get(groupPosition).get(childPosition);
     }
 
     @Override
@@ -67,10 +66,8 @@ public class DutyRosterListAdapter extends BaseExpandableListAdapter {
                     convertView :
                     inflater.inflate(android.R.layout.simple_expandable_list_item_2, null);
 
-        LocalDate date = mRoster.getRosterDatesAsList().get(groupPosition);
-        String dateString = date.toString("EEE, MMM dd, yyyy");
-
-        ((TextView) view.findViewById(android.R.id.text1)).setText(dateString);
+        EmployeeList.EmployeeSubList employees = mEmployees.getEmployees().get(groupPosition);
+        ((TextView) view.findViewById(android.R.id.text1)).setText(employees.getKey());
 
         return view;
     }
@@ -78,24 +75,17 @@ public class DutyRosterListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup viewGroup) {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = convertView != null ? convertView : inflater.inflate(R.layout.layout_duty_roster_item, null);
+        View view = convertView != null ? convertView : inflater.inflate(R.layout.layout_ra_item, null);
 
-        final DutyRosterItem item = mRoster.getRosterAsList().get(groupPosition).get(childPosition);
+        final Employee employee = mEmployees.getEmployees().get(groupPosition).get(childPosition);
 
-        ((TextView) view.findViewById(R.id.hallTextView)).setText(item.getHall());
-        ((TextView) view.findViewById(R.id.nameTextView)).setText(item.getName());
-
-        view.findViewById(R.id.callButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((MainActivity) mContext).dialPhoneNumber(item.getPhoneNumber());
-            }
-        });
+        ((TextView) view.findViewById(R.id.myRATextView)).setText(employee.getName());
+        ((TextView) view.findViewById(R.id.status)).setText(mContext.getString(R.string.status_format, employee.getStatus()));
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity) mContext).switchToProfile(item.getRa());
+                ((MainActivity) mContext).switchToProfile(employee);
             }
         });
 

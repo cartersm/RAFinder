@@ -27,7 +27,7 @@
     <string name="action_email">Email</string>
     <string name="my_ra">My RA</string>
     <string name="my_ras">My RAs</string>
-    <string name="hall_ras">Other Hall RAs</string>
+    <string name="hall_ras">Hall RAs</string>
     <string name="date_default">Sat. 7/11</string>
     <string name="hall_roster_room_default">101</string>
     <string name="hall_roster">Hall Roster</string>
@@ -77,4 +77,8 @@
     <string name="content_description_call">Tap to call this user</string>
     <string name="content_description_email">Send an email to this user</string>
     <string name="floor_default">First floor</string>
+    <string name="profile_picture">Profile Picture</string>
+    <string name="employees">Employees</string>
+    <string name="my_profile">My Profile</string>
+    <string name="hall_sas">Hall SAs</string>
 </resources>

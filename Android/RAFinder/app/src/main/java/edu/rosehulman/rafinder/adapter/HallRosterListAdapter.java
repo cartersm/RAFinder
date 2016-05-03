@@ -16,7 +16,6 @@ import edu.rosehulman.rafinder.model.reshall.ResHall;
 import edu.rosehulman.rafinder.model.reshall.Room;
 
 public class HallRosterListAdapter extends BaseExpandableListAdapter {
-    private static final int MAX_ROOMMATES = 3;
     private Context mContext;
     private List<ResHall> mHalls;
 
@@ -65,7 +64,7 @@ public class HallRosterListAdapter extends BaseExpandableListAdapter {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = convertView != null ?
                     convertView :
-                    inflater.inflate(android.R.layout.simple_expandable_list_item_1, null);
+                    inflater.inflate(android.R.layout.simple_expandable_list_item_2, null);
 
         ((TextView) view.findViewById(android.R.id.text1)).setText(mHalls.get(groupPosition).getHall());
 

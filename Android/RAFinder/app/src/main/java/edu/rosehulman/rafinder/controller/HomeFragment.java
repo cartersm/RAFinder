@@ -6,16 +6,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
 
+import edu.rosehulman.rafinder.MainActivity;
 import edu.rosehulman.rafinder.R;
-import edu.rosehulman.rafinder.adapter.EmployeeListArrayAdapter;
+import edu.rosehulman.rafinder.adapter.EmployeeListAdapter;
+import edu.rosehulman.rafinder.model.EmployeeList;
 import edu.rosehulman.rafinder.model.person.Employee;
 
 /**
  * The Home Page.
  */
-public class HomeFragment extends Fragment
-        implements EmployeeListArrayAdapter.EmployeeListArrayAdapterListener {
+public class HomeFragment extends Fragment {
     private HomeListener mListener;
 
     public static HomeFragment newInstance() {
@@ -28,7 +30,12 @@ public class HomeFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        ExpandableListView listView = (ExpandableListView) view.findViewById(R.id.employeesListView);
+        EmployeeList employees = new EmployeeList((MainActivity) view.getContext());
+        EmployeeListAdapter adapter = new EmployeeListAdapter(view.getContext(), employees);
+        listView.setAdapter(adapter);
+        return view;
     }
 
     @Override
@@ -45,11 +52,6 @@ public class HomeFragment extends Fragment
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    @Override
-    public void switchToProfile(Employee employee) {
-        mListener.switchToProfile(employee);
     }
 
     public interface HomeListener {

@@ -1,38 +1,28 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity">
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    tools:context=".controller.HomeFragment">
-
-
-    <fragment
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:name="edu.rosehulman.rafinder.controller.HomeRAFragment"
-        android:id="@+id/fragment"
-        android:layout_gravity="center_horizontal"
-        tools:layout="@layout/fragment_home_ra" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="5dp"
+        android:text="@string/employees"
+        android:textSize="30sp"
+        android:textStyle="bold" />
 
-    <fragment
-        android:layout_width="match_parent"
+    <ExpandableListView
+        android:id="@+id/employeesListView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:name="edu.rosehulman.rafinder.controller.HomeSAsFragment"
-        android:id="@+id/fragment2"
-        android:layout_gravity="center_horizontal"
-        tools:layout="@layout/fragment_home_sas" />
-
-    <fragment
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:name="edu.rosehulman.rafinder.controller.HomeHallRAsFragment"
-        android:id="@+id/fragment3"
-        android:layout_gravity="center_horizontal"
-        tools:layout="@layout/fragment_home_hall_ras" />
-
-</LinearLayout>
-</ScrollView>
+        android:layout_below="@+id/textView"
+        android:layout_alignParentStart="true" />
+</RelativeLayout>

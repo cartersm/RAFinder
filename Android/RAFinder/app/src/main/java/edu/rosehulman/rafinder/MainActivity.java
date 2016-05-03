@@ -28,9 +28,6 @@ import edu.rosehulman.rafinder.controller.DutyRosterFragment;
 import edu.rosehulman.rafinder.controller.EmergencyContactsFragment;
 import edu.rosehulman.rafinder.controller.HallRosterFragment;
 import edu.rosehulman.rafinder.controller.HomeFragment;
-import edu.rosehulman.rafinder.controller.HomeHallRAsFragment;
-import edu.rosehulman.rafinder.controller.HomeRAFragment;
-import edu.rosehulman.rafinder.controller.HomeSAsFragment;
 import edu.rosehulman.rafinder.controller.LoadingFragment;
 import edu.rosehulman.rafinder.controller.LoginActivity;
 import edu.rosehulman.rafinder.controller.NavigationDrawerFragment;
@@ -57,9 +54,6 @@ public class MainActivity extends Activity implements
         EmergencyContactsFragment.EmergencyContactsListener,
         HallRosterFragment.HallRosterListener,
         ProfileFragment.StudentProfileListener,
-        HomeHallRAsFragment.HomeMyHallRAsListener,
-        HomeRAFragment.HomeMyRAListener,
-        HomeSAsFragment.HomeMySAListener,
         Loader.LoaderListener,
         SearchFragment.SearchFragmentListener,
         DutyRosterFragment.DutyRosterListener {
@@ -274,7 +268,6 @@ public class MainActivity extends Activity implements
                 .commit();
     }
 
-    @Override
     public List<Employee> getMySAs() {
         List<Employee> mySAs = new ArrayList<>();
         for (Employee sa : mAllSAs) {
@@ -319,7 +312,6 @@ public class MainActivity extends Activity implements
         return myRAs;
     }
 
-    @Override
     public List<Employee> getMyHallRAs() {
         List<Employee> hallRAs = new ArrayList<>();
         for (Employee ra : mAllRAs) {
@@ -426,6 +418,10 @@ public class MainActivity extends Activity implements
             }
         }
         return employees;
+    }
+
+    public String getHallName() {
+        return mHallName;
     }
 
     /**
