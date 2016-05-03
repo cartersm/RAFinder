@@ -1,9 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        DevRelease {
+            keyAlias 'RoseHulmanRAFinder'
+            keyPassword 'I am, and shall always be, your friend.'
+            storeFile file('C:/Users/cartersm/Google Drive/Documents/rafinder.keystore')
+            storePassword 'That is a logical request.'
+        }
+    }
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
-
     defaultConfig {
         applicationId "edu.rosehulman.rafinder"
         minSdkVersion 17
@@ -15,6 +22,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.DevRelease
         }
     }
     repositories {
@@ -23,14 +31,17 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'joda-time:joda-time:2.8.1'
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     //noinspection GradleDependency
-    compile 'com.android.support:support-v4:22.0.0'
+    compile 'joda-time:joda-time:2.8.1'
+    compile 'com.android.support:support-v4:24.0.0-alpha2'
     compile 'com.firebase:firebase-client-android:2.3.1'
     compile 'eu.ocathain.com.sun.mail:javax.mail:1.5.2'
     compile 'edu.rosehulman.csse.rosefire:rosefire-android-client:2.0.0beta'
 }
+
+
+
 
 android {
     packagingOptions {
@@ -41,10 +52,10 @@ android {
     productFlavors {
         prod {
             applicationId "edu.rosehulman.rafinder.prod"
-
         }
         dev {
             applicationId "edu.rosehulman.rafinder.dev"
+            signingConfig signingConfigs.DevRelease
         }
     }
 }
