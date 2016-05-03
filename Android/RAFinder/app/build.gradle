@@ -5,7 +5,7 @@ android {
         DevRelease {
             keyAlias 'RoseHulmanRAFinder'
             keyPassword 'I am, and shall always be, your friend.'
-            storeFile file('C:/Users/cartersm/Google Drive/Documents/rafinder.keystore')
+            storeFile file('C:/Users/cartersm/Documents/rafinder.keystore.jks')
             storePassword 'That is a logical request.'
         }
     }
@@ -39,6 +39,7 @@ dependencies {
     compile 'eu.ocathain.com.sun.mail:javax.mail:1.5.2'
     compile 'edu.rosehulman.csse.rosefire:rosefire-android-client:2.0.0beta'
 }
+
 
 
 

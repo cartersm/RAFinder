@@ -1,5 +1,6 @@
 package edu.rosehulman.rafinder.controller;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -30,6 +31,7 @@ import edu.rosehulman.rafinder.model.person.Employee;
 /**
  * The Profile Page.
  */
+@SuppressLint("ValidFragment")
 public class ProfileFragment extends Fragment implements View.OnLongClickListener {
     private static final int SELECT_IMAGE_REQUEST_CODE = 1;
     private StudentProfileListener mListener;
