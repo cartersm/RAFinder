@@ -7,7 +7,7 @@ angular.module('RAFinder.services.auth', [])
         '$location',
         'EnvConfig',
         function ($firebaseAuth, $window, $firebaseObject, $location, EnvConfig) {
-            // registry token for RoseFire
+            // registry token for RoseFire TODO: move me
             const REGISTRY_TOKEN = 'f5bed5423c49f86cb1999207180b6520a0091e516e4135eb34e035fcf2da85748f8d8176c4c0da3' +
                 '3055f57c6d042821fJXiBojbwBpJ9pabFlFE7RYn/yukoVvJLJ9RveyCVfmBWAFinaQi1a7toTpqn3rsN0U1Eyf3kphf1faL9k' +
                 'BDkBgTAcay8Jwx+01DFViPYYoCiRAK8R6J09RJlzo10lZ8Z';

@@ -17,14 +17,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    repositories {
+        maven { url "https://maven.csse.rose-hulman.edu/artifactory/libs-release" }
+    }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'joda-time:joda-time:2.8.1'
-    compile 'com.android.support:support-v4:23.0.0'
+    //noinspection GradleDependency
+    compile 'com.android.support:support-v4:22.0.0'
     compile 'com.firebase:firebase-client-android:2.3.1'
     compile 'eu.ocathain.com.sun.mail:javax.mail:1.5.2'
+    compile 'edu.rosehulman.csse.rosefire:rosefire-android-client:2.0.0beta'
 }
 
 android {
