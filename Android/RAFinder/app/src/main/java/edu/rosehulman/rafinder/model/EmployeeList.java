@@ -18,11 +18,8 @@ public class EmployeeList {
         this.context = context;
         this.employees = new ArrayList<>();
 
-        // FIXME: when we allow selection by hall, make sure "My RA" is not listed
-        // FIXME: ditto, generify MainActivity's methods here
-        // FIXME: ditto,
         UserType userType = context.getUserType();
-        if (userType.equals(UserType.RESIDENT_ASSISTANT) || userType.equals(UserType.SOPHOMORE_ADVISOR)) {
+        if (userType.equals(!userType.equals(UserType.RESIDENT))) {
             this.employees.add(new EmployeeSubList(
                     context.getString(R.string.my_profile),
                     Arrays.asList(context.getUser())));
