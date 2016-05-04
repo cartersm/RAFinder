@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import edu.rosehulman.rafinder.MainActivity;
 import edu.rosehulman.rafinder.R;
 import edu.rosehulman.rafinder.UserType;
+import edu.rosehulman.rafinder.controller.HomeFragment;
 import edu.rosehulman.rafinder.model.person.Employee;
 
 public class EmployeeList {
-    private final MainActivity context;
+    private final HomeFragment.HomeListener context;
 
     private List<EmployeeSubList> employees;
 
-    public EmployeeList(MainActivity context) {
+    public EmployeeList(HomeFragment.HomeListener context, String hallName) {
         this.context = context;
         this.employees = new ArrayList<>();
 
@@ -26,18 +26,16 @@ public class EmployeeList {
             this.employees.add(new EmployeeSubList(
                     context.getString(R.string.my_profile),
                     Arrays.asList(context.getUser())));
-        } else {
-            // FIXME: consider the implications of this for admins/GAs.
-            // Theoretically, once ditto is in place we won't have to worry because we're getting by hall.
+        } else if (hallName.equals(context.getHallName())) {
             List<Employee> myRAs = context.getMyRAs();
             String key = myRAs.size() > 1 ? context.getString(R.string.my_ras) : context.getString(R.string.my_ra);
             this.employees.add(new EmployeeSubList(key, myRAs));
         }
 
-        this.employees.add(new EmployeeSubList(context.getString(R.string.hall_ras), context.getMyHallRAs()));
+        this.employees.add(new EmployeeSubList(context.getString(R.string.hall_ras), context.getRAsForHall(hallName)));
 
-        if (isFreshmanHall(context.getHallName())) {
-            this.employees.add(new EmployeeSubList(context.getString(R.string.hall_sas), context.getMySAs()));
+        if (isFreshmanHall(hallName)) {
+            this.employees.add(new EmployeeSubList(context.getString(R.string.hall_sas), context.getSAsForHall(hallName)));
         }
     }
 

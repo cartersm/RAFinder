@@ -39,7 +39,6 @@ import edu.rosehulman.rafinder.loader.EmployeeLoader;
 import edu.rosehulman.rafinder.loader.HallLoader;
 import edu.rosehulman.rafinder.loader.Loader;
 import edu.rosehulman.rafinder.model.DutyRoster;
-import edu.rosehulman.rafinder.model.DutyRosterItem;
 import edu.rosehulman.rafinder.model.person.EmergencyContact;
 import edu.rosehulman.rafinder.model.person.Employee;
 import edu.rosehulman.rafinder.model.reshall.ResHall;
@@ -78,9 +77,6 @@ public class MainActivity extends Activity implements
     private DutyRosterLoader mDutyRosterLoader;
     private HallLoader mHallLoader;
     private EmergencyContactsLoader mEmergencyContactsLoader;
-
-    private DutyRosterItem mDutyRosterItem;
-
     private UserType mUserType = UserType.RESIDENT;
 
     private List<Employee> mAllRAs;
@@ -268,6 +264,15 @@ public class MainActivity extends Activity implements
                 .commit();
     }
 
+    @Override
+    public List<String> getHallNames() {
+        List<String> halls = new ArrayList<>();
+        for (ResHall hall : mHalls) {
+            halls.add(hall.getHall());
+        }
+        return halls;
+    }
+
     public List<Employee> getMySAs() {
         List<Employee> mySAs = new ArrayList<>();
         for (Employee sa : mAllSAs) {
@@ -310,16 +315,6 @@ public class MainActivity extends Activity implements
             }
         }
         return myRAs;
-    }
-
-    public List<Employee> getMyHallRAs() {
-        List<Employee> hallRAs = new ArrayList<>();
-        for (Employee ra : mAllRAs) {
-            if (ra.getHall().equals(mHallName) && !ra.equals(myRA)) {
-                hallRAs.add(ra);
-            }
-        }
-        return hallRAs;
     }
 
     private Employee getEmployee(String email) {
@@ -422,6 +417,28 @@ public class MainActivity extends Activity implements
 
     public String getHallName() {
         return mHallName;
+    }
+
+    @Override
+    public List<Employee> getRAsForHall(String hallName) {
+        List<Employee> hallRAs = new ArrayList<>();
+        for (Employee ra : mAllRAs) {
+            if (ra.getHall().equals(hallName) && !ra.equals(myRA)) {
+                hallRAs.add(ra);
+            }
+        }
+        return hallRAs;
+    }
+
+    @Override
+    public List<Employee> getSAsForHall(String hallName) {
+        List<Employee> hallSAs = new ArrayList<>();
+        for (Employee sa : mAllSAs) {
+            if (sa.getHall().equals(hallName)) {
+                hallSAs.add(sa);
+            }
+        }
+        return hallSAs;
     }
 
     /**

@@ -19,10 +19,18 @@
         android:textSize="30sp"
         android:textStyle="bold" />
 
+    <Spinner
+        android:id="@+id/hallSelectionSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView"
+        android:spinnerMode="dialog" />
+
     <ExpandableListView
+
         android:id="@+id/employeesListView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/hallSelectionSpinner" />
 </RelativeLayout>
