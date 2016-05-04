@@ -1,10 +1,13 @@
 package edu.rosehulman.rafinder.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import edu.rosehulman.rafinder.MainActivity;
@@ -79,6 +82,13 @@ public class EmployeeListAdapter extends BaseExpandableListAdapter {
 
         final Employee employee = mEmployees.getEmployees().get(groupPosition).get(childPosition);
 
+        ImageView imageView = (ImageView) view.findViewById(R.id.RAImageView);
+        Bitmap profilePicture = employee.getProfilePictureAsBitmap();
+        if (profilePicture != null) {
+            imageView.setImageBitmap(profilePicture);
+        } else {
+            imageView.setImageBitmap(BitmapFactory.decodeResource(view.getResources(), R.drawable.ic_person));
+        }
         ((TextView) view.findViewById(R.id.myRATextView)).setText(employee.getName());
         ((TextView) view.findViewById(R.id.status)).setText(mContext.getString(R.string.status_format, employee.getStatus()));
 
@@ -95,5 +105,9 @@ public class EmployeeListAdapter extends BaseExpandableListAdapter {
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
+    }
+
+    public void setData(EmployeeList newEmployees) {
+        mEmployees = newEmployees;
     }
 }
