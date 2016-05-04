@@ -34,7 +34,7 @@ public abstract class Employee extends AuthenticatedResident {
     @JsonIgnore
     private UserType userType;
 
-    public Employee() {
+    Employee() {
         userType = getEmployeeType();
     }
 
@@ -54,15 +54,15 @@ public abstract class Employee extends AuthenticatedResident {
         firebase.addChildEventListener(new EmployeeChangedListener());
     }
 
-    protected Employee(String name,
-                       String email,
-                       int floor,
-                       String hall,
-                       String phoneNumber,
-                       String room,
-                       String status,
-                       String statusDetail,
-                       String profilePicture) {
+    Employee(String name,
+             String email,
+             int floor,
+             String hall,
+             String phoneNumber,
+             String room,
+             String status,
+             String statusDetail,
+             String profilePicture) {
         super(name);
         this.email = email;
         this.floor = floor;
@@ -75,7 +75,7 @@ public abstract class Employee extends AuthenticatedResident {
         userType = getEmployeeType();
     }
 
-    public Employee(String name) {
+    Employee(String name) {
         super(name);
         userType = getEmployeeType();
     }
@@ -94,7 +94,7 @@ public abstract class Employee extends AuthenticatedResident {
         }
     }
 
-    public abstract UserType getEmployeeType();
+    protected abstract UserType getEmployeeType();
 
     public UserType getUserType() {
         return userType;
@@ -108,7 +108,7 @@ public abstract class Employee extends AuthenticatedResident {
         return email;
     }
 
-    public void setEmail(String email) {
+    private void setEmail(String email) {
         this.email = email;
     }
 
@@ -116,7 +116,7 @@ public abstract class Employee extends AuthenticatedResident {
         return floor;
     }
 
-    public void setFloor(int floor) {
+    private void setFloor(int floor) {
         this.floor = floor;
     }
 
@@ -124,7 +124,7 @@ public abstract class Employee extends AuthenticatedResident {
         return hall;
     }
 
-    public void setHall(String hall) {
+    private void setHall(String hall) {
         this.hall = hall;
     }
 
@@ -140,7 +140,7 @@ public abstract class Employee extends AuthenticatedResident {
         return room;
     }
 
-    public void setRoom(String room) {
+    private void setRoom(String room) {
         this.room = room;
     }
 

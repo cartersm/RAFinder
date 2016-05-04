@@ -10,7 +10,7 @@ import android.widget.GridView;
  * for the purpose of nesting a GridView within an ExpandableListView.
  */
 public class ExpandableHeightGridView extends GridView {
-    boolean isExpanded = false;
+    private boolean isExpanded = false;
 
     public ExpandableHeightGridView(Context context) {
         super(context);
@@ -37,7 +37,7 @@ public class ExpandableHeightGridView extends GridView {
         }
     }
 
-    public boolean isExpanded() {
+    private boolean isExpanded() {
         return isExpanded;
     }
 

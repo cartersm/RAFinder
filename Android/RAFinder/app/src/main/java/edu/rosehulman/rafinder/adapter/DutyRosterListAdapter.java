@@ -17,8 +17,8 @@ import edu.rosehulman.rafinder.model.DutyRoster;
 import edu.rosehulman.rafinder.model.DutyRosterItem;
 
 public class DutyRosterListAdapter extends BaseExpandableListAdapter {
-    private Context mContext;
-    private DutyRoster mRoster;
+    private final Context mContext;
+    private final DutyRoster mRoster;
 
     public DutyRosterListAdapter(Context context, DutyRoster roster) {
         mContext = context;

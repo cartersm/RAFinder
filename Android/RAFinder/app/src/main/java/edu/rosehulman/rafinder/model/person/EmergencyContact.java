@@ -64,7 +64,7 @@ public class EmergencyContact {
         return name;
     }
 
-    public void setName(String name) {
+    private void setName(String name) {
         this.name = name;
     }
 
@@ -72,7 +72,7 @@ public class EmergencyContact {
         return phone;
     }
 
-    public void setPhone(String phone) {
+    private void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -80,7 +80,7 @@ public class EmergencyContact {
         return email;
     }
 
-    public void setEmail(String email) {
+    private void setEmail(String email) {
         this.email = email;
     }
 
@@ -88,7 +88,7 @@ public class EmergencyContact {
         return priority;
     }
 
-    public void setPriority(Priority priority) {
+    private void setPriority(Priority priority) {
         this.priority = priority;
     }
 
@@ -96,7 +96,7 @@ public class EmergencyContact {
         return userType;
     }
 
-    public void setUserType(UserType userType) {
+    private void setUserType(UserType userType) {
         this.userType = userType;
     }
 

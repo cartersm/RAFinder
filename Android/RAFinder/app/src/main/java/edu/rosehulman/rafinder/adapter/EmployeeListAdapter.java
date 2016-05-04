@@ -19,7 +19,7 @@ import edu.rosehulman.rafinder.model.person.Employee;
  * An expandable list adapter for various employee types.
  */
 public class EmployeeListAdapter extends BaseExpandableListAdapter {
-    private Context mContext;
+    private final Context mContext;
     private EmployeeList mEmployees;
 
     public EmployeeListAdapter(Context context, EmployeeList employees) {

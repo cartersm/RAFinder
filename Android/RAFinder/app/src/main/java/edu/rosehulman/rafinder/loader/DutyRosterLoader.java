@@ -17,7 +17,7 @@ import edu.rosehulman.rafinder.model.DutyRoster;
 import edu.rosehulman.rafinder.model.person.Employee;
 
 public class DutyRosterLoader extends Loader {
-    public static final String DUTY_ROSTERS = "DutyRosters";
+    private static final String DUTY_ROSTERS = "DutyRosters";
     private final List<Employee> mRAs;
     private final boolean mIsEdit;
     private final LoaderListener mListener;

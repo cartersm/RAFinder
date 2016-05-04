@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:columnCount="5"
     android:orientation="vertical"
-    tools:context=".controller.EmergencyContactItem">
+    tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/nameTextView"

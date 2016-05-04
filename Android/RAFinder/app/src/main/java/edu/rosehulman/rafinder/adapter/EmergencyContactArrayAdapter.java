@@ -78,7 +78,7 @@ public class EmergencyContactArrayAdapter extends ArrayAdapter<EmergencyContact>
     }
 
     public interface EmergencyContactListener {
-        public void makePhoneCall(String phoneNumber);
-        public void sendEmail(String emailAddress);
+        void makePhoneCall(String phoneNumber);
+        void sendEmail(String emailAddress);
     }
 }

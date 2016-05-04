@@ -71,6 +71,6 @@ public class DutyRosterFragment extends Fragment {
     }
 
     public interface DutyRosterListener {
-        public DutyRoster getDutyRoster();
+        DutyRoster getDutyRoster();
     }
 }

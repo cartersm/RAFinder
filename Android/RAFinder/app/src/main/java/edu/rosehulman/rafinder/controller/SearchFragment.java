@@ -75,6 +75,6 @@ public class SearchFragment extends Fragment {
     }
 
     public interface SearchFragmentListener {
-        public List<Employee> getEmployeesForName(String name);
+        List<Employee> getEmployeesForName(String name);
     }
 }

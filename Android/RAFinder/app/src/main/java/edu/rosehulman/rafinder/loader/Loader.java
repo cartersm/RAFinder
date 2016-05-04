@@ -10,15 +10,15 @@ import edu.rosehulman.rafinder.model.person.Employee;
 public abstract class Loader {
 
     public interface LoaderListener {
-        public void onDutyRosterLoadingComplete(boolean isEdit);
+        void onDutyRosterLoadingComplete(boolean isEdit);
 
-        public DutyRoster getDutyRoster();
-        public List<Employee> getMyRAs();
-        public void onEmergencyContactsLoadingComplete();
+        DutyRoster getDutyRoster();
+        List<Employee> getMyRAs();
+        void onEmergencyContactsLoadingComplete();
 
-        public void onEmployeeLoadingComplete();
+        void onEmployeeLoadingComplete();
 
-        public void onHallRosterLoadingComplete();
+        void onHallRosterLoadingComplete();
     }
 
     protected abstract void loadData(Firebase firebase);

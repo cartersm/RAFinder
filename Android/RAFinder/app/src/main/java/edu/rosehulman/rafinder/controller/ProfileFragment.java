@@ -336,7 +336,7 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
     }
 
     public interface StudentProfileListener {
-        public Employee getSelectedEmployee();
-        public void sendFeedback(String name, String email, String body);
+        Employee getSelectedEmployee();
+        void sendFeedback(String name, String email, String body);
     }
 }

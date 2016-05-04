@@ -10,7 +10,7 @@ public class AuthenticatedResident {
     @JsonIgnore
     private String uid;
 
-    public AuthenticatedResident() {
+    AuthenticatedResident() {
 
     }
 
@@ -19,7 +19,7 @@ public class AuthenticatedResident {
         uid = ds.getKey();
     }
 
-    public AuthenticatedResident(String name) {
+    AuthenticatedResident(String name) {
         this.name = name;
     }
 

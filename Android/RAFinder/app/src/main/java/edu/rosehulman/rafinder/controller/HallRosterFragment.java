@@ -80,7 +80,7 @@ public class HallRosterFragment extends Fragment {
     }
 
     public interface HallRosterListener {
-        public List<ResHall> getHalls();
+        List<ResHall> getHalls();
     }
 
 }

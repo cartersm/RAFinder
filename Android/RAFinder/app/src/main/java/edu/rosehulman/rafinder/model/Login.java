@@ -33,15 +33,15 @@ public class Login {
     /**
      * Verifies the user provided a valid email.
      */
-    public static boolean isEmailValid(String email) {
-        return email.matches(".*?@.*?\\..*"); // TODO: use Rockwood's Kerberos Auth validation
+    public static boolean isEmailInvalid(String email) {
+        return !email.matches(".*?@.*?\\..*"); // TODO: use Rockwood's Kerberos Auth validation
     }
 
     /**
      * Verifies the password is longer than 4 characters.
      */
-    public static boolean isPasswordValid(String password) {
-        return password.length() > 4;
+    public static boolean isPasswordInvalid(String password) {
+        return password.length() <= 4;
     }
 
     /**

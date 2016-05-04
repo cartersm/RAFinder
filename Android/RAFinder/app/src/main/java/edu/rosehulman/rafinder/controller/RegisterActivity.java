@@ -76,13 +76,13 @@ public class RegisterActivity extends Activity {
         final String password = mPasswordView.getText().toString();
         final String raEmail = mRAEmailView.getText().toString();
 
-        if (!Login.isEmailValid(email)) {
+        if (Login.isEmailInvalid(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
         }
-        if (!Login.isPasswordValid(password)) {
+        if (Login.isPasswordInvalid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
         }
-        if (!Login.isEmailValid(raEmail)) {
+        if (Login.isEmailInvalid(raEmail)) {
             mRAEmailView.setError(getString(R.string.error_invalid_ra_email));
         }
         if (!email.equals(mConfirmEmailView.getText().toString())) {

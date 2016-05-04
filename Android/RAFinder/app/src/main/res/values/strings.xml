@@ -28,7 +28,6 @@
     <string name="my_ra">My RA</string>
     <string name="my_ras">My RAs</string>
     <string name="hall_ras">Hall RAs</string>
-    <string name="date_default">Sat. 7/11</string>
     <string name="hall_roster_room_default">101</string>
     <string name="hall_roster">Hall Roster</string>
     <string name="content_description_profile_picture">The profile picture</string>
@@ -65,7 +64,6 @@
     <string name="error_generic">An unexpected error occurred.</string>
 
     <string name="action_refresh">Refresh</string>
-    <string name="my_sas">My SAs</string>
     <string name="hint_default">hint</string>
 
     <string name="profile_feedback">Feedback Message</string>
@@ -73,7 +71,6 @@
     <string name="profile_feedback_subject_format">RA Finder: Anonymous feedback for %s</string>
 
     <string name="content_description_search">Tap to search</string>
-    <string name="content_description_profile_nav">Tap to go to this user\'s profile</string>
     <string name="content_description_call">Tap to call this user</string>
     <string name="content_description_email">Send an email to this user</string>
     <string name="floor_default">First floor</string>

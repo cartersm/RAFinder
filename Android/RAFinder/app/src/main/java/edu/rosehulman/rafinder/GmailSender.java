@@ -23,7 +23,7 @@ import eu.ocathain.javax.activation.DataSource;
  * StackOverflowArticle</a>
  * For sending email directly from the app.
  */
-public class GmailSender extends Authenticator {
+class GmailSender extends Authenticator {
     private final String user;
     private final String password;
     private final Session session;

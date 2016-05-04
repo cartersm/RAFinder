@@ -13,8 +13,8 @@ import edu.rosehulman.rafinder.R;
 import edu.rosehulman.rafinder.model.reshall.Resident;
 import edu.rosehulman.rafinder.model.reshall.Room;
 
-public class FloorRosterArrayAdapter extends ArrayAdapter<Room> {
-    public static final int MAX_ROOMMATES = 3;
+class FloorRosterArrayAdapter extends ArrayAdapter<Room> {
+    private static final int MAX_ROOMMATES = 3;
     private final Context mContext;
     private final int mLayout;
 

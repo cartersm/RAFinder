@@ -16,7 +16,7 @@ import edu.rosehulman.rafinder.model.reshall.ResHall;
 public class HallLoader extends Loader {
     private static final String RES_HALLS = "ResHalls";
 
-    private List<ResHall> mHalls;
+    private final List<ResHall> mHalls;
     private final LoaderListener mListener;
 
     public HallLoader(LoaderListener listener) {

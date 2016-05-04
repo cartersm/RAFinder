@@ -16,8 +16,8 @@ import edu.rosehulman.rafinder.model.reshall.ResHall;
 import edu.rosehulman.rafinder.model.reshall.Room;
 
 public class HallRosterListAdapter extends BaseExpandableListAdapter {
-    private Context mContext;
-    private List<ResHall> mHalls;
+    private final Context mContext;
+    private final List<ResHall> mHalls;
 
     public HallRosterListAdapter(Context context, List<ResHall> halls) {
         mContext = context;

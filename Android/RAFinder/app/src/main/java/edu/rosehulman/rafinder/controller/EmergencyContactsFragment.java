@@ -104,8 +104,8 @@ public class EmergencyContactsFragment extends Fragment
     }
 
     public interface EmergencyContactsListener {
-        public void dialPhoneNumber(String phoneNumber);
-        public void sendEmail(String emailAddress);
-        public List<EmergencyContact> getEmergencyContacts();
+        void dialPhoneNumber(String phoneNumber);
+        void sendEmail(String emailAddress);
+        List<EmergencyContact> getEmergencyContacts();
     }
 }

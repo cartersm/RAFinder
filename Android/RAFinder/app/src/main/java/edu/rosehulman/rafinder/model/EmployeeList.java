@@ -1,7 +1,7 @@
 package edu.rosehulman.rafinder.model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import edu.rosehulman.rafinder.R;
@@ -10,19 +10,18 @@ import edu.rosehulman.rafinder.controller.HomeFragment;
 import edu.rosehulman.rafinder.model.person.Employee;
 
 public class EmployeeList {
-    private final HomeFragment.HomeListener context;
 
-    private List<EmployeeSubList> employees;
+    private final List<EmployeeSubList> employees;
 
     public EmployeeList(HomeFragment.HomeListener context, String hallName) {
-        this.context = context;
+        HomeFragment.HomeListener context1 = context;
         this.employees = new ArrayList<>();
 
         UserType userType = context.getUserType();
         if (!userType.equals(UserType.RESIDENT)) {
             this.employees.add(new EmployeeSubList(
                     context.getString(R.string.my_profile),
-                    Arrays.asList(context.getUser())));
+                    Collections.singletonList(context.getUser())));
         } else if (hallName.equals(context.getHallName())) {
             List<Employee> myRAs = context.getMyRAs();
             String key = myRAs.size() > 1 ? context.getString(R.string.my_ras) : context.getString(R.string.my_ra);
@@ -50,8 +49,8 @@ public class EmployeeList {
     }
 
     public class EmployeeSubList {
-        private String key;
-        private List<Employee> employees;
+        private final String key;
+        private final List<Employee> employees;
 
         public EmployeeSubList(String key, List<Employee> employees) {
             this.key = key;

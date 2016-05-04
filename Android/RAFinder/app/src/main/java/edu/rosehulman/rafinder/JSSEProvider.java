@@ -30,7 +30,7 @@ import java.security.Provider;
  * StackOverflowArticle</a>
  * For sending email directly from the app.
  */
-public final class JSSEProvider extends Provider {
+final class JSSEProvider extends Provider {
 
     public JSSEProvider() {
         super("HarmonyJSSE", 1.0, "Harmony JSSE Provider");
