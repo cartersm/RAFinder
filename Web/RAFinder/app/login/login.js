@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('RAFinder.login', [
-    'ngRoute',
-    'firebase'
-])
+        'ngRoute',
+        'firebase'
+    ])
     .config(['$routeProvider',
         function ($routeProvider) {
             $routeProvider.when('/login', {
@@ -16,9 +16,19 @@ angular.module('RAFinder.login', [
         '$location',
         '$window',
         'Auth',
-        function ($scope, $location, $window, Auth) {
+        'EnvConfig',
+        function ($scope, $location, $window, Auth, EnvConfig) {
             $scope.signinFailed = false;
             $scope.isEmployee = true;
+            $scope.emailSuffix = '@rose-hulman.edu';
+            $scope.user = {};
+
+            $scope.getInputTemplate = function () {
+                if (EnvConfig.env === 'prod') {
+                    return 'login/login-rosefire.html';
+                }
+                return 'login/login-dev.html';
+            };
 
             Auth.checkAuth(function () {
                 $window.location.reload();

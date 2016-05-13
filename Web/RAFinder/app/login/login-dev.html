@@ -1,0 +1,8 @@
+<div class="form-group" ng-class="{ 'has-error' : signinForm.email.$invalid }">
+    <div class="input-group">
+        <input type="email" name="email" ng-model="user.email" class="form-control"
+               placeholder="Email address" required autofocus>
+    </div>
+    <p class="help-block" ng-show="!signinForm.email.$invalid">-</p>
+    <p class="help-block" ng-show="signinForm.email.$invalid">Enter a valid email.</p>
+</div>
