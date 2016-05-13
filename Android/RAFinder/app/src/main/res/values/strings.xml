@@ -78,4 +78,6 @@
     <string name="employees">Employees</string>
     <string name="my_profile">My Profile</string>
     <string name="hall_sas">Hall SAs</string>
+    <string name="kerberos_username">Kerberos Username</string>
+    <string name="kerberos_password">Kerberos Password</string>
 </resources>

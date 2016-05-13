@@ -21,10 +21,12 @@ import android.widget.TextView;
 import com.firebase.client.Firebase;
 
 import edu.rosehulman.rafinder.ConfigKeys;
-import edu.rosehulman.rafinder.R;
+import edu.rosehulman.rafinder.Environment;
 import edu.rosehulman.rafinder.MainActivity;
+import edu.rosehulman.rafinder.R;
 import edu.rosehulman.rafinder.UserType;
 import edu.rosehulman.rafinder.model.Login;
+import edu.rosehulman.rosefire.Rosefire;
 
 /**
  * A login screen that offers login via email/password.
@@ -60,9 +62,18 @@ public class LoginActivity extends Activity {
 
         // Set up the login form.
         mEmailView = (TextView) findViewById(R.id.email);
+        switch (ConfigKeys.ENV) {
+        case PROD:
+            mEmailView.setHint(R.string.kerberos_username);
+            break;
         }
 
         mPasswordView = (EditText) findViewById(R.id.password);
+        switch(ConfigKeys.ENV) {
+        case PROD:
+            mPasswordView.setHint(R.string.kerberos_password);
+            break;
+        }
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -96,6 +107,10 @@ public class LoginActivity extends Activity {
             && !raEmail.equals("")
             && !email.equals("")) {
             launchMainActivity(userType, raEmail, email);
+        }
+
+        if (ConfigKeys.ENV.equals(Environment.PROD)) {
+            onRosefireLogin();
         }
     }
 
@@ -215,5 +230,19 @@ public class LoginActivity extends Activity {
     public void showError(String errorMessage) {
         showErrorDialog(errorMessage);
         mAuthProgressDialog.hide();
+    }
+
+    // RoseFire
+    public void onRosefireLogin() {
+        Intent signInIntent = Rosefire.getSignInIntent(this, ConfigKeys.REGISTRY_TOKEN);
+        startActivityForResult(signInIntent, ConfigKeys.RC_ROSEFIRE_LOGIN);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == ConfigKeys.RC_ROSEFIRE_LOGIN) {
+            String token = Rosefire.getSignInResultFromIntent(data);
+            mLogin.firebase.authWithCustomToken(token, mLogin.getAuthResultHandler());
+        }
     }
 }

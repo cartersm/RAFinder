@@ -19,7 +19,7 @@ public class Login {
     private static final String myRA = "myRA";
     private static final String Residents = "Residents";
 
-    private final Firebase firebase;
+    public final Firebase firebase;
     private final LoginActivity loginActivity;
 
     private UserType userType;
@@ -34,7 +34,7 @@ public class Login {
      * Verifies the user provided a valid email.
      */
     public static boolean isEmailInvalid(String email) {
-        return !email.matches(".*?@.*?\\..*"); // TODO: use Rockwood's Kerberos Auth validation
+        return !email.matches(".*?@.*?\\..*");
     }
 
     /**
@@ -48,8 +48,7 @@ public class Login {
      * Authenticates the user with Firebase, using the specified email address and password
      */
     public void loginWithPassword(String email, String password) {
-        firebase.authWithPassword(email, password, new AuthResultHandler(
-                "password"));
+        firebase.authWithPassword(email, password, new AuthResultHandler());
     }
 
     /**
@@ -61,20 +60,14 @@ public class Login {
         }
     }
 
+    public AuthResultHandler getAuthResultHandler() {
+        return new AuthResultHandler();
+    }
+
     /**
      * A custom AuthResultHandler
      */
-    private class AuthResultHandler implements Firebase.AuthResultHandler {
-
-        private final String provider;
-
-        /**
-         * Creates a new AuthResultHandler
-         */
-        private AuthResultHandler(String provider) {
-            this.provider = provider;
-        }
-
+    public class AuthResultHandler implements Firebase.AuthResultHandler {
         /**
          * On successful authentication, calls the setAuthenticatedUser method
          */
@@ -86,7 +79,8 @@ public class Login {
          * On failed login, displays an error message
          */
         public void onAuthenticationError(FirebaseError firebaseError) {
-            if (firebaseError.getCode() == FirebaseError.INVALID_EMAIL) {
+            if (firebaseError.getCode() == FirebaseError.INVALID_EMAIL ||
+                firebaseError.getCode() == FirebaseError.USER_DOES_NOT_EXIST) {
                 loginActivity.showError(loginActivity.getString(R.string.error_invalid_email));
             } else if (firebaseError.getCode() == FirebaseError.INVALID_PASSWORD) {
                 loginActivity.showError(loginActivity.getString(R.string.error_incorrect_password));
