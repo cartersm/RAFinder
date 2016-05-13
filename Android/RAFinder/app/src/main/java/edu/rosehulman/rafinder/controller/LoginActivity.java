@@ -60,11 +60,6 @@ public class LoginActivity extends Activity {
 
         // Set up the login form.
         mEmailView = (TextView) findViewById(R.id.email);
-
-        String intentEmail = getIntent().getStringExtra(ConfigKeys.KEY_USER_EMAIL);
-        if (intentEmail != null) {
-            // pre-populate the email address if we're coming from the Registration page
-            mEmailView.setText(intentEmail);
         }
 
         mPasswordView = (EditText) findViewById(R.id.password);
@@ -84,14 +79,6 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View ignored) {
                 attemptLogin();
-            }
-        });
-
-        Button mEmailRegister = (Button) findViewById(R.id.register);
-        mEmailRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View ignored) {
-                registerNewUser();
             }
         });
 
@@ -162,9 +149,6 @@ public class LoginActivity extends Activity {
         }
     }
 
-    /**
-     * Opens up a list of projects after logging in.
-     */
     public void launchMainActivity(UserType userType, String raEmail, String email) {
         mAuthProgressDialog.hide();
         Intent intent = new Intent(this, MainActivity.class);
@@ -226,15 +210,6 @@ public class LoginActivity extends Activity {
 
     public String getEmail() {
         return mEmailView.getText().toString();
-    }
-
-    private void registerNewUser() {
-        Intent registerIntent = new Intent(this, RegisterActivity.class);
-        String email = mEmailView.getText().toString();
-        if (!email.equals("")) {
-            registerIntent.putExtra(ConfigKeys.KEY_USER_EMAIL, email);
-        }
-        startActivity(registerIntent);
     }
 
     public void showError(String errorMessage) {
