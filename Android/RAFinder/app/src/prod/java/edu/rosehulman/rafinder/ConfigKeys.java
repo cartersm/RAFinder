@@ -6,8 +6,13 @@ import org.joda.time.format.DateTimeFormatter;
 public class ConfigKeys {
 
     public static final String LOG_TAG = "RAFinder";
-
     public static final String FIREBASE_ROOT_URL = "https://ra-finder.firebaseio.com";
+    public static final Environment ENV = Environment.PROD;
+    public static final String REGISTRY_TOKEN = "f5bed5423c49f86cb1999207180b6520a0091e516e4135eb34e035fcf2da85748f8" +
+                                                "d8176c4c0da33055f57c6d042821fJXiBojbwBpJ9pabFlFE7RYn/yukoVvJLJ9Rvey" +
+                                                "CVfmBWAFinaQi1a7toTpqn3rsN0U1Eyf3kphf1faL9kBDkBgTAcay8Jwx+01DFViPYY" +
+                                                "oCiRAK8R6J09RJlzo10lZ8Z";
+    public static final int RC_ROSEFIRE_LOGIN = 127;
 
     // Root Firebase keys
     public static final String Employees = "Employees";
