@@ -10,7 +10,7 @@ android {
         }
     }
     compileSdkVersion 23
-    buildToolsVersion "22.0.1"
+    buildToolsVersion "23.0.3"
     defaultConfig {
         applicationId "edu.rosehulman.rafinder"
         minSdkVersion 17
@@ -34,7 +34,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     //noinspection GradleDependency
     compile 'joda-time:joda-time:2.8.1'
-    compile 'com.android.support:support-v4:24.0.0-alpha2'
+    compile 'com.android.support:support-v4:23.2.1'
     compile 'com.firebase:firebase-client-android:2.3.1'
     compile 'eu.ocathain.com.sun.mail:javax.mail:1.5.2'
     compile 'edu.rosehulman.csse.rosefire:rosefire-android-client:2.0.0beta'
