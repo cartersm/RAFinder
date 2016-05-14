@@ -21,7 +21,6 @@ import android.widget.TextView;
 import com.firebase.client.Firebase;
 
 import edu.rosehulman.rafinder.ConfigKeys;
-import edu.rosehulman.rafinder.Environment;
 import edu.rosehulman.rafinder.MainActivity;
 import edu.rosehulman.rafinder.R;
 import edu.rosehulman.rafinder.UserType;
@@ -103,9 +102,9 @@ public class LoginActivity extends Activity {
 
         // Skip login screen if we're still authorized and have data.
         if (firebase.getAuth() != null
-            && !userType.equals(UserType.NONE)
-            && !raEmail.equals("")
-            && !email.equals("")) {
+                && !userType.equals(UserType.NONE)
+                && !raEmail.equals("")
+                && !email.equals("")) {
             launchMainActivity(userType, raEmail, email);
         }
 
@@ -197,7 +196,7 @@ public class LoginActivity extends Activity {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         mLoginFormView.setVisibility(show ? View.GONE
-                                                          : View.VISIBLE);
+                                : View.VISIBLE);
                     }
                 });
 
@@ -208,7 +207,7 @@ public class LoginActivity extends Activity {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         mProgressView.setVisibility(show ? View.VISIBLE
-                                                         : View.GONE);
+                                : View.GONE);
                     }
                 });
     }

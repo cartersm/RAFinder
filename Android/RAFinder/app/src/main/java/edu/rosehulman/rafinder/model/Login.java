@@ -13,7 +13,9 @@ import edu.rosehulman.rafinder.R;
 import edu.rosehulman.rafinder.UserType;
 import edu.rosehulman.rafinder.controller.LoginActivity;
 
-
+/**
+ * Models actions and data required for login.
+ */
 public class Login {
     // Resident Firebase key
     private static final String myRA = "myRA";
@@ -30,30 +32,18 @@ public class Login {
         this.loginActivity = loginActivity;
     }
 
-    /**
-     * Verifies the user provided a valid email.
-     */
     public static boolean isEmailInvalid(String email) {
         return !email.matches(".*?@.*?\\..*");
     }
 
-    /**
-     * Verifies the password is longer than 4 characters.
-     */
     public static boolean isPasswordInvalid(String password) {
         return password.length() <= 4;
     }
 
-    /**
-     * Authenticates the user with Firebase, using the specified email address and password
-     */
     public void loginWithPassword(String email, String password) {
         firebase.authWithPassword(email, password, new AuthResultHandler());
     }
 
-    /**
-     * Authenticates a user to allow them to login.
-     */
     private void setAuthenticatedUser(AuthData authData) {
         if (authData != null) {
             firebase.child(ConfigKeys.Employees).addListenerForSingleValueEvent(new EmployeeListener(authData.getUid()));
@@ -64,20 +54,11 @@ public class Login {
         return new AuthResultHandler();
     }
 
-    /**
-     * A custom AuthResultHandler
-     */
     public class AuthResultHandler implements Firebase.AuthResultHandler {
-        /**
-         * On successful authentication, calls the setAuthenticatedUser method
-         */
         public void onAuthenticated(AuthData authData) {
             setAuthenticatedUser(authData);
         }
 
-        /**
-         * On failed login, displays an error message
-         */
         public void onAuthenticationError(FirebaseError firebaseError) {
             if (firebaseError.getCode() == FirebaseError.INVALID_EMAIL ||
                 firebaseError.getCode() == FirebaseError.USER_DOES_NOT_EXIST) {
@@ -133,20 +114,16 @@ public class Login {
             if (dataSnapshot.child(ConfigKeys.Administrators).hasChild(uid)) {
                 userType = UserType.ADMINISTRATOR;
                 table = dataSnapshot.child(ConfigKeys.Administrators);
-            }
-            else if (dataSnapshot.child(ConfigKeys.ResidentAssistants).hasChild(uid)) {
+            } else if (dataSnapshot.child(ConfigKeys.ResidentAssistants).hasChild(uid)) {
                 userType = UserType.RESIDENT_ASSISTANT;
                 table = dataSnapshot.child(ConfigKeys.ResidentAssistants);
-            }
-            else if (dataSnapshot.child(ConfigKeys.SophomoreAdvisors).hasChild(uid)) {
+            } else if (dataSnapshot.child(ConfigKeys.SophomoreAdvisors).hasChild(uid)) {
                 userType = UserType.SOPHOMORE_ADVISOR;
                 table = dataSnapshot.child(ConfigKeys.SophomoreAdvisors);
-            }
-            else if (dataSnapshot.child(ConfigKeys.GraduateAssistants).hasChild(uid)) {
+            } else if (dataSnapshot.child(ConfigKeys.GraduateAssistants).hasChild(uid)) {
                 userType = UserType.GRADUATE_ASSISTANT;
                 table = dataSnapshot.child(ConfigKeys.GraduateAssistants);
-            }
-            else {
+            } else {
                 firebase.child(Residents).addListenerForSingleValueEvent(new ResidentListener(uid));
                 Log.d(ConfigKeys.LOG_TAG, "User <" + uid + "> not found in employees");
                 return;
