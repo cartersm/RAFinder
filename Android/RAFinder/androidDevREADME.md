@@ -45,7 +45,7 @@ Now for the fun part: the code walkthrough. This will be structured in the same 
     - ** *model* **. All models required by the app. These are, for the most part, POJOs.
       - ** *person* **. The hierarchy of models specific to people.
       - ** *reshall* ** The hierarchy of models specific to Residence Halls, mostly the Hall Roster view.
-  - **JSSEProvider, GmailSender**. Used to send anonomyous feedback via a dedicated Gmail account.
+  - **JSSEProvider, GmailSender**. Used to send anonymous feedback via a dedicated Gmail account.
   - ** *edu.rosehulman.rafinder (dev)* **. Same package structure as the main root package; contains java sources unique to the dev build.
     - **ConfigKeys**. This is the only file that differs between the two environments.
   - ** *edu.rosehulman.rafinder (prod)* **. Same package structure as the main root package; contains java sources unique to the prod build.
@@ -56,22 +56,6 @@ Now for the fun part: the code walkthrough. This will be structured in the same 
     3. **fragment\*.html**. Fragment views. Imagine that.
     4. **layout\*.html**. Smaller pieces of views. Mostly list view items.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+### Closing comments
+Hopefully this app will be relatively straightforward for you, but,
+##### If you are, for any reason, still floundering after reading this README, or have problems with anything, feel free to contact me at sean47933@gmail.com.
