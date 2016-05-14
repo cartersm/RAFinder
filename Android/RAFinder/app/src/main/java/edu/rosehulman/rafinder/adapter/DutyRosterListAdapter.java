@@ -16,6 +16,9 @@ import edu.rosehulman.rafinder.R;
 import edu.rosehulman.rafinder.model.DutyRoster;
 import edu.rosehulman.rafinder.model.DutyRosterItem;
 
+/**
+ * An Expandable List Adapter for Duty Rosters.
+ */
 public class DutyRosterListAdapter extends BaseExpandableListAdapter {
     private final Context mContext;
     private final DutyRoster mRoster;
@@ -64,8 +67,8 @@ public class DutyRosterListAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isLastItem, View convertView, ViewGroup viewGroup) {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = convertView != null ?
-                    convertView :
-                    inflater.inflate(android.R.layout.simple_expandable_list_item_2, null);
+                convertView :
+                inflater.inflate(android.R.layout.simple_expandable_list_item_2, null);
 
         LocalDate date = mRoster.getRosterDatesAsList().get(groupPosition);
         String dateString = date.toString("EEE, MMM dd, yyyy");

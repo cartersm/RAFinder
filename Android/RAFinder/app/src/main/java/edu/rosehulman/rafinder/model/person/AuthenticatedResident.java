@@ -5,6 +5,9 @@ import com.firebase.client.DataSnapshot;
 
 import edu.rosehulman.rafinder.ConfigKeys;
 
+/**
+ * Any authenticated resident or Residence Life Employee.
+ */
 public class AuthenticatedResident {
     private String name;
     @JsonIgnore

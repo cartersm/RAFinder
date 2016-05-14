@@ -9,12 +9,14 @@ import edu.rosehulman.rafinder.UserType;
 import edu.rosehulman.rafinder.controller.HomeFragment;
 import edu.rosehulman.rafinder.model.person.Employee;
 
+/**
+ * Models a list of lists of employees, for use with {@link edu.rosehulman.rafinder.adapter.EmployeeListAdapter}.
+ */
 public class EmployeeList {
 
     private final List<EmployeeSubList> employees;
 
     public EmployeeList(HomeFragment.HomeListener context, String hallName) {
-        HomeFragment.HomeListener context1 = context;
         this.employees = new ArrayList<>();
 
         UserType userType = context.getUserType();
@@ -37,17 +39,20 @@ public class EmployeeList {
 
     private boolean isFreshmanHall(String hallName) {
         return hallName.equalsIgnoreCase("Mees") ||
-               hallName.equalsIgnoreCase("Blumberg") ||
-               hallName.equalsIgnoreCase("Scharpenberg") ||
-               hallName.equalsIgnoreCase("Speed") ||
-               hallName.equalsIgnoreCase("Deming") ||
-               hallName.equalsIgnoreCase("BSB");
+                hallName.equalsIgnoreCase("Blumberg") ||
+                hallName.equalsIgnoreCase("Scharpenberg") ||
+                hallName.equalsIgnoreCase("Speed") ||
+                hallName.equalsIgnoreCase("Deming") ||
+                hallName.equalsIgnoreCase("BSB");
     }
 
     public List<EmployeeSubList> getEmployees() {
         return employees;
     }
 
+    /**
+     * Models a single list of employees within the larger list.
+     */
     public class EmployeeSubList {
         private final String key;
         private final List<Employee> employees;

@@ -1,5 +1,8 @@
 package edu.rosehulman.rafinder.model.reshall;
 
+/**
+ * A single resident in a room.
+ */
 public class Resident {
     private String image;
     private String name;

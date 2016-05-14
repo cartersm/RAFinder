@@ -9,6 +9,9 @@ import java.util.Arrays;
 
 import edu.rosehulman.rafinder.UserType;
 
+/**
+ * An item in the Emergency Contacts list.
+ */
 public class EmergencyContact {
     // EmergencyContact Firebase keys
     private static final String ecEmail = "Email";
@@ -19,12 +22,6 @@ public class EmergencyContact {
     private String phone;
     private UserType userType;
     private Priority priority;
-
-    public enum Priority {
-        ON_DUTY,
-        MY_RA,
-        STAFF
-    }
 
     public EmergencyContact(String firebaseURL) {
         Firebase firebase = new Firebase(firebaseURL);
@@ -108,5 +105,11 @@ public class EmergencyContact {
                 userType,
                 priority
         ).toString();
+    }
+
+    public enum Priority {
+        ON_DUTY,
+        MY_RA,
+        STAFF
     }
 }

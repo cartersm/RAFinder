@@ -17,11 +17,14 @@ import edu.rosehulman.rafinder.model.DutyRoster;
 
 
 /**
- * The RA view of the Duty Roster (which is editable for RAs, but not for SAs).
+ * The RA view of the Duty Roster.
  */
 public class DutyRosterFragment extends Fragment {
     private DutyRosterListener mListener;
     private DutyRoster mRoster;
+
+    public DutyRosterFragment() {
+    }
 
     public static DutyRosterFragment newInstance(LocalDate date) {
         DutyRosterFragment fragment = new DutyRosterFragment();
@@ -29,9 +32,6 @@ public class DutyRosterFragment extends Fragment {
         args.putString(ConfigKeys.DATE, date.toString(ConfigKeys.dateFormat));
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public DutyRosterFragment() {
     }
 
     @Override

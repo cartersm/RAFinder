@@ -15,6 +15,9 @@ import edu.rosehulman.rafinder.model.reshall.Floor;
 import edu.rosehulman.rafinder.model.reshall.ResHall;
 import edu.rosehulman.rafinder.model.reshall.Room;
 
+/**
+ * An Expandable List Adapter for the Hall Roster.
+ */
 public class HallRosterListAdapter extends BaseExpandableListAdapter {
     private final Context mContext;
     private final List<ResHall> mHalls;
@@ -63,8 +66,8 @@ public class HallRosterListAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isLastItem, View convertView, ViewGroup viewGroup) {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = convertView != null ?
-                    convertView :
-                    inflater.inflate(android.R.layout.simple_expandable_list_item_2, null);
+                convertView :
+                inflater.inflate(android.R.layout.simple_expandable_list_item_2, null);
 
         ((TextView) view.findViewById(android.R.id.text1)).setText(mHalls.get(groupPosition).getHall());
 
@@ -75,8 +78,8 @@ public class HallRosterListAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup viewGroup) {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = convertView != null ?
-                    convertView :
-                    inflater.inflate(R.layout.layout_floor_roster, null);
+                convertView :
+                inflater.inflate(R.layout.layout_floor_roster, null);
 
         Floor floor = mHalls.get(groupPosition).getFloors().get(childPosition);
 

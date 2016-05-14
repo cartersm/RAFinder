@@ -11,14 +11,13 @@ import edu.rosehulman.rafinder.model.person.Employee;
  */
 public class DutyRosterItem {
     private Employee ra;
-
     private String hall;
     private String email;
     private String name;
     private String phoneNumber;
     private String uid;
 
-
+    // CONSIDER whether we can use a POJO here
     public DutyRosterItem(DataSnapshot ds, List<Employee> ras) {
         this.hall = ds.child("hall").getValue(String.class);
         this.email = ds.child("email").getValue(String.class);

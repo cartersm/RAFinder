@@ -16,6 +16,9 @@ import edu.rosehulman.rafinder.ConfigKeys;
 import edu.rosehulman.rafinder.model.DutyRoster;
 import edu.rosehulman.rafinder.model.person.Employee;
 
+/**
+ * A loader for duty rosters.
+ */
 public class DutyRosterLoader extends Loader {
     private static final String DUTY_ROSTERS = "DutyRosters";
     private final List<Employee> mRAs;
@@ -25,7 +28,6 @@ public class DutyRosterLoader extends Loader {
     private LocalDate mDate;
 
     public DutyRosterLoader(LoaderListener listener, List<Employee> ras, boolean isEdit) {
-        // FIXME for new DB structure
         mListener = listener;
         mRAs = ras;
         mIsEdit = isEdit;

@@ -57,6 +57,7 @@ public class MainActivity extends Activity implements
         SearchFragment.SearchFragmentListener,
         DutyRosterFragment.DutyRosterListener {
 
+    // Fragment view constants
     private static final int LOADING = -1;
     private static final int SEARCH = 0;
     private static final int HOME = 1;
@@ -72,24 +73,25 @@ public class MainActivity extends Activity implements
     private String mRaEmail;
     private int mFloor;
     private String mHallName = "";
+    private UserType mUserType = UserType.RESIDENT;
+    private Employee mUser;
+    private Employee myRA;
 
     private EmployeeLoader mEmployeeLoader;
     private DutyRosterLoader mDutyRosterLoader;
     private HallLoader mHallLoader;
     private EmergencyContactsLoader mEmergencyContactsLoader;
-    private UserType mUserType = UserType.RESIDENT;
 
     private List<Employee> mAllRAs;
     private List<Employee> mAllSAs;
     private List<Employee> mAllGAs;
     private List<Employee> mAllAdmins;
+    private List<ResHall> mHalls;
     private List<EmergencyContact> mEmergencyContacts;
+
     private Employee mSelectedEmployee;
-    private Employee mUser;
-    private Employee myRA;
     private LocalDate mDate;
     private DutyRoster mDutyRoster;
-    private List<ResHall> mHalls;
 
     /**
      * Borrowed from {@link PhoneNumberUtils#normalizeNumber(String)}, for use on devices below API21
@@ -165,37 +167,37 @@ public class MainActivity extends Activity implements
         Fragment fragment;
 
         switch (position) {
-        case LOADING:
-            fragment = LoadingFragment.newInstance();
-            break;
-        case SEARCH:
-            fragment = SearchFragment.newInstance();
-            break;
-        case HOME:
-            fragment = HomeFragment.newInstance();
-            break;
-        case MY_RA:
-            switchToProfile(myRA);
-            return;
-        case EMERGENCY_CONTACTS:
-            fragment = EmergencyContactsFragment.newInstance();
-            break;
-        case DUTY_ROSTER:
-            fragment = DutyRosterFragment.newInstance(mDate);
-            break;
-        case HALL_ROSTER_OR_RESIDENT_LOGOUT:
-            if (mUserType.equals(UserType.RESIDENT)) {
+            case LOADING:
+                fragment = LoadingFragment.newInstance();
+                break;
+            case SEARCH:
+                fragment = SearchFragment.newInstance();
+                break;
+            case HOME:
+                fragment = HomeFragment.newInstance();
+                break;
+            case MY_RA:
+                switchToProfile(myRA);
+                return;
+            case EMERGENCY_CONTACTS:
+                fragment = EmergencyContactsFragment.newInstance();
+                break;
+            case DUTY_ROSTER:
+                fragment = DutyRosterFragment.newInstance(mDate);
+                break;
+            case HALL_ROSTER_OR_RESIDENT_LOGOUT:
+                if (mUserType.equals(UserType.RESIDENT)) {
+                    logout();
+                    return;
+                } else {
+                    fragment = HallRosterFragment.newInstance();
+                    break;
+                }
+            case EMPLOYEE_LOGOUT:
                 logout();
                 return;
-            } else {
-                fragment = HallRosterFragment.newInstance();
-                break;
-            }
-        case EMPLOYEE_LOGOUT:
-            logout();
-            return;
-        default:
-            fragment = HomeFragment.newInstance();
+            default:
+                fragment = HomeFragment.newInstance();
         }
 
         String tag = fragment.getClass().toString();
@@ -310,7 +312,7 @@ public class MainActivity extends Activity implements
         List<Employee> myRAs = new ArrayList<>();
         for (Employee ra : mAllRAs) {
             if (ra.getHall().equals(mHallName)
-                && ra.getFloor() == mFloor) {
+                    && ra.getFloor() == mFloor) {
                 myRAs.add(ra);
             }
         }

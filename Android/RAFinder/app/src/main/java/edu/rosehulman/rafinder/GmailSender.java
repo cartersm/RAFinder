@@ -1,5 +1,8 @@
 package edu.rosehulman.rafinder;
 
+import eu.ocathain.javax.activation.DataHandler;
+import eu.ocathain.javax.activation.DataSource;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,22 +18,19 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import eu.ocathain.javax.activation.DataHandler;
-import eu.ocathain.javax.activation.DataSource;
-
 /**
  * Borrowed from <a href=http://stackoverflow.com/questions/2020088/sending-email-in-android-using-javamail-api-without-using-the-default-built-in-a/2033124#2033124>This
  * StackOverflowArticle</a>
  * For sending email directly from the app.
  */
 class GmailSender extends Authenticator {
-    private final String user;
-    private final String password;
-    private final Session session;
-
     static {
         Security.addProvider(new JSSEProvider());
     }
+
+    private final String user;
+    private final String password;
+    private final Session session;
 
     public GmailSender(String user, String password) {
         this.user = user;

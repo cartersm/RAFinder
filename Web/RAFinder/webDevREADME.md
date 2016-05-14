@@ -71,6 +71,8 @@ The core dependencies of this project are as follows, and can be found in ```pac
 
 - ```stream``` is another NodeJS dependency for FileReader, which allows me to stream the file line-by-line in the browser the same way I would in a NodeJS backend.
 
+- ```Rosefire``` is not listed in package.json, as it is not on NPM. It is used for authenticating with Rose-Hulman's KERBEROS system and using that login token to log into the Firebase database.
+
 #### Bower Components
 
 - ```angular``` AngularJS itself.

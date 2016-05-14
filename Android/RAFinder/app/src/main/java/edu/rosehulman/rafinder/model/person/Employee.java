@@ -174,12 +174,12 @@ public abstract class Employee extends AuthenticatedResident {
         return profilePicture;
     }
 
-    public Bitmap getProfilePictureAsBitmap() {
-        return convertToBitmap(this.profilePicture);
-    }
-
     public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
+    }
+
+    public Bitmap getProfilePictureAsBitmap() {
+        return convertToBitmap(this.profilePicture);
     }
 
     public void setProfilePictureFromBitmap(Bitmap profilePicture) {
@@ -196,14 +196,14 @@ public abstract class Employee extends AuthenticatedResident {
         }
         Employee e = (Employee) other;
         return getName().equals(e.getName())
-               && email.equals(e.getEmail())
-               && floor == e.getFloor()
-               && hall.equals(e.getHall())
-               && phoneNumber.equals(e.getPhoneNumber())
-               && room.equals(e.getRoom())
-               && status.equals(e.getStatus())
-               && statusDetail.equals(e.getStatusDetail())
-               && userType.equals(e.userType);
+                && email.equals(e.getEmail())
+                && floor == e.getFloor()
+                && hall.equals(e.getHall())
+                && phoneNumber.equals(e.getPhoneNumber())
+                && room.equals(e.getRoom())
+                && status.equals(e.getStatus())
+                && statusDetail.equals(e.getStatusDetail())
+                && userType.equals(e.userType);
     }
 
     @Override
@@ -225,30 +225,30 @@ public abstract class Employee extends AuthenticatedResident {
     private class EmployeeChangedListener implements ChildEventListener {
         public void onChildChanged(DataSnapshot arg0, String arg1) {
             switch (arg0.getKey()) {
-            case ConfigKeys.employeeEmail:
-                setEmail(arg0.getValue(String.class));
-                break;
-            case ConfigKeys.employeeFloor:
-                setFloor(arg0.getValue(int.class));
-                break;
-            case ConfigKeys.employeeHall:
-                setHall(arg0.getValue(String.class));
-                break;
-            case ConfigKeys.employeePhone:
-                setPhoneNumber(arg0.getValue(String.class));
-                break;
-            case ConfigKeys.employeeRoom:
-                setRoom(arg0.getValue(String.class));
-                break;
-            case ConfigKeys.employeeStatus:
-                setStatus(arg0.getValue(String.class));
-                break;
-            case ConfigKeys.employeeStatusDetail:
-                setStatusDetail(arg0.getValue(String.class));
-                break;
-            case ConfigKeys.employeeName:
-                setName(arg0.getValue(String.class));
-                break;
+                case ConfigKeys.employeeEmail:
+                    setEmail(arg0.getValue(String.class));
+                    break;
+                case ConfigKeys.employeeFloor:
+                    setFloor(arg0.getValue(int.class));
+                    break;
+                case ConfigKeys.employeeHall:
+                    setHall(arg0.getValue(String.class));
+                    break;
+                case ConfigKeys.employeePhone:
+                    setPhoneNumber(arg0.getValue(String.class));
+                    break;
+                case ConfigKeys.employeeRoom:
+                    setRoom(arg0.getValue(String.class));
+                    break;
+                case ConfigKeys.employeeStatus:
+                    setStatus(arg0.getValue(String.class));
+                    break;
+                case ConfigKeys.employeeStatusDetail:
+                    setStatusDetail(arg0.getValue(String.class));
+                    break;
+                case ConfigKeys.employeeName:
+                    setName(arg0.getValue(String.class));
+                    break;
             }
         }
 

@@ -14,6 +14,9 @@ import edu.rosehulman.rafinder.MainActivity;
 import edu.rosehulman.rafinder.R;
 import edu.rosehulman.rafinder.model.person.Employee;
 
+/**
+ * An Array Adapter for search results.
+ */
 public class SearchResultArrayAdapter extends ArrayAdapter<Employee> {
     private final Context mContext;
     private final List<Employee> mObjects;
