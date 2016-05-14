@@ -1,5 +1,8 @@
 'use strict';
 
+/**
+ * The root module for the app. Loads dependencies on other modules.
+ */
 angular.module('RAFinder', [
         'ngRoute',
         'ui.bootstrap',
@@ -14,13 +17,20 @@ angular.module('RAFinder', [
         'RAFinder.hallRoster',
         'RAFinder.dutyRoster'
     ])
-    .config(['$routeProvider',
+    /**
+     * Sets up the default route.
+     */
+    .config([
+        '$routeProvider',
         function ($routeProvider) {
             // Always redirect to login page
             // Login will forward to home page if logged in
             $routeProvider.otherwise({redirectTo: '/login'});
         }
     ])
+    /**
+     * Controls base functionality to hide the navbar until a user is authenticated.
+     */
     .controller('RootCtrl', [
         '$scope',
         '$location',

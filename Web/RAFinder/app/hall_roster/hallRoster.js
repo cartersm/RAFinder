@@ -1,3 +1,7 @@
+'use strict';
+/**
+ * Controls the HalLRoster view.
+ */
 angular.module('RAFinder.hallRoster', [
     'ngRoute',
     'firebase'

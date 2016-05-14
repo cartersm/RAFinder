@@ -1,4 +1,7 @@
 'use strict';
+/**
+ * A modal service to display popup windows.
+ */
 angular.module('RAFinder.services.modal', [])
     // the following is borrowed from http://weblogs.asp.net/dwahlin/building-an-angularjs-modal-service
     .service('Modal', [
