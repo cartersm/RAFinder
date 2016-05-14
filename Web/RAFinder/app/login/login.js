@@ -51,7 +51,7 @@ angular.module('RAFinder.login', [
                             $scope.signinFailed = false;
                             $scope.isEmployee = Auth.isEmployee();
                             if ($scope.isEmployee) {
-                                Auth.setUser(authData.password.email);
+                                Auth.setUser(authData.uid);
                                 $('#page-header').removeClass('hidden');
                                 $('#nav-bar').removeClass('hidden');
                                 $window.location.reload();

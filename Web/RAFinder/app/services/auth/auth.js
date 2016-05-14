@@ -18,6 +18,10 @@ angular.module('RAFinder.services.auth', [])
 
             this.checkAuth = function (onSuccess, onFailure) {
                 var auth = authObj.$getAuth();
+                // append '@rose-hulman.edu' if it does not exist
+                if (!auth.uid.endsWith('@rose-hulman.edu')) {
+                    auth.uid += '@rose-hulman.edu';
+                }
                 if (auth === null || auth.expires <= Date.now() / 1000) {
                     if (auth) {
                         // The auth has expired
@@ -31,7 +35,6 @@ angular.module('RAFinder.services.auth', [])
                     var obj = $firebaseObject(firebase.child('Employees/Administrators'));
                     obj.$loaded().then(function (data) {
                         angular.forEach(data, function (value, key) {
-                            // TODO: this'll break RoseFire auth
                             if (key === auth.uid) {
                                 isAdmin = true;
                                 isEmployee = true;
@@ -45,7 +48,6 @@ angular.module('RAFinder.services.auth', [])
                             var obj = $firebaseObject(firebase.child('Employees/Graduate Assistants'));
                             obj.$loaded().then(function (data) {
                                 angular.forEach(data, function (value, key) {
-                                    // TODO: this'll break RoseFire auth
                                     if (key === auth.uid) {
                                         isGA = true;
                                         isEmployee = true;
@@ -60,7 +62,6 @@ angular.module('RAFinder.services.auth', [])
                                     obj.$loaded().then(function (data) {
                                         angular.forEach(data, function (child) {
                                             angular.forEach(child, function (value, key) {
-                                                // TODO: this'll break RoseFire auth
                                                 if (key === auth.uid) {
                                                     isEmployee = true;
                                                 }
@@ -139,6 +140,7 @@ angular.module('RAFinder.services.auth', [])
                     });
                     return;
                 }
+                // Else, use RoseFire
                 var data = {
                     registryToken: EnvConfig.token,
                     email: username + '@rose-hulman.edu',
@@ -152,6 +154,9 @@ angular.module('RAFinder.services.auth', [])
                     }
                     authObj.$authWithCustomToken(token)
                         .then(function (authData) {
+                            if (!auth.uid.endsWith('@rose-hulman.edu')) {
+                                authData.uid += '@rose-hulman.edu';
+                            }
                             callback(null, authData);
                         })
                         .catch(function (error) {

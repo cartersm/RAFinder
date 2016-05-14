@@ -200,8 +200,18 @@ angular.module('RAFinder.services.database', [
                 }
             };
 
-            // FIXME: this should be removed as soon as we have KERBEROS auth in place
             this.addEmployee = function (employeeType, user) {
+                if (EnvConfig.env === 'prod') {
+                    firebase.child('Employees/' + employeeType + '/')
+                        .push(user, function (error) {
+                            if (error != null) {
+                                console.error(error);
+                                // TODO: show error to user?
+                            }
+                        });
+                    return;
+                }
+                // Else, we're in dev; create a fake user
                 var authObj = Auth.getAuthObject();
                 authObj.$createUser({email: user.email, password: 'test1234'})
                     .then(function (authData) {
@@ -209,7 +219,6 @@ angular.module('RAFinder.services.database', [
                         firebase.child('Employees/' + employeeType + '/' + authData.uid)
                             .set(user, function (error) {
                                 if (error != null) {
-                                    // TODO: look into Rockwood's validation
                                     console.error(error);
                                 }
                             });
@@ -236,7 +245,7 @@ angular.module('RAFinder.services.database', [
                 }
                 data.$remove(person);
 
-                // FIXME: remove once KERBEROS auth is in place
+                if (EnvConfig.env === 'prod') return;
                 if (person.email.endsWith('@test.com')) {
                     // This is a test entity created by a demo of the app; remove it from the Firebase's authorized users
                     var authObj = Auth.getAuthObject();
