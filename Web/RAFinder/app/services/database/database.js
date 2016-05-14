@@ -1,4 +1,8 @@
 'use strict';
+/**
+ * A facade service to interact with the database.
+ * ALL database read/write operations should be delegated through methods of this service.
+ */
 angular.module('RAFinder.services.database', [
         'firebase',
         'RAFinder.services.fileReader'
@@ -61,6 +65,11 @@ angular.module('RAFinder.services.database', [
                     });
             };
 
+            /**
+             * Returns the synchronized list of RAs via a callback.
+             *
+             * @param {function} callback - the callback to utilize the data.
+             */
             this.getRAs = function (callback) {
                 if (self.employees.ras.length === 0) {
                     loadRAs(function (data) {
@@ -71,6 +80,11 @@ angular.module('RAFinder.services.database', [
                 }
             };
 
+            /**
+             * Returns the synchronized list of SAs via a callback.
+             *
+             * @param {function} callback - the callback to utilize the data.
+             */
             this.getSAs = function (callback) {
                 if (self.employees.sas.length === 0) {
                     loadSAs(function (data) {
@@ -81,6 +95,11 @@ angular.module('RAFinder.services.database', [
                 }
             };
 
+            /**
+             * Returns the synchronized list of GAs via a callback.
+             *
+             * @param {function} callback - the callback to utilize the data.
+             */
             this.getGAs = function (callback) {
                 if (self.employees.gas.length === 0) {
                     loadGAs(function (data) {
@@ -91,6 +110,11 @@ angular.module('RAFinder.services.database', [
                 }
             };
 
+            /**
+             * Returns the synchronized list of Admins via a callback.
+             *
+             * @param {function} callback - the callback to utilize the data.
+             */
             this.getAdmins = function (callback) {
                 if (self.employees.admins.length === 0) {
                     loadAdmins(function (data) {
@@ -101,6 +125,12 @@ angular.module('RAFinder.services.database', [
                 }
             };
 
+            /**
+             * Parses the given CSV of employee data.
+             *
+             * @param {*} data - the data to parse.
+             * @param {boolean} overwrite - whether to overwrite the existing data.
+             */
             this.parseEmployeeCsv = function (data, overwrite) {
                 var ras = [];
                 var sas = [];
@@ -200,6 +230,22 @@ angular.module('RAFinder.services.database', [
                 }
             };
 
+            /**
+             * Adds the given employee to the Database.
+             *
+             * @param {String} employeeType - the type of employee being added.
+             * @param {Object} user - the user to add
+             * @param {String} user.email
+             * @param {Number} user.floor
+             * @param {String} user.hall
+             * @param {String} user.name
+             * @param {String} user.phoneNumber
+             * @param {String} user.profilePicture
+             * @param {String} user.room
+             * @param {String} user.status
+             * @param {String} user.statusDetail
+             */
+            // FIXME: this should be removed as soon as we have KERBEROS auth in place
             this.addEmployee = function (employeeType, user) {
                 if (EnvConfig.env === 'prod') {
                     firebase.child('Employees/' + employeeType + '/')
@@ -227,6 +273,12 @@ angular.module('RAFinder.services.database', [
                     });
             };
 
+            /**
+             * Removes the given employee from the database.
+             *
+             * @param {String} type - the type of user being deleted.
+             * @param {Object} person - the synchronized record to be deleted.
+             */
             this.removeEmployee = function (type, person) {
                 var data;
                 switch (type) {
@@ -263,6 +315,11 @@ angular.module('RAFinder.services.database', [
                     });
             };
 
+            /**
+             * Returns the synchronized list of Residence Halls via a callback.
+             *
+             * @param {function} callback - the callback to utilize the data.
+             */
             this.getResHalls = function (callback) {
                 if (self.resHalls.length === 0) {
                     loadResHalls(function (data) {
@@ -283,6 +340,11 @@ angular.module('RAFinder.services.database', [
                     });
             };
 
+            /**
+             * Returns the synchronized list of Duty Rosters via a callback.
+             *
+             * @param {function} callback - the callback to utilize the data.
+             */
             this.getDutyRosters = function (callback) {
                 if (self.dutyRosters.length === 0) {
                     loadDutyRosters(function (data) {
@@ -293,6 +355,12 @@ angular.module('RAFinder.services.database', [
                 }
             };
 
+            /**
+             * Adds the given Duty Roster Item to the database.
+             *
+             * @param {Date|String} date - the date at which to add the roster.
+             * @param {Object[]} roster - The roster to add.
+             */
             this.addDutyRosterItem = function (date, roster) {
                 self.dutyRosters.$add({date: date})
                     .then(function (ref) {
@@ -306,10 +374,21 @@ angular.module('RAFinder.services.database', [
                     });
             };
 
+            /**
+             * Edits the given Duty Roster item.
+             *
+             * @param {Object} roster - the roster to add.
+             */
             this.editDutyRosterItem = function (roster) {
                 self.dutyRosters.$save(roster);
             };
 
+            /**
+             * Parses the given Duty Roster file.
+             *
+             * @param {*} data - the data to parse.
+             * @param {boolean} overwrite - whether to overwrite the existing data.
+             */
             this.parseDutyRosterFile = function (data, overwrite) {
                 var rosters = [];
                 var roster = roster = {
