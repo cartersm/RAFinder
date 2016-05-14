@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A Residence Hall.
+ */
 public class ResHall {
     private Map<String, Floor> floors;
     private String hall;

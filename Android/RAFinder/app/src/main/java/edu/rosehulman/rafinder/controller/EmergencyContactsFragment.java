@@ -25,16 +25,11 @@ public class EmergencyContactsFragment extends Fragment
     private EmergencyContactsListener mListener;
     private List<EmergencyContact> emergencyContacts;
 
-    /**
-     * Use this factory method to create a new instance of this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment EmergencyContactsFragment.
-     */
-    public static EmergencyContactsFragment newInstance() {
-        return new EmergencyContactsFragment();
+    public EmergencyContactsFragment() {
     }
 
-    public EmergencyContactsFragment() {
+    public static EmergencyContactsFragment newInstance() {
+        return new EmergencyContactsFragment();
     }
 
     @Override
@@ -105,7 +100,9 @@ public class EmergencyContactsFragment extends Fragment
 
     public interface EmergencyContactsListener {
         void dialPhoneNumber(String phoneNumber);
+
         void sendEmail(String emailAddress);
+
         List<EmergencyContact> getEmergencyContacts();
     }
 }

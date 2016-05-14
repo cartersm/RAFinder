@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A single room in the hall roster.
+ */
 public class Room {
 
     @JsonProperty("number")

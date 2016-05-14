@@ -17,11 +17,11 @@ public class LoadingFragment extends Fragment {
 
     private ProgressDialog mProgressDialog;
 
-    public static LoadingFragment newInstance() {
-        return new LoadingFragment();
+    public LoadingFragment() {
     }
 
-    public LoadingFragment() {
+    public static LoadingFragment newInstance() {
+        return new LoadingFragment();
     }
 
     @Override

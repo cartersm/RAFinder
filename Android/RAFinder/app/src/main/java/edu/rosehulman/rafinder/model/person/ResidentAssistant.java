@@ -3,7 +3,7 @@ package edu.rosehulman.rafinder.model.person;
 import edu.rosehulman.rafinder.UserType;
 
 /**
- * An RA, who has the broadest access to the app.
+ * An RA.
  */
 public class ResidentAssistant extends Employee {
 

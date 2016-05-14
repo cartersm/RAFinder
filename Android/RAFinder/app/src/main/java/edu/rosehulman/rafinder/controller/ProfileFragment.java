@@ -31,7 +31,7 @@ import edu.rosehulman.rafinder.model.person.Employee;
 /**
  * The Profile Page.
  */
-@SuppressLint("ValidFragment")
+@SuppressLint("ValidFragment") // FIXME: dialog fragments have to be extracted.
 public class ProfileFragment extends Fragment implements View.OnLongClickListener {
     private static final int SELECT_IMAGE_REQUEST_CODE = 1;
     private StudentProfileListener mListener;
@@ -48,17 +48,17 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
     @Override
     public boolean onLongClick(View v) {
         switch (v.getId()) {
-        case R.id.phoneTextView:
-        case R.id.statusDetailTextView:
-            // intentional fallthrough
-            showEditTextDialog((TextView) v);
-            break;
-        case R.id.statusTextView:
-            showStatusChooserDialog((TextView) v);
-            break;
-        case R.id.profileImageView:
-            showImageChooserDialog();
-            break;
+            case R.id.phoneTextView:
+            case R.id.statusDetailTextView:
+                // intentional fallthrough
+                showEditTextDialog((TextView) v);
+                break;
+            case R.id.statusTextView:
+                showStatusChooserDialog((TextView) v);
+                break;
+            case R.id.profileImageView:
+                showImageChooserDialog();
+                break;
         }
 
         return true;
@@ -70,7 +70,7 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
         if (requestCode == SELECT_IMAGE_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 Uri selectedImageUri = data.getData();
-                String[] filePathColumn = { MediaStore.Images.Media.DATA };
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
                 Cursor cursor = getActivity().getContentResolver().query(selectedImageUri,
                         filePathColumn, null, null, null);
@@ -137,8 +137,8 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
 
         // Set editable fields based on MainActivity.getUserType
         if (!mContext.getUserType().equals(UserType.RESIDENT)
-            && mContext.getUser() != null
-            && employee.equals(mContext.getUser())) {
+                && mContext.getUser() != null
+                && employee.equals(mContext.getUser())) {
 
             phoneTextView.setOnLongClickListener(this);
             statusTextView.setOnLongClickListener(this);
@@ -231,17 +231,17 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
     private void setMessageAndType(AlertDialog.Builder builder, EditText editText, int id) {
         final String hint;
         switch (id) {
-        case R.id.phoneTextView:
-            hint = getString(R.string.profile_edit_phone);
-            editText.setInputType(InputType.TYPE_CLASS_PHONE);
-            editText.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
-            break;
-        case R.id.statusDetailTextView:
-            hint = getString(R.string.profile_edit_status_detail);
-            break;
-        default:
-            hint = "value";
-            break;
+            case R.id.phoneTextView:
+                hint = getString(R.string.profile_edit_phone);
+                editText.setInputType(InputType.TYPE_CLASS_PHONE);
+                editText.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+                break;
+            case R.id.statusDetailTextView:
+                hint = getString(R.string.profile_edit_status_detail);
+                break;
+            default:
+                hint = "value";
+                break;
         }
         final String message = getString(R.string.profile_edit_message_format, hint);
         builder.setTitle(message);
@@ -250,16 +250,16 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
 
     private void setTextAndEmployeeField(TextView textView, String value) {
         switch (textView.getId()) {
-        case R.id.phoneTextView:
-            textView.setText(getString(R.string.profile_phone_format, value));
-            employee.setPhoneNumber(value);
-            employee.getFirebase().child("phoneNumber").setValue(employee.getPhoneNumber());
-            break;
-        case R.id.statusDetailTextView:
-            textView.setText(getString(R.string.status_detail_format, value));
-            employee.setStatusDetail(value);
-            employee.getFirebase().child("statusDetail").setValue(employee.getStatusDetail());
-            break;
+            case R.id.phoneTextView:
+                textView.setText(getString(R.string.profile_phone_format, value));
+                employee.setPhoneNumber(value);
+                employee.getFirebase().child("phoneNumber").setValue(employee.getPhoneNumber());
+                break;
+            case R.id.statusDetailTextView:
+                textView.setText(getString(R.string.status_detail_format, value));
+                employee.setStatusDetail(value);
+                employee.getFirebase().child("statusDetail").setValue(employee.getStatusDetail());
+                break;
         }
     }
 
@@ -337,6 +337,7 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
 
     public interface StudentProfileListener {
         Employee getSelectedEmployee();
+
         void sendFeedback(String name, String email, String body);
     }
 }

@@ -25,14 +25,14 @@ public class HallRosterFragment extends Fragment {
     private HallRosterListener mListener;
     private ExpandableListAdapter mAdapter;
 
+    public HallRosterFragment() {
+    }
+
     public static HallRosterFragment newInstance() {
         HallRosterFragment fragment = new HallRosterFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public HallRosterFragment() {
     }
 
     @Override

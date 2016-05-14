@@ -17,13 +17,15 @@ import edu.rosehulman.rafinder.model.person.GraduateAssistant;
 import edu.rosehulman.rafinder.model.person.ResidentAssistant;
 import edu.rosehulman.rafinder.model.person.SophomoreAdvisor;
 
-@SuppressWarnings("unused")
+/**
+ * A loader for Residence Life Employees.
+ */
 public class EmployeeLoader extends Loader {
+    private final LoaderListener mListener;
     private List<Employee> mAdmins = new ArrayList<>();
     private List<Employee> mRAs = new ArrayList<>();
     private List<Employee> mGAs = new ArrayList<>();
     private List<Employee> mSAs = new ArrayList<>();
-    private final LoaderListener mListener;
 
 
     public EmployeeLoader(String url, LoaderListener listener) {
@@ -38,38 +40,38 @@ public class EmployeeLoader extends Loader {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     switch (child.getKey()) {
-                    case ConfigKeys.Administrators:
-                        for (DataSnapshot adminDS : child.getChildren()) {
-                            Administrator admin = adminDS.getValue(Administrator.class);
-                            admin.setUid(adminDS.getKey());
-                            admin.setFirebase(adminDS.getRef());
-                            mAdmins.add(admin);
-                        }
-                        break;
-                    case ConfigKeys.GraduateAssistants:
-                        for (DataSnapshot gaDS : child.getChildren()) {
-                            GraduateAssistant ga = gaDS.getValue(GraduateAssistant.class);
-                            ga.setUid(gaDS.getKey());
-                            ga.setFirebase(gaDS.getRef());
-                            mGAs.add(ga);
-                        }
-                        break;
-                    case ConfigKeys.ResidentAssistants:
-                        for (DataSnapshot raDS : child.getChildren()) {
-                            ResidentAssistant ra = raDS.getValue(ResidentAssistant.class);
-                            ra.setUid(raDS.getKey());
-                            ra.setFirebase(raDS.getRef());
-                            mRAs.add(ra);
-                        }
-                        break;
-                    case ConfigKeys.SophomoreAdvisors:
-                        for (DataSnapshot saDS : child.getChildren()) {
-                            SophomoreAdvisor sa = saDS.getValue(SophomoreAdvisor.class);
-                            sa.setUid(saDS.getKey());
-                            sa.setFirebase(saDS.getRef());
-                            mSAs.add(sa);
-                        }
-                        break;
+                        case ConfigKeys.Administrators:
+                            for (DataSnapshot adminDS : child.getChildren()) {
+                                Administrator admin = adminDS.getValue(Administrator.class);
+                                admin.setUid(adminDS.getKey());
+                                admin.setFirebase(adminDS.getRef());
+                                mAdmins.add(admin);
+                            }
+                            break;
+                        case ConfigKeys.GraduateAssistants:
+                            for (DataSnapshot gaDS : child.getChildren()) {
+                                GraduateAssistant ga = gaDS.getValue(GraduateAssistant.class);
+                                ga.setUid(gaDS.getKey());
+                                ga.setFirebase(gaDS.getRef());
+                                mGAs.add(ga);
+                            }
+                            break;
+                        case ConfigKeys.ResidentAssistants:
+                            for (DataSnapshot raDS : child.getChildren()) {
+                                ResidentAssistant ra = raDS.getValue(ResidentAssistant.class);
+                                ra.setUid(raDS.getKey());
+                                ra.setFirebase(raDS.getRef());
+                                mRAs.add(ra);
+                            }
+                            break;
+                        case ConfigKeys.SophomoreAdvisors:
+                            for (DataSnapshot saDS : child.getChildren()) {
+                                SophomoreAdvisor sa = saDS.getValue(SophomoreAdvisor.class);
+                                sa.setUid(saDS.getKey());
+                                sa.setFirebase(saDS.getRef());
+                                mSAs.add(sa);
+                            }
+                            break;
                     }
                 }
                 Log.d(ConfigKeys.LOG_TAG, "Finished loading Employee data.");

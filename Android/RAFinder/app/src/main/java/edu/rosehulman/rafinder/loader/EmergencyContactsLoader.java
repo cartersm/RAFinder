@@ -14,7 +14,9 @@ import edu.rosehulman.rafinder.ConfigKeys;
 import edu.rosehulman.rafinder.model.person.EmergencyContact;
 import edu.rosehulman.rafinder.model.person.Employee;
 
-@SuppressWarnings("unused")
+/**
+ * A loader for Emergency Contacts.
+ */
 public class EmergencyContactsLoader extends Loader {
     private static final String EMERGENCY_CONTACTS = "EmergencyContacts";
     private final LoaderListener mListener;

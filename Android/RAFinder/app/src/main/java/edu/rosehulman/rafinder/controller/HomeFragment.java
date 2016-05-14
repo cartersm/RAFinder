@@ -25,11 +25,11 @@ import edu.rosehulman.rafinder.model.person.Employee;
 public class HomeFragment extends Fragment {
     private HomeListener mListener;
 
-    public static HomeFragment newInstance() {
-        return new HomeFragment();
+    public HomeFragment() {
     }
 
-    public HomeFragment() {
+    public static HomeFragment newInstance() {
+        return new HomeFragment();
     }
 
     @Override

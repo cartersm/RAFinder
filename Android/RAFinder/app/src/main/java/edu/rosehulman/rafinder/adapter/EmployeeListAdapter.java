@@ -66,8 +66,8 @@ public class EmployeeListAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isLastItem, View convertView, ViewGroup viewGroup) {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = convertView != null ?
-                    convertView :
-                    inflater.inflate(android.R.layout.simple_expandable_list_item_2, null);
+                convertView :
+                inflater.inflate(android.R.layout.simple_expandable_list_item_2, null);
 
         EmployeeList.EmployeeSubList employees = mEmployees.getEmployees().get(groupPosition);
         ((TextView) view.findViewById(android.R.id.text1)).setText(employees.getKey());

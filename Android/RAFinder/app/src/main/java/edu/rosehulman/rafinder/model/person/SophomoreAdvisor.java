@@ -3,7 +3,7 @@ package edu.rosehulman.rafinder.model.person;
 import edu.rosehulman.rafinder.UserType;
 
 /**
- * An SA (like an RA, but with limited privileges).
+ * An SA.
  */
 public class SophomoreAdvisor extends Employee {
 
