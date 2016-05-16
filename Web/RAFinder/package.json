@@ -6,6 +6,7 @@
   "dependencies": {
     "csv-parser": "^1.9.3",
     "lodash": "~3.10.0",
+    "rosefire-js-sdk": "git+https://ada.csse.rose-hulman.edu/rosefire/javascript-sdk.git#2.0.0beta2",
     "stream": "0.0.2"
   },
   "devDependencies": {

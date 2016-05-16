@@ -1,8 +1,3 @@
-<div class="form-group" ng-class="{ 'has-error' : signinForm.email.$invalid }">
-    <div class="input-group">
-        <input type="text" name="email" ng-model="user.email" class="form-control"
-               placeholder="Kerberos Username" required autofocus>
-        <span class="input-group-addon">{{emailSuffix}}</span>
-    </div>
-    <p class="help-block" ng-show="signinForm.email.$invalid">Enter a valid username.</p>
-</div>
+<button ng-click="SignIn($event)" class="btn btn-lg btn-primary btn-block" type="submit" hotkey="{enter: SignIn}">
+    Sign in
+</button>

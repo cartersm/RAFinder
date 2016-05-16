@@ -6,18 +6,6 @@
     <form class="form-signin" name="signinForm" role="form" novalidate>
         <!-- allows variance in the input field based on whether we're using RoseFire -->
         <ng-include src="getInputTemplate()"></ng-include>
-        <div class="form-group" ng-class="{ 'has-error' : signinForm.email.$invalid }">
-            <input type="password" name="password" ng-model="user.password" class="form-control"
-                   placeholder="Password" required="" ng-minlength="8">
-            <p class="help-block" ng-show="signinForm.password.$error.minlength">
-                Min password length is 8 characters.
-            </p>
-            <p class="help-block" ng-show="!signinForm.password.$error.minlength">-</p>
-        </div>
-        <button ng-click="SignIn($event)" ng-disabled="!user.email || !user.password || !isEmployee"
-                class="btn btn-lg btn-primary btn-block" type="submit" hotkey="{enter: SignIn}">
-            Sign in
-        </button>
     </form>
     <p class="help-block text-center alert-danger" ng-show="signinFailed">Invalid username or password</p>
 
