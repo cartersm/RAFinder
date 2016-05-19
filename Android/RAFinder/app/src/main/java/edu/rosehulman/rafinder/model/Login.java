@@ -1,5 +1,7 @@
 package edu.rosehulman.rafinder.model;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.firebase.client.AuthData;
@@ -46,7 +48,8 @@ public class Login {
 
     private void setAuthenticatedUser(AuthData authData) {
         if (authData != null) {
-            firebase.child(ConfigKeys.Employees).addListenerForSingleValueEvent(new EmployeeListener(authData.getUid()));
+            firebase.child(ConfigKeys.Employees)
+                    .addListenerForSingleValueEvent(new EmployeeListener(authData.getUid() + "@rose-hulman.edu"));
         }
     }
 
@@ -61,38 +64,13 @@ public class Login {
 
         public void onAuthenticationError(FirebaseError firebaseError) {
             if (firebaseError.getCode() == FirebaseError.INVALID_EMAIL ||
-                firebaseError.getCode() == FirebaseError.USER_DOES_NOT_EXIST) {
+                    firebaseError.getCode() == FirebaseError.USER_DOES_NOT_EXIST) {
                 loginActivity.showError(loginActivity.getString(R.string.error_invalid_email));
             } else if (firebaseError.getCode() == FirebaseError.INVALID_PASSWORD) {
                 loginActivity.showError(loginActivity.getString(R.string.error_incorrect_password));
             } else {
                 Log.w(ConfigKeys.LOG_TAG, "Caught firebase error: " + firebaseError.getMessage());
             }
-        }
-    }
-
-    private class ResidentListener implements ValueEventListener {
-        private final String uid;
-
-        public ResidentListener(String uid) {
-            this.uid = uid;
-        }
-
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
-            Log.d(ConfigKeys.LOG_TAG, "In Resident callback for user <" + uid + ">");
-            if (dataSnapshot.hasChild(uid)) {
-                userType = UserType.RESIDENT;
-                raEmail = dataSnapshot.child(uid).child(myRA).getValue().toString();
-                loginActivity.launchMainActivity(userType, raEmail, loginActivity.getEmail());
-            } else {
-                Log.e(ConfigKeys.LOG_TAG, "No resident found with uid <" + uid + ">");
-            }
-        }
-
-        @Override
-        public void onCancelled(FirebaseError firebaseError) {
-            // ignored
         }
     }
 
@@ -105,31 +83,38 @@ public class Login {
 
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
-            Log.d(ConfigKeys.LOG_TAG, "in Employees callback for user <" + uid + ">");
+            Log.d(ConfigKeys.LOG_TAG, "in Employees callback for user <" + this.uid + ">");
             Log.d(ConfigKeys.LOG_TAG, "DataSnapshot url = " + dataSnapshot.getRef().getPath().toString());
             if (dataSnapshot.getChildrenCount() != 4) {
                 Log.wtf(ConfigKeys.LOG_TAG, "Employees table had wrong number of children");
             }
-            DataSnapshot table;
-            if (dataSnapshot.child(ConfigKeys.Administrators).hasChild(uid)) {
-                userType = UserType.ADMINISTRATOR;
-                table = dataSnapshot.child(ConfigKeys.Administrators);
-            } else if (dataSnapshot.child(ConfigKeys.ResidentAssistants).hasChild(uid)) {
-                userType = UserType.RESIDENT_ASSISTANT;
-                table = dataSnapshot.child(ConfigKeys.ResidentAssistants);
-            } else if (dataSnapshot.child(ConfigKeys.SophomoreAdvisors).hasChild(uid)) {
-                userType = UserType.SOPHOMORE_ADVISOR;
-                table = dataSnapshot.child(ConfigKeys.SophomoreAdvisors);
-            } else if (dataSnapshot.child(ConfigKeys.GraduateAssistants).hasChild(uid)) {
-                userType = UserType.GRADUATE_ASSISTANT;
-                table = dataSnapshot.child(ConfigKeys.GraduateAssistants);
-            } else {
-                firebase.child(Residents).addListenerForSingleValueEvent(new ResidentListener(uid));
-                Log.d(ConfigKeys.LOG_TAG, "User <" + uid + "> not found in employees");
-                return;
+            for (DataSnapshot table : dataSnapshot.getChildren()) {
+                for (DataSnapshot key : table.getChildren()) {
+                    if (key.hasChild(ConfigKeys.employeeEmail) &&
+                            key.child(ConfigKeys.employeeEmail).getValue(String.class).equals(this.uid)) {
+                        raEmail = this.uid;
+                        userType = UserType.valueOf(table.getKey().toUpperCase());
+                        loginActivity.launchMainActivity(userType, raEmail, loginActivity.getEmail());
+                    }
+                }
             }
-            raEmail = table.child(uid).child(ConfigKeys.employeeEmail).getValue().toString();
-            loginActivity.launchMainActivity(userType, raEmail, loginActivity.getEmail());
+
+            if (raEmail.equals("")) {
+                Log.d(ConfigKeys.LOG_TAG, "User <" + this.uid + "> not found in employees");
+                userType = UserType.RESIDENT;
+                SharedPreferences prefs =
+                        loginActivity.getSharedPreferences(ConfigKeys.KEY_SHARED_PREFS, Context.MODE_PRIVATE);
+                raEmail = prefs.getString(ConfigKeys.KEY_RA_EMAIL, "");
+                String userEmail = prefs.getString(ConfigKeys.KEY_USER_EMAIL, "");
+                if (raEmail.isEmpty() || !userEmail.equals(this.uid)) {
+                    // TODO: dialogue to get and save RA Email, then login
+                    // CONSIDER: Make a radio-select dialogue with the RAs list
+                } else if (!raEmail.isEmpty()) {
+                    loginActivity.launchMainActivity(userType, raEmail, loginActivity.getEmail());
+                }
+
+            }
+
         }
 
         @Override

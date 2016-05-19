@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.firebase.client.Firebase;
 
 import edu.rosehulman.rafinder.ConfigKeys;
+import edu.rosehulman.rafinder.Environment;
 import edu.rosehulman.rafinder.MainActivity;
 import edu.rosehulman.rafinder.R;
 import edu.rosehulman.rafinder.UserType;
@@ -240,8 +241,14 @@ public class LoginActivity extends Activity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ConfigKeys.RC_ROSEFIRE_LOGIN) {
-            String token = Rosefire.getSignInResultFromIntent(data);
-            mLogin.firebase.authWithCustomToken(token, mLogin.getAuthResultHandler());
+            try {
+                String token = Rosefire.getSignInResultFromIntent(data);
+                mLogin.firebase.authWithCustomToken(token, mLogin.getAuthResultHandler());
+            } catch (NullPointerException e) {
+                // We backed out of the browser activity; exit
+                finish();
+                System.exit(0);
+            }
         }
     }
 }
