@@ -17,9 +17,11 @@
 
     ```RAFinder\Web\RAFinder```
 
-    This will install all of the necessary dependencies for the project, including AngularJS itself and a few goodies to make development easier.
+    This will install all but the global dependencies for the project, including AngularJS itself and a few goodies to make development easier.
 
-4. It is recommended to install grunt, flatten-packages, and firebase-tools globally with the -g flag. If you do not do this, these commands (grunt, flatten-packages, firebase) should be prefaced by ```.\node_modules\.bin\```.
+4. install global dependencies. These tools must be installed globally to function as expected in this project:
+
+    ```npm install -g browserify firebase-tools flatten-packages grunt```
 
 5. If developing on Windows, I recommend flattening your node modules. Windows can get cranky otherwise because of path lengths. This is a one-time operation per computer or added top-level dependency.
 

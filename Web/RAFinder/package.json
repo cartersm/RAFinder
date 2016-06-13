@@ -11,10 +11,6 @@
   },
   "devDependencies": {
     "bower": "^1.7.7",
-    "browserify": "^13.0.0",
-    "firebase-tools": "^2.2.1",
-    "flatten-packages": "^0.1.4",
-    "grunt": "^1.0.1",
     "grunt-bower-task": "^0.4.0",
     "grunt-browserify": "^5.0.0",
     "grunt-contrib-connect": "^1.0.2",
@@ -27,10 +23,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "bower install",
     "prestart": "npm install",
-    "start": ".\\node_modules\\.bin\\grunt dev",
-    "start-prod": ".\\node_modules\\.bin\\grunt prod",
-    "deploy-dev": ".\\node_modules\\.bin\\firebase deploy",
-    "deploy-prod": ".\\node_modules\\.bin\\firebase deploy -f ra-finder"
+    "start": "grunt dev",
+    "start-prod": "grunt prod",
+    "deploy-dev": "firebase deploy",
+    "deploy-prod": "firebase deploy -f ra-finder"
   },
   "repository": {
     "type": "git",
