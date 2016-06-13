@@ -40,15 +40,15 @@ public abstract class Employee extends AuthenticatedResident {
 
     public Employee(DataSnapshot ds) {
         this(
-                ds.child(ConfigKeys.employeeName).getValue(String.class),
-                ds.child(ConfigKeys.employeeEmail).getValue(String.class),
-                ds.child(ConfigKeys.employeeFloor).getValue(int.class),
-                ds.child(ConfigKeys.employeeHall).getValue(String.class),
-                ds.child(ConfigKeys.employeePhone).getValue(String.class),
-                ds.child(ConfigKeys.employeeRoom).getValue(String.class),
-                ds.child(ConfigKeys.employeeStatus).getValue(String.class),
-                ds.child(ConfigKeys.employeeStatusDetail).getValue(String.class),
-                ds.child(ConfigKeys.employeePicture).getValue(String.class)
+                ds.child(ConfigKeys.EMPLOYEE_NAME).getValue(String.class),
+                ds.child(ConfigKeys.EMPLOYEE_EMAIL).getValue(String.class),
+                ds.child(ConfigKeys.EMPLOYEE_FLOOR).getValue(int.class),
+                ds.child(ConfigKeys.EMPLOYEE_HALL).getValue(String.class),
+                ds.child(ConfigKeys.EMPLOYEE_PHONE).getValue(String.class),
+                ds.child(ConfigKeys.EMPLOYEE_ROOM).getValue(String.class),
+                ds.child(ConfigKeys.EMPLOYEE_STATUS).getValue(String.class),
+                ds.child(ConfigKeys.EMPLOYEE_STATUS_DETAIL).getValue(String.class),
+                ds.child(ConfigKeys.EMPLOYEE_PICTURE).getValue(String.class)
         );
         firebase = new Firebase(ConfigKeys.FIREBASE_ROOT_URL + ds.getRef().getPath().toString());
         firebase.addChildEventListener(new EmployeeChangedListener());
@@ -225,28 +225,28 @@ public abstract class Employee extends AuthenticatedResident {
     private class EmployeeChangedListener implements ChildEventListener {
         public void onChildChanged(DataSnapshot arg0, String arg1) {
             switch (arg0.getKey()) {
-                case ConfigKeys.employeeEmail:
+                case ConfigKeys.EMPLOYEE_EMAIL:
                     setEmail(arg0.getValue(String.class));
                     break;
-                case ConfigKeys.employeeFloor:
+                case ConfigKeys.EMPLOYEE_FLOOR:
                     setFloor(arg0.getValue(int.class));
                     break;
-                case ConfigKeys.employeeHall:
+                case ConfigKeys.EMPLOYEE_HALL:
                     setHall(arg0.getValue(String.class));
                     break;
-                case ConfigKeys.employeePhone:
+                case ConfigKeys.EMPLOYEE_PHONE:
                     setPhoneNumber(arg0.getValue(String.class));
                     break;
-                case ConfigKeys.employeeRoom:
+                case ConfigKeys.EMPLOYEE_ROOM:
                     setRoom(arg0.getValue(String.class));
                     break;
-                case ConfigKeys.employeeStatus:
+                case ConfigKeys.EMPLOYEE_STATUS:
                     setStatus(arg0.getValue(String.class));
                     break;
-                case ConfigKeys.employeeStatusDetail:
+                case ConfigKeys.EMPLOYEE_STATUS_DETAIL:
                     setStatusDetail(arg0.getValue(String.class));
                     break;
-                case ConfigKeys.employeeName:
+                case ConfigKeys.EMPLOYEE_NAME:
                     setName(arg0.getValue(String.class));
                     break;
             }

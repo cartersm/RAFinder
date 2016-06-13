@@ -30,7 +30,7 @@ public class EmployeeLoader extends Loader {
 
     public EmployeeLoader(String url, LoaderListener listener) {
         mListener = listener;
-        loadData(new Firebase(url + "/" + ConfigKeys.Employees));
+        loadData(new Firebase(url + "/" + ConfigKeys.EMPLOYEES));
     }
 
     protected void loadData(Firebase firebase) {
@@ -40,7 +40,7 @@ public class EmployeeLoader extends Loader {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     switch (child.getKey()) {
-                        case ConfigKeys.Administrators:
+                        case ConfigKeys.ADMINISTRATORS:
                             for (DataSnapshot adminDS : child.getChildren()) {
                                 Administrator admin = adminDS.getValue(Administrator.class);
                                 admin.setUid(adminDS.getKey());
@@ -48,7 +48,7 @@ public class EmployeeLoader extends Loader {
                                 mAdmins.add(admin);
                             }
                             break;
-                        case ConfigKeys.GraduateAssistants:
+                        case ConfigKeys.GRADUATE_ASSISTANTS:
                             for (DataSnapshot gaDS : child.getChildren()) {
                                 GraduateAssistant ga = gaDS.getValue(GraduateAssistant.class);
                                 ga.setUid(gaDS.getKey());
@@ -56,7 +56,7 @@ public class EmployeeLoader extends Loader {
                                 mGAs.add(ga);
                             }
                             break;
-                        case ConfigKeys.ResidentAssistants:
+                        case ConfigKeys.RESIDENT_ASSISTANTS:
                             for (DataSnapshot raDS : child.getChildren()) {
                                 ResidentAssistant ra = raDS.getValue(ResidentAssistant.class);
                                 ra.setUid(raDS.getKey());
@@ -64,7 +64,7 @@ public class EmployeeLoader extends Loader {
                                 mRAs.add(ra);
                             }
                             break;
-                        case ConfigKeys.SophomoreAdvisors:
+                        case ConfigKeys.SOPHOMORE_ADVISORS:
                             for (DataSnapshot saDS : child.getChildren()) {
                                 SophomoreAdvisor sa = saDS.getValue(SophomoreAdvisor.class);
                                 sa.setUid(saDS.getKey());

@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -65,7 +64,8 @@ public class MainActivity extends Activity implements
     private static final int EMERGENCY_CONTACTS = 3;
     private static final int DUTY_ROSTER = 4;
     private static final int HALL_ROSTER_OR_RESIDENT_LOGOUT = 5;
-    private static final int EMPLOYEE_LOGOUT = 6;
+    private static final int SUPPORT_REQUEST_OR_EMPLOYEE_LOGOUT = 6;
+    private static final int EMPLOYEE_SUPPORT_REQUEST = 7;
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private CharSequence mTitle;
@@ -193,8 +193,16 @@ public class MainActivity extends Activity implements
                     fragment = HallRosterFragment.newInstance();
                     break;
                 }
-            case EMPLOYEE_LOGOUT:
-                logout();
+            case SUPPORT_REQUEST_OR_EMPLOYEE_LOGOUT:
+                if (mUserType.equals(UserType.RESIDENT)) {
+                    requestSupport();
+                    return;
+                } else {
+                    logout();
+                    return;
+                }
+            case EMPLOYEE_SUPPORT_REQUEST:
+                requestSupport();
                 return;
             default:
                 fragment = HomeFragment.newInstance();
@@ -206,14 +214,17 @@ public class MainActivity extends Activity implements
                 .commit();
     }
 
+    private void requestSupport() {
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+        String uri = "mailto:" + Uri.encode(ConfigKeys.SUPPORT_EMAIL) +
+                     "?subject=" + Uri.encode("RAFinder Support Request");
+        emailIntent.setData(Uri.parse(uri));
+        startActivity(emailIntent);
+    }
+
     private void logout() {
         Intent loginIntent = new Intent(this, LoginActivity.class);
         new Firebase(ConfigKeys.FIREBASE_ROOT_URL).unauth();
-
-        // clear persistent data
-        SharedPreferences.Editor editor = getSharedPreferences(ConfigKeys.KEY_SHARED_PREFS, MODE_PRIVATE).edit();
-        editor.clear();
-        editor.apply();
 
         startActivity(loginIntent);
         finish();
@@ -294,7 +305,7 @@ public class MainActivity extends Activity implements
     public void sendFeedback(String name, String email, String body) {
         Log.d(ConfigKeys.LOG_TAG, "Preparing to send feedback email...");
         String subject = getString(R.string.profile_feedback_subject_format, name);
-        String ccList = ",cartersm@rose-hulman.edu";
+        String ccList = ConfigKeys.FEEDBACK_CC;
         new SendEmailAsyncTask().execute(subject, body, email + ccList);
     }
 

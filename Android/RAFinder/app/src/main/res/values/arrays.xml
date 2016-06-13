@@ -21,6 +21,7 @@
         <item>Emergency Contacts</item>
         <item>Duty Roster</item>
         <item>Logout</item>
+        <item>Request Support</item>
     </string-array>
 
     <string-array name="nav_drawer_ra">
@@ -31,5 +32,6 @@
         <item>Duty Roster</item>
         <item>Hall Roster</item>
         <item>Logout</item>
+        <item>Request Support</item>
     </string-array>
 </resources>

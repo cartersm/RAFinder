@@ -26,7 +26,7 @@ public class DutyRoster {
         this.roster = new HashMap<>();
         for (DataSnapshot rosterSnapshot : ds.getChildren()) {
             LocalDate rosterDate = LocalDate.parse(rosterSnapshot.child("date")
-                    .getValue(String.class), ConfigKeys.formatter);
+                    .getValue(String.class), ConfigKeys.FORMATTER);
             if (!rosterDate.isBefore(startDate)) {
                 List<DutyRosterItem> items = new ArrayList<>();
                 for (DataSnapshot hallSnapshot : rosterSnapshot.child("roster").getChildren()) {

@@ -11,6 +11,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import edu.rosehulman.rafinder.ConfigKeys;
+import edu.rosehulman.rafinder.Environment;
 import edu.rosehulman.rafinder.R;
 import edu.rosehulman.rafinder.UserType;
 import edu.rosehulman.rafinder.controller.LoginActivity;
@@ -48,7 +49,7 @@ public class Login {
 
     private void setAuthenticatedUser(AuthData authData) {
         if (authData != null) {
-            firebase.child(ConfigKeys.Employees)
+            firebase.child(ConfigKeys.EMPLOYEES)
                     .addListenerForSingleValueEvent(new EmployeeListener(authData.getUid() + "@rose-hulman.edu"));
         }
     }
@@ -90,27 +91,32 @@ public class Login {
             }
             for (DataSnapshot table : dataSnapshot.getChildren()) {
                 for (DataSnapshot key : table.getChildren()) {
-                    if (key.hasChild(ConfigKeys.employeeEmail) &&
-                            key.child(ConfigKeys.employeeEmail).getValue(String.class).equals(this.uid)) {
+                    if (key.hasChild(ConfigKeys.EMPLOYEE_EMAIL) &&
+                            key.child(ConfigKeys.EMPLOYEE_EMAIL).getValue(String.class).equals(this.uid)) {
                         raEmail = this.uid;
                         userType = UserType.valueOf(table.getKey().toUpperCase());
-                        loginActivity.launchMainActivity(userType, raEmail, loginActivity.getEmail());
+                        if (ConfigKeys.ENV.equals(Environment.DEV)) {
+                            loginActivity.launchMainActivity(userType, raEmail, loginActivity.getEmail());
+                        } else {
+                            loginActivity.launchMainActivity(userType, raEmail, this.uid);
+                        }
                     }
                 }
             }
 
-            if (raEmail.equals("")) {
+            if (raEmail.isEmpty()) {
                 Log.d(ConfigKeys.LOG_TAG, "User <" + this.uid + "> not found in employees");
                 userType = UserType.RESIDENT;
                 SharedPreferences prefs =
                         loginActivity.getSharedPreferences(ConfigKeys.KEY_SHARED_PREFS, Context.MODE_PRIVATE);
                 raEmail = prefs.getString(ConfigKeys.KEY_RA_EMAIL, "");
+                Log.d(ConfigKeys.LOG_TAG, "Got RA Email '" + raEmail + "'");
                 String userEmail = prefs.getString(ConfigKeys.KEY_USER_EMAIL, "");
                 if (raEmail.isEmpty() || !userEmail.equals(this.uid)) {
-                    // TODO: dialogue to get and save RA Email, then login
-                    // CONSIDER: Make a radio-select dialogue with the RAs list
+                    Log.d(ConfigKeys.LOG_TAG, "Got user email '" + userEmail + "' and uid '" + uid + "'");
+                    loginActivity.getRAAndLogin(userType, this.uid);
                 } else if (!raEmail.isEmpty()) {
-                    loginActivity.launchMainActivity(userType, raEmail, loginActivity.getEmail());
+                    loginActivity.launchMainActivity(userType, raEmail, this.uid);
                 }
 
             }

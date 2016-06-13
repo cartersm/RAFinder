@@ -18,7 +18,7 @@ public class AuthenticatedResident {
     }
 
     public AuthenticatedResident(DataSnapshot ds) {
-        name = ds.child(ConfigKeys.employeeName).getValue(String.class);
+        name = ds.child(ConfigKeys.EMPLOYEE_NAME).getValue(String.class);
         uid = ds.getKey();
     }
 

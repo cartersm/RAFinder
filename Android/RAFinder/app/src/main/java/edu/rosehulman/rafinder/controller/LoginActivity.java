@@ -5,6 +5,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,7 +19,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 import edu.rosehulman.rafinder.ConfigKeys;
 import edu.rosehulman.rafinder.Environment;
@@ -26,6 +35,7 @@ import edu.rosehulman.rafinder.MainActivity;
 import edu.rosehulman.rafinder.R;
 import edu.rosehulman.rafinder.UserType;
 import edu.rosehulman.rafinder.model.Login;
+import edu.rosehulman.rafinder.model.person.ResidentAssistant;
 import edu.rosehulman.rosefire.Rosefire;
 
 /**
@@ -63,16 +73,16 @@ public class LoginActivity extends Activity {
         // Set up the login form.
         mEmailView = (TextView) findViewById(R.id.email);
         switch (ConfigKeys.ENV) {
-        case PROD:
-            mEmailView.setHint(R.string.kerberos_username);
-            break;
+            case PROD:
+                mEmailView.setHint(R.string.kerberos_username);
+                break;
         }
 
         mPasswordView = (EditText) findViewById(R.id.password);
-        switch(ConfigKeys.ENV) {
-        case PROD:
-            mPasswordView.setHint(R.string.kerberos_password);
-            break;
+        switch (ConfigKeys.ENV) {
+            case PROD:
+                mPasswordView.setHint(R.string.kerberos_password);
+                break;
         }
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -111,6 +121,9 @@ public class LoginActivity extends Activity {
 
         if (ConfigKeys.ENV.equals(Environment.PROD)) {
             onRosefireLogin();
+            mEmailView.setVisibility(View.GONE);
+            mPasswordView.setVisibility(View.GONE);
+            mEmailSignInButton.setVisibility(View.GONE);
         }
     }
 
@@ -244,6 +257,7 @@ public class LoginActivity extends Activity {
             try {
                 String token = Rosefire.getSignInResultFromIntent(data);
                 mLogin.firebase.authWithCustomToken(token, mLogin.getAuthResultHandler());
+
             } catch (NullPointerException e) {
                 // We backed out of the browser activity; exit
                 finish();
@@ -251,4 +265,39 @@ public class LoginActivity extends Activity {
             }
         }
     }
+
+    public void getRAAndLogin(final UserType userType, final String userEmail) {
+        mLogin.firebase.child(ConfigKeys.EMPLOYEES + "/" + ConfigKeys.RESIDENT_ASSISTANTS)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        List<ResidentAssistant> ras = new ArrayList<>((int) dataSnapshot.getChildrenCount());
+                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+                            ras.add(child.getValue(ResidentAssistant.class));
+                        }
+                        ResidentAssistant[] rasArray = new ResidentAssistant[(int) dataSnapshot.getChildrenCount()];
+                        rasArray = ras.toArray(rasArray);
+                        // sort alphabetically by name
+                        Arrays.sort(rasArray, new Comparator<ResidentAssistant>() {
+                            @Override
+                            public int compare(ResidentAssistant lhs, ResidentAssistant rhs) {
+                                return lhs.getName().toLowerCase().compareTo(rhs.getName().toLowerCase());
+                            }
+                        });
+
+                        createRADialog(userType, rasArray, userEmail);
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+                        // ignored
+                    }
+                });
+    }
+
+    private void createRADialog(final UserType userType, final ResidentAssistant[] ras, String userEmail) {
+        DialogFragment dialogFragment = new RAChooserDialogFragment(this, ras, userType, userEmail);
+        dialogFragment.show(getFragmentManager(), "raChooser");
+    }
+
 }

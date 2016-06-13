@@ -29,7 +29,7 @@ public class DutyRosterFragment extends Fragment {
     public static DutyRosterFragment newInstance(LocalDate date) {
         DutyRosterFragment fragment = new DutyRosterFragment();
         Bundle args = new Bundle();
-        args.putString(ConfigKeys.DATE, date.toString(ConfigKeys.dateFormat));
+        args.putString(ConfigKeys.DATE, date.toString(ConfigKeys.DATE_FORMAT));
         fragment.setArguments(args);
         return fragment;
     }
