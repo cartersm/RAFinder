@@ -1,3 +1,7 @@
+'use strict';
+/**
+ * Controls the DutyRoster view.
+ */
 angular.module('RAFinder.dutyRoster', [
         'ngRoute',
         'firebase'
@@ -10,6 +14,9 @@ angular.module('RAFinder.dutyRoster', [
             });
         }
     ])
+    /**
+     * Controls viewing of the Duty Rosters themselves.
+     */
     .controller('DutyRosterCtrl', [
         '$scope',
         '$location',
@@ -98,6 +105,9 @@ angular.module('RAFinder.dutyRoster', [
             };
         }
     ])
+    /**
+     * Controls adding or editing a single Duty Roster.
+     */
     .controller('AddDutyRosterItemCtrl', [
         '$scope',
         '$uibModalInstance',

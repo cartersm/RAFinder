@@ -1,5 +1,8 @@
 'use strict';
 
+/**
+ * Controls the login page, login attempts, and rerouting after successful login.
+ */
 angular.module('RAFinder.login', [
         'ngRoute',
         'firebase'

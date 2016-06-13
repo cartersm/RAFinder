@@ -1,5 +1,7 @@
 'use strict';
-
+/**
+ * Controls the Employees view.
+ */
 angular.module('RAFinder.employees', [
     'ngRoute',
     'firebase'
@@ -10,6 +12,9 @@ angular.module('RAFinder.employees', [
             controller: 'EmployeesCtrl'
         });
     }])
+    /**
+     * Controls viewing of the employees.
+     */
     .controller('EmployeesCtrl', [
         '$scope',
         '$location',

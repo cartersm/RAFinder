@@ -1,3 +1,7 @@
+'use strict';
+/**
+ * A factory that returns the current execution environment of the app.
+ */
 angular.module('RAFinder.services.environment', [])
     .factory('EnvConfig', ['ENV', "REGISTRY_TOKEN", function (ENV, REGISTRY_TOKEN) {
         var dev = {

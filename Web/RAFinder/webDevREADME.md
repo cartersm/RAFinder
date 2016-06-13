@@ -19,12 +19,14 @@
 
     This will install all of the necessary dependencies for the project, including AngularJS itself and a few goodies to make development easier.
 
-4. If developing on Windows, I recommend flattening your node modules. Windows can get cranky otherwise because of path lengths. This is a one-time operation per computer or added top-level dependency.
+4. It is recommended to install grunt, flatten-packages, and firebase-tools globally with the -g flag. If you do not do this, these commands (grunt, flatten-packages, firebase) should be prefaced by ```.\node_modules\.bin\```.
+
+5. If developing on Windows, I recommend flattening your node modules. Windows can get cranky otherwise because of path lengths. This is a one-time operation per computer or added top-level dependency.
 
   1. Run ```flatten-packages``` from the root directory.
   2. JSCS will complain that it can't find things, as it doesn't like having its dependencies flattened. To fix this, run ```npm uninstall jscs jscs-angular```, then run ```npm install``` again.
 
-5. To run the app. run ```npm start```, then navigate to http://localhost:8000/app/index.html. You should see a login screen welcoming you to RAFinder.
+6. To run the app. run ```npm start```, then navigate to http://localhost:8000/app/index.html. You should see a login screen welcoming you to RAFinder.
 
 ### Basics
 This app can seem daunting at first. Here are a few tips:
