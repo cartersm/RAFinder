@@ -94,7 +94,7 @@ module.exports = function (grunt) {
     ]);
     grunt.registerTask('prod-deploy', [
         'copy:main',
-        'ngconstant:dev'
+        'ngconstant:prod'
     ]);
     grunt.registerTask('browserify', [
         'browserify:main'
