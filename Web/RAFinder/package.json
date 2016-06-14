@@ -26,7 +26,7 @@
     "prestart": "npm install",
     "start": "grunt dev",
     "start-prod": "grunt prod",
-    "deploy-dev": "grunt dev-deploy && firebase deploy",
+    "deploy-dev": "grunt dev-deploy && firebase deploy --project ra-finder-dev",
     "deploy-prod": "grunt prod-deploy && firebase deploy --project ra-finder"
   },
   "repository": {

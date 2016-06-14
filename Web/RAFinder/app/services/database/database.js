@@ -182,7 +182,7 @@ angular.module('RAFinder.services.database', [
                             firebase.child('Employees/Resident Assistants').remove();
                             firebase.child('Employees/Sophomore Advisors').remove();
                             firebase.child('Employees/Graduate Assistants').remove();
-                            //firebase.child('Employees/Administrators').remove();
+                            // don't remove admins
                         }
                         angular.forEach(ras, function (ra) {
                             self.employees.ras.$add(ra);

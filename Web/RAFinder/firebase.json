@@ -1,9 +1,5 @@
 {
-  "firebase": "ra-finder-dev",
-  "public": "./app",
-  "ignore": [
-    "firebase.json",
-    "**/.*",
-    "**/node_modules/**"
-  ]
+  "hosting": {
+    "public": "app"
+  }
 }
