@@ -60,22 +60,41 @@ module.exports = function (grunt) {
                     require: ['stream', 'csv-parser']
                 }
             }
+        },
+        copy: {
+            main: {
+                files: [
+                    // includes files within path and its sub-directories
+                    {expand: true, cwd: 'node_modules/rosefire-js-sdk/', src: ['**'], dest: 'app/bower_components/rosefire-js-sdk'}
+                ]
+            }
         }
     });
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-ng-constant');
     grunt.loadNpmTasks('grunt-browserify');
+    grunt.loadNpmTasks('grunt-contrib-copy');
 
     grunt.registerTask('dev', [
+        'copy:main',
         'ngconstant:dev',
         'connect:server',
         'watch:app'
     ]);
+    grunt.registerTask('dev-deploy', [
+        'copy:main',
+        'ngconstant:dev'
+    ]);
     grunt.registerTask('prod', [
+        'copy:main',
         'ngconstant:prod',
         'connect:server',
         'watch:app'
+    ]);
+    grunt.registerTask('prod-deploy', [
+        'copy:main',
+        'ngconstant:dev'
     ]);
     grunt.registerTask('browserify', [
         'browserify:main'
