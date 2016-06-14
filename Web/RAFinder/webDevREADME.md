@@ -126,11 +126,14 @@ These should be called by the user.
 Grunt also has a set of scripts to work with, called tasks. You can see the developer-defined tasks in Gruntfile.js, as well as the configs for them, but here are the basics:
 
 - ```grunt dev``` runs the app in the development environment. ```npm start``` is just a shortcut to this. This task leverages:
+  - ```copy:main```` to copy an npm dependency to the public directory
   - ```ngConstant:dev``` to set up the environment variables
   - ```connect:server``` to set up and serve the app on localhost
   - ```watch:app``` to watch files for changes and automatically update the server when changes are saved to files being served
 
 - ```grunt prod``` is very similar to ```grunt dev```, but sets up the environment variables for the production environment.
+
+- ```grunt dev-deploy``` and ```grunt-prod-deploy``` are the same as the above, with the omission of the server and watch tasks.
 
 - ```grunt browserify``` runs the browserify task for FileReader as mentioned above.
 

@@ -14,6 +14,7 @@
     "grunt-bower-task": "^0.4.0",
     "grunt-browserify": "^5.0.0",
     "grunt-contrib-connect": "^1.0.2",
+    "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-ng-constant": "^2.0.1",
     "jscs": "^2.10.1",
@@ -25,8 +26,8 @@
     "prestart": "npm install",
     "start": "grunt dev",
     "start-prod": "grunt prod",
-    "deploy-dev": "firebase deploy",
-    "deploy-prod": "firebase deploy -f ra-finder"
+    "deploy-dev": "grunt dev-deploy && firebase deploy",
+    "deploy-prod": "grunt prod-deploy && firebase deploy --project ra-finder"
   },
   "repository": {
     "type": "git",
