@@ -40,16 +40,17 @@ angular.module('RAFinder.services.auth', [
                     $location.path('/login');
                     if (onFailure) onFailure('not logged in');
                 } else {
-                    // append '@rose-hulman.edu' if it does not exist
-                    if (!auth.uid.endsWith('@rose-hulman.edu')) {
+                    if (EnvConfig.env !== 'prod') {
+                        auth.uid = auth.password.email;
+                    } else if (!auth.uid.endsWith('@rose-hulman.edu')) {
                         auth.uid += '@rose-hulman.edu';
                     }
-                    console.log(auth);
+                    // console.log(auth);
                     // Find out whether the user is an admin or other employee
                     var obj = $firebaseObject(firebase.child('Employees/Administrators'));
                     obj.$loaded().then(function (data) {
                         angular.forEach(data, function (value, key) {
-                            if (value.email === auth.uid) {
+                            if (value.email.toLowerCase() === auth.uid.toLowerCase()) {
                                 isAdmin = true;
                                 isEmployee = true;
                             }
@@ -62,7 +63,7 @@ angular.module('RAFinder.services.auth', [
                             var obj = $firebaseObject(firebase.child('Employees/Graduate Assistants'));
                             obj.$loaded().then(function (data) {
                                 angular.forEach(data, function (value, key) {
-                                    if (value.email === auth.uid) {
+                                    if (value.email.toLowerCase() === auth.uid.toLowerCase()) {
                                         isGA = true;
                                         isEmployee = true;
                                     }
@@ -76,7 +77,7 @@ angular.module('RAFinder.services.auth', [
                                     obj.$loaded().then(function (data) {
                                         angular.forEach(data, function (child) {
                                             angular.forEach(child, function (value, key) {
-                                                if (value.email === auth.uid) {
+                                                if (value.email.toLowerCase() === auth.uid.toLowerCase()) {
                                                     isEmployee = true;
                                                 }
                                             });
@@ -206,7 +207,9 @@ angular.module('RAFinder.services.auth', [
                     .then(function (token) {
                         authObj.$authWithCustomToken(token)
                             .then(function (authData) {
-                                if (!authData.uid.endsWith('@rose-hulman.edu')) {
+                                if (EnvConfig.env !== 'prod') {
+                                    authData.uid = authData.password.email;
+                                } else if (!authData.uid.endsWith('@rose-hulman.edu')) {
                                     authData.uid += '@rose-hulman.edu';
                                 }
                                 callback(null, authData);
