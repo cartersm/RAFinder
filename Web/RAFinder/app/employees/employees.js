@@ -130,6 +130,7 @@ angular.module('RAFinder.employees', [
 
             $scope.onCsvError = function (error) {
                 console.error('problem uploading CSV', error);
+                // TODO: show an error (toast?) to the user
             };
 
             // FIXME: replace this with edit.

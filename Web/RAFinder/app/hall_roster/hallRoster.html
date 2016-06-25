@@ -1,6 +1,18 @@
 <div class="container">
     <h3>Hall Roster</h3>
 
+    <div class="bottom-margin" ng-show="isAdmin()">
+        <span class="btn btn-default btn-primary btn-file">
+            Upload CSV
+            <input class="btn btn-primary" type="file" ng-model="file.data" file-select="data"
+                   file-loaded="onCsvLoaded()" file-error="onCsvError($error)">
+        </span>
+        <label class="alert-danger">
+            <p>This operation assumes a complete overwrite of existing data in any rooms that are changed.</p>
+            <p>Make sure all residents of an updated room are accounted for.</p>
+        </label>
+    </div>
+
     <div ng-show="isLoading">
         <h2>Loading All Students... </h2>
         <h1 class='glyphicon glyphicon-refresh spinning'></h1>

@@ -27,6 +27,16 @@ angular.module('RAFinder.hallRoster', [
                 }
             });
 
+            // CSV upload
+            $scope.onCsvLoaded = function () {
+                Database.parseHallRosterCsv($scope.file.data);
+            };
+
+            $scope.onCsvError = function (error) {
+                console.error('problem uploading CSV', error);
+                // TODO: show an error (toast?) to the user
+            };
+
             // Populate Hall Data
             Database.getResHalls(function (data) {
                     $scope.hallData = data;
@@ -40,6 +50,10 @@ angular.module('RAFinder.hallRoster', [
                     residents.push(key);
                 });
                 return residents;
+            };
+
+            $scope.isAdmin = function () {
+                return Auth.isAdmin();
             };
         }
     ]);

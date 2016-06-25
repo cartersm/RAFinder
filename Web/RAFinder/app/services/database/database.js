@@ -227,6 +227,8 @@ angular.module('RAFinder.services.database', [
                     return 'Lakeside';
                 } else if (hall === 'SPEED HALL') {
                     return 'Speed';
+                } else {
+                    return hall;
                 }
             };
 
@@ -327,6 +329,71 @@ angular.module('RAFinder.services.database', [
                     });
                 } else {
                     callback(self.resHalls);
+                }
+            };
+
+            this.parseHallRosterCsv = function (data) {
+                var residents = [];
+
+                var dataCallback = function (lineData) {
+                    var toAdd = angular.copy(lineData);
+                    console.log(toAdd);
+
+                    residents.push({
+                        resident: {
+                            name: toAdd.NAME,
+                            type: toAdd.TYPE,
+                            image: toAdd.IMAGE
+                        },
+                        hall: normalizeHall(toAdd.HALL),
+                        floor: numberToOrdinal(toAdd.FLOOR),
+                        room: toAdd.ROOM
+                    })
+
+                    console.log(residents);
+                };
+
+                var endCallback = function () {
+                    var editedRooms = {};
+                    console.log(self.resHalls);
+                    angular.forEach(residents, function (value) {
+                        console.log(value);
+                        angular.forEach(self.resHalls, function (hall) {
+                            if (hall.hall !== value.hall) return;
+                            console.log("got here 1");
+                            angular.forEach(hall.floors, function (floor) {
+                                if (floor.floor !== value.floor) return;
+                                console.log("got here 2");
+                                angular.forEach(floor.rooms, function (room) {
+                                    if (room.number !== value.room) return;
+                                    console.log("got here 3");
+                                    var roomData = hall.hall + floor.floor + room.number;
+                                    console.log("got here 4");
+                                    console.log(editedRooms[roomData]);
+                                    if (!editedRooms[roomData]) {
+                                        editedRooms[roomData] = true;
+                                        room.residents = [value.resident];
+                                    } else {
+                                        room.residents.push(value.resident);
+                                    }
+                                });
+                            });
+                        });
+                    });
+                    self.resHalls.$save(self.resHalls);
+                };
+
+                FileReader.readCsv(data, dataCallback, endCallback);
+            };
+
+            var numberToOrdinal = function (number) {
+                switch (number) {
+                    case '1':
+                        return "1st";
+                    case '2':
+                        return "2nd";
+                    default:
+                        return number + "th";
                 }
             };
 

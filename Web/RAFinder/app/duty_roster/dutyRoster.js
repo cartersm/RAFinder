@@ -80,6 +80,7 @@ angular.module('RAFinder.dutyRoster', [
 
             $scope.onFileError = function (error) {
                 console.error('Error uploading Duty Roster', error);
+                // TODO: show an error (toast?) to the user
             };
 
             $scope.showEditDutyRosterItemModal = function (roster) {
