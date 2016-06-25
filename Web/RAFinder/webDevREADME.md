@@ -21,14 +21,9 @@
 
 4. install global dependencies. These tools must be installed globally to function as expected in this project:
 
-    ```npm install -g browserify firebase-tools flatten-packages grunt```
+    ```npm install -g browserify firebase-tools grunt```
 
-5. If developing on Windows, I recommend flattening your node modules. Windows can get cranky otherwise because of path lengths. This is a one-time operation per computer or added top-level dependency.
-
-  1. Run ```flatten-packages``` from the root directory.
-  2. JSCS will complain that it can't find things, as it doesn't like having its dependencies flattened. To fix this, run ```npm uninstall jscs jscs-angular```, then run ```npm install``` again.
-
-6. To run the app. run ```npm start```, then navigate to http://localhost:8000/app/index.html. You should see a login screen welcoming you to RAFinder.
+5. To run the app. run ```npm start```, then navigate to http://localhost:8000/app/index.html. You should see a login screen welcoming you to RAFinder.
 
 ### Basics
 This app can seem daunting at first. Here are a few tips:
