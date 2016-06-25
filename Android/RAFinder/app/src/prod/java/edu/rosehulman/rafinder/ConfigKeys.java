@@ -5,7 +5,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 public class ConfigKeys {
     // FIXME: extract these lists to the DB?
-    public static final String SUPPORT_EMAIL = "sean47933@gmail.com";
+    public static final String SUPPORT_EMAIL = "csseadmin@rose-hulman.edu";
     public static final String FEEDBACK_CC = ",rhodeska@rose-hulman.edu,";
 
     public static final String LOG_TAG = "RAFinder";
