@@ -18,6 +18,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -260,6 +261,7 @@ public class LoginActivity extends Activity {
 
             } catch (NullPointerException e) {
                 // We backed out of the browser activity; exit
+                Toast.makeText(this, "Exiting RAFinder...", Toast.LENGTH_SHORT).show();
                 finish();
                 System.exit(0);
             }
