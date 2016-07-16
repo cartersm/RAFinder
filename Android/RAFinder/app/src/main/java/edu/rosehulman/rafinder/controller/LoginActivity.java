@@ -287,7 +287,7 @@ public class LoginActivity extends Activity {
                             }
                         });
 
-                        createRADialog(userType, rasArray, userEmail);
+                        createRADialog(rasArray, userType, userEmail);
                     }
 
                     @Override
@@ -297,9 +297,8 @@ public class LoginActivity extends Activity {
                 });
     }
 
-    private void createRADialog(final UserType userType, final ResidentAssistant[] ras, String userEmail) {
-        DialogFragment dialogFragment = new RAChooserDialogFragment(this, ras, userType, userEmail);
-        dialogFragment.show(getFragmentManager(), "raChooser");
+    private void createRADialog(final ResidentAssistant[] ras, final UserType userType, final String userEmail) {
+        RAChooserDialogFragment.getInstance(ras, userType, userEmail).show(getFragmentManager(), "raChooser");
     }
 
 }
