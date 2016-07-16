@@ -123,17 +123,36 @@ These should be called by the user.
 ### Grunt Tasks
 Grunt also has a set of scripts to work with, called tasks. You can see the developer-defined tasks in Gruntfile.js, as well as the configs for them, but here are the basics:
 
+- ```grunt setup``` unzips the customized bootstrap used in this app into the appropriate directory.
+
 - ```grunt dev``` runs the app in the development environment. ```npm start``` is just a shortcut to this. This task leverages:
-  - ```copy:main```` to copy an npm dependency to the public directory
-  - ```ngConstant:dev``` to set up the environment variables
-  - ```connect:server``` to set up and serve the app on localhost
-  - ```watch:app``` to watch files for changes and automatically update the server when changes are saved to files being served
+  - ```copy:rosefire``` to copy the Rosefire npm dependency to the public directory
+  - ```ngConstant:dev``` to set up environment variables
+  - ```jshint``` to style-check files
+  - ```connect:dev``` to set up and serve the app on localhost:8000
+  - ```watch:dev``` to watch files for changes and automatically update the server when changes are saved to files being served
 
 - ```grunt prod``` is very similar to ```grunt dev```, but sets up the environment variables for the production environment.
 
-- ```grunt dev-deploy``` and ```grunt-prod-deploy``` are the same as the above, with the omission of the server and watch tasks.
+- ```grunt dist``` is very similar to ```grunt dev```, but builds the app and serves it from ```dist```
 
-- ```grunt browserify``` runs the browserify task for FileReader as mentioned above.
+- ```grunt build``` builds the app into ```dist```. It leverages the following tasks:
+  - ```bowercopy``` to copy bower dependencies
+  - ```copy:source``` to copy source files to an intermediate folder
+  - ```concat``` to concatenate js sources and js libs into two js files
+  - ```uglify``` to minify those two files
+  - ```cssmin``` to concatenate and minify css files used by the app
+  - ```htmlmin``` to minify html files used by the app
+  - ```copy:dist``` to copy the minified files and other necessary files to ```dist```
+  - ```clean:build``` to remove the intermediate directory
+
+- ```grunt dev-deploy``` and ```grunt-prod-deploy``` prepare the app for deployment in the dev or prod environments, respectively. They leverage the ```copy:rosefire```, ```ngconstant:{dev|prod}```, and ```build``` tasks
+
+- ```grunt browserify``` runs the browserify task for FileReader as mentioned above. **NOTE:** this seems to be broken at the moment. If it hangs, use browserify directly as noted in Gruntfile.js
+
+- ```grunt jshint``` will lint all js files in the project directory (mostly for style)
+
+- ```grunt clean:dist``` will remove the ```dist``` directory
 
 ### Roadmap
 Now for the interesting part: walking through the code. This part is organized just like the project files.
@@ -144,7 +163,6 @@ A note on the project hierarchy: it's not structured like a traditional Web Appl
 
 - ** *app* **. The public directory that will be deployed and contains all sources.
 
-  - ** *bower_components* **. Bower's version of node\_modules. Can be safely ignored.
   - ** *duty_roster* **. Contains sources for Duty Roster-related views and operations.
   - ** *employees* **. Contains sources for employee-related views and operations.
   - ** *hall_roster* **. Contains sources for Hall Roster-related views and operations. Sensing a pattern?
@@ -166,7 +184,13 @@ A note on the project hierarchy: it's not structured like a traditional Web Appl
   - **index.html**. The root page for the app. All other views are HTML templates, and are loaded dynamically by the router into the element with the ```ng-view``` attribute.
 - ** *dist* **. Future home of minified sources (using grunt), and future deployment directory.
 
+- ** *bower_components* **. Bower's version of node\_modules. Can be safely ignored.
+
 - ** *node_modules* **. The library root for all node modules.
+
+- ** *dist* **. The distribution directory. This is the public directory that is deployed to the website.
+
+- ** *intermediate* **. This will only appear if something fails during the build process. It is a working folder for preparing the build, and should be deleted after the build oompletes.
 
 - **.bowerrc**. A JSON file specifying configurations for bower. All it has is a pointer to the app's bower install directory.
 
