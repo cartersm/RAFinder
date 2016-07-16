@@ -9,14 +9,21 @@ module.exports = function (grunt) {
                 }
             },
             dist: {
-                files: ['dist/<%= pkg.name %>.min.js', 'dist/**/*.html']
+                files: ['dist/<%= pkg.name %>.min.js', 'dist/**/*.html', 'Gruntfile.js']
             }
         },
         connect: {
-            server: {
+            dev: {
                 options: {
                     hostname: 'localhost',
                     port: 8000
+                }
+            },
+            dist: {
+                options: {
+                    hostname: 'localhost',
+                    port: 8000,
+                    base: 'dist'
                 }
             }
         },
@@ -64,7 +71,6 @@ module.exports = function (grunt) {
         copy: {
             rosefire: {
                 files: [
-                    // includes files within path and its sub-directories
                     {
                         expand: true,
                         cwd: 'node_modules/rosefire-js-sdk/',
@@ -77,25 +83,32 @@ module.exports = function (grunt) {
                 files: [
                     {
                         expand: true,
-                        src: 'app/**/*.js',
+                        src: ['app/**/*.js', '!app/services/file_reader/fileReader.js'],
                         dest: 'intermediate/src',
-                        noProcess: 'app/services/file_reader/fileReader.js'
-                    }
-                ]
-            },
-            html: {
-                files: [
+                        filter: 'isFile',
+                        flatten: true
+                    },
                     {
                         expand: true,
                         cwd: 'app',
                         src: '*/**/*.html',
                         dest: 'intermediate/html',
-                        filter: 'isFile'
+                        filter: 'isFile',
+                        process: function (content, sourcePath) {
+                            if (sourcePath.includes('login')) {
+                                return content.replace('bootstrap-signin.css', 'bootstrap-signin.min.css')
+                            }
+                            return content;
+                        }
                     }
                 ]
             },
-            dist_html: {
+            dist: {
                 files: [
+                    {
+                        src: 'intermediate/src/fileReader.browserify.js',
+                        dest: 'dist/fileReader.browserify.js'
+                    },
                     {
                         expand: true,
                         cwd: 'intermediate/html',
@@ -135,7 +148,15 @@ module.exports = function (grunt) {
                     'ui-bootstrap.min.js': 'angular-bootstrap/ui-bootstrap.min.js',
                     'ui-bootstrap-tpls.min.js': 'angular-bootstrap/ui-bootstrap-tpls.min.js',
                     'hotkeys.min.js': 'angular-hotkeys/build/hotkeys.min.js',
-                    'modernizr-2.8.3.min.js': 'html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js'
+                    'modernizr-2.8.3.min.js': 'html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js',
+                }
+            },
+            fonts: {
+                options: {
+                    destPrefix: 'dist'
+                },
+                files: {
+                    'fonts': 'bootstrap/fonts'
                 }
             },
             css: {
@@ -152,12 +173,27 @@ module.exports = function (grunt) {
         },
         concat: {
             source: {
-                src: ['app/**/*.js', '!app/services/file_reader/fileReader.js'],
+                src: ['intermediate/src/**/*.js', '!intermediate/src/fileReader.browserify.js'],
                 dest: 'intermediate/<%= pkg.name %>.js'
 
             },
             libs: {
-                src: ['intermediate/libs/**/*.js'],
+                // explicitly source libraries to maintain order (some deps have deps higher in the list)
+                src: [
+                    'intermediate/libs/angular.js',
+                    'intermediate/libs/rosefire-angular.min.js',
+                    'intermediate/libs/angular-route.js',
+                    'intermediate/libs/firebase.js',
+                    'intermediate/libs/angularfire.min.js',
+                    'intermediate/libs/jquery.min.js',
+                    'intermediate/libs/bootstrap.min.js',
+                    'intermediate/libs/angular-animate.js',
+                    'intermediate/libs/ui-bootstrap.min.js',
+                    'intermediate/libs/ui-bootstrap-tpls.min.js',
+                    'intermediate/libs/hotkeys.min.js',
+                    'intermediate/libs/modernizr-2.8.3.min.js'
+
+                ],
                 dest: 'intermediate/libs.js'
             }
         },
@@ -175,7 +211,8 @@ module.exports = function (grunt) {
         cssmin: {
             dist: {
                 files: {
-                    'dist/app.min.css': ['app/**/*.css', 'intermediate/css/**/*.css']
+                    'dist/app.min.css': ['intermediate/css/**/*.css', 'app/app.css'],
+                    'dist/bootstrap-signin.css': ['app/bootstrap-signin.css']
                 }
             }
         },
@@ -213,7 +250,7 @@ module.exports = function (grunt) {
         'copy:rosefire',
         'ngconstant:dev',
         'jshint',
-        'connect:server',
+        'connect:dev',
         'watch:dev'
     ]);
 
@@ -221,7 +258,7 @@ module.exports = function (grunt) {
         'copy:rosefire',
         'ngconstant:prod',
         'jshint',
-        'connect:server',
+        'connect:dev',
         'watch:dev'
     ]);
 
@@ -229,7 +266,7 @@ module.exports = function (grunt) {
         'copy:rosefire',
         'ngconstant:dev',
         'build',
-        'connect:server',
+        'connect:dist',
         'watch:dist'
     ]);
 
@@ -241,11 +278,10 @@ module.exports = function (grunt) {
         // 'jshint',
         'bowercopy',
         'copy:source',
-        'copy:html',
         'concat',
         'uglify',
         'cssmin',
-        'copy:dist_html',
+        'copy:dist',
         'clean:build'
     ]);
 
