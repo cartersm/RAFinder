@@ -1,3 +1,4 @@
+'use strict';
 angular.module('RAFinder.services.fileReader', [])
     .service('FileReader', [
         function () {
@@ -30,9 +31,13 @@ angular.module('RAFinder.services.fileReader', [])
                     lines = data.split('\r');
                 }
                 angular.forEach(lines, function (line) {
-                    if (dataCallback) dataCallback(line);
+                    if (dataCallback) {
+                        dataCallback(line);
+                    }
                 });
-                if (endCallback) endCallback();
+                if (endCallback) {
+                    endCallback();
+                }
             };
         }
     ]);

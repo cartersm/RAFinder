@@ -4,9 +4,9 @@
  * ALL database read/write operations should be delegated through methods of this service.
  */
 angular.module('RAFinder.services.database', [
-        'firebase',
-        'RAFinder.services.fileReader'
-    ])
+    'firebase',
+    'RAFinder.services.fileReader'
+])
     .service('Database', [
         '$firebaseObject',
         '$firebaseArray',
@@ -125,6 +125,40 @@ angular.module('RAFinder.services.database', [
                 }
             };
 
+            var normalizeHall = function (hall) {
+                if (hall === 'APT. STYLE - EAST') {
+                    return 'Apartments East';
+                }
+                if (hall === 'APT. STYLE - WEST') {
+                    return 'Apartments West';
+                }
+                if (hall === 'BAUR-SAMES-BOGART HALL') {
+                    return 'BSB';
+                }
+                if (hall === 'BLUMBERG HALL') {
+                    return 'Blumberg';
+                }
+                if (hall === 'DEMING HALL') {
+                    return 'Deming';
+                }
+                if (hall === 'MEES HALL') {
+                    return 'Mees';
+                }
+                if (hall === 'PERCOPO HALL') {
+                    return 'Percopo';
+                }
+                if (hall === 'SCHARPENBERG HALL') {
+                    return 'Scharpenberg';
+                }
+                if (hall === 'LAKESIDE HALL') {
+                    return 'Lakeside';
+                }
+                if (hall === 'SPEED HALL') {
+                    return 'Speed';
+                }
+                return hall;
+            };
+
             /**
              * Parses the given CSV of employee data.
              *
@@ -155,7 +189,7 @@ angular.module('RAFinder.services.database', [
                             // leading zero was stripped, add it back
                             toAdd.room = '0' + toAdd.room;
                         }
-                        toAdd.floor = parseInt(toAdd.room.substring(0, 1));
+                        toAdd.floor = parseInt(toAdd.room.substring(0, 1), 10);
                         delete toAdd.type;
 
                         toAdd.hall = normalizeHall(toAdd.hall);
@@ -206,32 +240,6 @@ angular.module('RAFinder.services.database', [
                     });
             };
 
-            var normalizeHall = function (hall) {
-                if (hall === 'APT. STYLE - EAST') {
-                    return 'Apartments East';
-                } else if (hall === 'APT. STYLE - WEST') {
-                    return 'Apartments West';
-                } else if (hall === 'BAUR-SAMES-BOGART HALL') {
-                    return 'BSB';
-                } else if (hall === 'BLUMBERG HALL') {
-                    return 'Blumberg';
-                } else if (hall === 'DEMING HALL') {
-                    return 'Deming';
-                } else if (hall === 'MEES HALL') {
-                    return 'Mees';
-                } else if (hall === 'PERCOPO HALL') {
-                    return 'Percopo';
-                } else if (hall === 'SCHARPENBERG HALL') {
-                    return 'Scharpenberg';
-                } else if (hall === 'LAKESIDE HALL') {
-                    return 'Lakeside';
-                } else if (hall === 'SPEED HALL') {
-                    return 'Speed';
-                } else {
-                    return hall;
-                }
-            };
-
             /**
              * Adds the given employee to the Database.
              *
@@ -252,7 +260,7 @@ angular.module('RAFinder.services.database', [
                 if (EnvConfig.env === 'prod') {
                     firebase.child('Employees/' + employeeType + '/')
                         .push(user, function (error) {
-                            if (error != null) {
+                            if (error !== null) {
                                 console.error(error);
                                 // TODO: show error to user?
                             }
@@ -266,7 +274,7 @@ angular.module('RAFinder.services.database', [
                         console.log('successfully created user: ' + authData.uid);
                         firebase.child('Employees/' + employeeType + '/' + authData.uid)
                             .set(user, function (error) {
-                                if (error != null) {
+                                if (error !== null) {
                                     console.error(error);
                                 }
                             });
@@ -284,24 +292,26 @@ angular.module('RAFinder.services.database', [
             this.removeEmployee = function (type, person) {
                 var data;
                 switch (type) {
-                    case 'ra':
-                        data = self.employees.ras;
-                        break;
-                    case 'sa':
-                        data = self.employees.sas;
-                        break;
-                    case 'ga':
-                        data = self.employees.gas;
-                        break;
-                    case 'admin':
-                        data = self.employees.admins;
-                        break;
+                case 'ra':
+                    data = self.employees.ras;
+                    break;
+                case 'sa':
+                    data = self.employees.sas;
+                    break;
+                case 'ga':
+                    data = self.employees.gas;
+                    break;
+                case 'admin':
+                    data = self.employees.admins;
+                    break;
                 }
                 data.$remove(person);
 
-                if (EnvConfig.env === 'prod') return;
+                if (EnvConfig.env === 'prod') {
+                    return;
+                }
                 if (person.email.endsWith('@test.com')) {
-                    // This is a test entity created by a demo of the app; remove it from the Firebase's authorized users
+                    // This is a test entity created by a demo of the app; remove it
                     var authObj = Auth.getAuthObject();
                     authObj.$removeUser({email: person.email, password: 'test1234'});
                 }
@@ -332,6 +342,17 @@ angular.module('RAFinder.services.database', [
                 }
             };
 
+            var numberToOrdinal = function (number) {
+                switch (number) {
+                case '1':
+                    return '1st';
+                case '2':
+                    return '2nd';
+                default:
+                    return number + 'th';
+                }
+            };
+
             this.parseHallRosterCsv = function (data) {
                 var residents = [];
 
@@ -348,7 +369,7 @@ angular.module('RAFinder.services.database', [
                         hall: normalizeHall(toAdd.HALL),
                         floor: numberToOrdinal(toAdd.FLOOR),
                         room: toAdd.ROOM
-                    })
+                    });
 
                     console.log(residents);
                 };
@@ -359,16 +380,18 @@ angular.module('RAFinder.services.database', [
                     angular.forEach(residents, function (value) {
                         console.log(value);
                         angular.forEach(self.resHalls, function (hall) {
-                            if (hall.hall !== value.hall) return;
-                            console.log("got here 1");
+                            if (hall.hall !== value.hall) {
+                                return;
+                            }
                             angular.forEach(hall.floors, function (floor) {
-                                if (floor.floor !== value.floor) return;
-                                console.log("got here 2");
+                                if (floor.floor !== value.floor) {
+                                    return;
+                                }
                                 angular.forEach(floor.rooms, function (room) {
-                                    if (room.number !== value.room) return;
-                                    console.log("got here 3");
+                                    if (room.number !== value.room) {
+                                        return;
+                                    }
                                     var roomData = hall.hall + floor.floor + room.number;
-                                    console.log("got here 4");
                                     console.log(editedRooms[roomData]);
                                     if (!editedRooms[roomData]) {
                                         editedRooms[roomData] = true;
@@ -384,17 +407,6 @@ angular.module('RAFinder.services.database', [
                 };
 
                 FileReader.readCsv(data, dataCallback, endCallback);
-            };
-
-            var numberToOrdinal = function (number) {
-                switch (number) {
-                    case '1':
-                        return "1st";
-                    case '2':
-                        return "2nd";
-                    default:
-                        return number + "th";
-                }
             };
 
             // Duty Rosters
@@ -458,7 +470,7 @@ angular.module('RAFinder.services.database', [
              */
             this.parseDutyRosterFile = function (data, overwrite) {
                 var rosters = [];
-                var roster = roster = {
+                var roster = {
                     date: '',
                     roster: []
                 };
@@ -473,11 +485,11 @@ angular.module('RAFinder.services.database', [
 
                 var headers = lines.slice(rollover * 10);
                 if (self.employees.admins.length === 0) {
-                    self.getAdmins(function (ignored) {
+                    self.getAdmins(function () {
                         if (self.employees.ras.length === 0) {
-                            self.getRAs(function (ignored) {
+                            self.getRAs(function () {
                                 if (self.employees.gas.length === 0) {
-                                    self.getGAs(function (ignored) {
+                                    self.getGAs(function () {
                                         FileReader.readLines(data, dataCallback, endCallback);
                                     });
                                 }
@@ -486,7 +498,7 @@ angular.module('RAFinder.services.database', [
                     });
                 }
                 var dataCallback = function (line) {
-                    if (count == rollover) {
+                    if (count === rollover) {
                         count = 0;
                         rosters.push(angular.copy(roster));
                         roster = {
@@ -495,7 +507,9 @@ angular.module('RAFinder.services.database', [
                         };
                         nTriplets = 0;
                     }
-                    if (line in headers) return;
+                    if (headers.hasOwnProperty(line)) {
+                        return;
+                    }
                     if (!isNaN(line)) {
                         roster.date =
                             line.slice(4, 8) + '-' + // YYYY
@@ -505,9 +519,9 @@ angular.module('RAFinder.services.database', [
                         var employee = getEmployeeRecordForDutyRoster(line);
                         if (employee) {
                             if (employee.hall === 'Mees' ||
-                                employee.hall === 'Scharpenberg' ||
-                                employee.hall === 'Blumberg') {
-                                nTriplets++;
+                                    employee.hall === 'Scharpenberg' ||
+                                    employee.hall === 'Blumberg') {
+                                nTriplets += 1;
                                 employee.hall = 'Triplets ' + nTriplets;
                             }
                             roster.roster.push({
@@ -519,7 +533,7 @@ angular.module('RAFinder.services.database', [
                             });
                         }
                     }
-                    count++;
+                    count += 1;
                 };
                 var endCallback = function () {
                     angular.forEach(rosters, function (roster) {
@@ -532,7 +546,9 @@ angular.module('RAFinder.services.database', [
             var getEmployeeRecordForDutyRoster = function (name) {
                 var found = null;
                 angular.forEach(self.employees.admins, function (admin) {
-                    if (found) return;
+                    if (found) {
+                        return;
+                    }
                     if (admin.name === name) {
                         found = angular.copy(admin);
                         found.hall = 'OCP';
@@ -540,10 +556,14 @@ angular.module('RAFinder.services.database', [
                     }
                 });
 
-                if (found) return found;
+                if (found) {
+                    return found;
+                }
 
                 angular.forEach(self.employees.gas, function (ga) {
-                    if (found) return;
+                    if (found) {
+                        return;
+                    }
                     if (ga.name === name) {
                         found = angular.copy(ga);
                         found.hall = 'GA';
@@ -551,10 +571,14 @@ angular.module('RAFinder.services.database', [
                     }
                 });
 
-                if (found) return found;
+                if (found) {
+                    return found;
+                }
 
                 angular.forEach(self.employees.ras, function (ra) {
-                    if (found) return;
+                    if (found) {
+                        return;
+                    }
                     if (ra.name === name) {
                         found = angular.copy(ra);
                         found.uid = ra.$id;
@@ -582,5 +606,4 @@ angular.module('RAFinder.services.database', [
                 }
                 return dateObj.getFullYear() + '-' + monthStr + '-' + dateOfMonthStr;
             };
-        }
-    ]);
+        }]);

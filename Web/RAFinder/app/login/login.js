@@ -4,9 +4,9 @@
  * Controls the login page, login attempts, and rerouting after successful login.
  */
 angular.module('RAFinder.login', [
-        'ngRoute',
-        'firebase'
-    ])
+    'ngRoute',
+    'firebase'
+])
     .config(['$routeProvider',
         function ($routeProvider) {
             $routeProvider.when('/login', {
@@ -68,5 +68,4 @@ angular.module('RAFinder.login', [
                         });
                     });
             };
-        }
-    ]);
+        }]);

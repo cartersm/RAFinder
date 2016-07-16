@@ -191,7 +191,9 @@ angular.module('RAFinder.dutyRoster', [
 
             Database.getResHalls(function (data) {
                 angular.forEach(data, function (resHall) {
-                    if (isTriplet(resHall.hall)) return;
+                    if (isTriplet(resHall.hall)) {
+                        return;
+                    }
                     $scope.resHalls.push(resHall.hall);
                     if (!$scope.modalOptions.roster) {
                         $scope.roster[resHall.hall] = '';
@@ -260,7 +262,7 @@ angular.module('RAFinder.dutyRoster', [
                 result.date = date;
                 $uibModalInstance.close(result);
             };
-            $scope.modalOptions.close = function (result) {
+            $scope.modalOptions.close = function () {
                 $uibModalInstance.dismiss('cancel');
             };
         }

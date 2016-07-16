@@ -38,7 +38,9 @@ angular.module('RAFinder.services.auth', [
                     }
                     // We're not logged in
                     $location.path('/login');
-                    if (onFailure) onFailure('not logged in');
+                    if (onFailure) {
+                        onFailure('not logged in');
+                    }
                 } else {
                     if (EnvConfig.env !== 'prod') {
                         auth.uid = auth.password.email;
@@ -49,7 +51,7 @@ angular.module('RAFinder.services.auth', [
                     // Find out whether the user is an admin or other employee
                     var obj = $firebaseObject(firebase.child('Employees/Administrators'));
                     obj.$loaded().then(function (data) {
-                        angular.forEach(data, function (value, key) {
+                        angular.forEach(data, function (value) {
                             if (value.email.toLowerCase() === auth.uid.toLowerCase()) {
                                 isAdmin = true;
                                 isEmployee = true;
@@ -58,11 +60,13 @@ angular.module('RAFinder.services.auth', [
 
                         if (isAdmin) {
                             user = auth.uid;
-                            if (typeof onSuccess === 'function') onSuccess();
+                            if (typeof onSuccess === 'function') {
+                                onSuccess();
+                            }
                         } else {
-                            var obj = $firebaseObject(firebase.child('Employees/Graduate Assistants'));
+                            obj = $firebaseObject(firebase.child('Employees/Graduate Assistants'));
                             obj.$loaded().then(function (data) {
-                                angular.forEach(data, function (value, key) {
+                                angular.forEach(data, function (value) {
                                     if (value.email.toLowerCase() === auth.uid.toLowerCase()) {
                                         isGA = true;
                                         isEmployee = true;
@@ -71,12 +75,14 @@ angular.module('RAFinder.services.auth', [
 
                                 if (isGA) {
                                     user = auth.uid;
-                                    if (typeof onSuccess === 'function') onSuccess();
+                                    if (typeof onSuccess === 'function') {
+                                        onSuccess();
+                                    }
                                 } else {
                                     obj = $firebaseObject(firebase.child('Employees'));
                                     obj.$loaded().then(function (data) {
                                         angular.forEach(data, function (child) {
-                                            angular.forEach(child, function (value, key) {
+                                            angular.forEach(child, function (value) {
                                                 if (value.email.toLowerCase() === auth.uid.toLowerCase()) {
                                                     isEmployee = true;
                                                 }
@@ -84,12 +90,16 @@ angular.module('RAFinder.services.auth', [
                                         });
                                         if (isEmployee) {
                                             user = auth.uid;
-                                            if (onSuccess) onSuccess();
+                                            if (onSuccess) {
+                                                onSuccess();
+                                            }
                                         } else {
                                             user = '';
                                             console.log('non-employee has been logged out');
                                             self.logoutUser();
-                                            if (onFailure) onFailure('non-employee attempted login');
+                                            if (onFailure) {
+                                                onFailure('non-employee attempted login');
+                                            }
                                         }
                                     });
                                 }

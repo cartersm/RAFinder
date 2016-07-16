@@ -210,7 +210,7 @@ module.exports = function (grunt) {
         jshint: {
             options: {
                 force: false,
-                ignores: 'app/services/file_reader/fileReader.browserify.js',
+                ignores: ['app/services/file_reader/fileReader.browserify.js', 'app/config.js'],
                 jshintrc: true
 
             },

@@ -4,30 +4,29 @@
  * The root module for the app. Loads dependencies on other modules.
  */
 angular.module('RAFinder', [
-        'ngRoute',
-        'ui.bootstrap',
-        'cfp.hotkeys',
-        'RAFinder.config',
-        'RAFinder.services.auth',
-        'RAFinder.services.modal',
-        'RAFinder.services.database',
-        'RAFinder.services.environment',
-        'RAFinder.login',
-        'RAFinder.employees',
-        'RAFinder.hallRoster',
-        'RAFinder.dutyRoster'
-    ])
-    /**
-     * Sets up the default route.
-     */
+    'ngRoute',
+    'ui.bootstrap',
+    'cfp.hotkeys',
+    'RAFinder.config',
+    'RAFinder.services.auth',
+    'RAFinder.services.modal',
+    'RAFinder.services.database',
+    'RAFinder.services.environment',
+    'RAFinder.login',
+    'RAFinder.employees',
+    'RAFinder.hallRoster',
+    'RAFinder.dutyRoster'
+])
+/**
+ * Sets up the default route.
+ */
     .config([
         '$routeProvider',
         function ($routeProvider) {
             // Always redirect to login page
             // Login will forward to home page if logged in
             $routeProvider.otherwise({redirectTo: '/login'});
-        }
-    ])
+        }])
     /**
      * Controls base functionality to hide the navbar until a user is authenticated.
      */
@@ -60,8 +59,7 @@ angular.module('RAFinder', [
             $scope.hasAuth = function () {
                 return Auth.isEmployee();
             };
-        }
-    ])
+        }])
     /* borrowed from http://stackoverflow.com/a/34001254 */
     .directive('fileSelect', ['$window', function ($window) {
         return {
@@ -89,8 +87,6 @@ angular.module('RAFinder', [
                         scope.$eval(attr.fileError, {'$error': fileReader.error});
                     }
                 };
-
-                var fileType = attr.fileSelect;
 
                 el.bind('change', function (e) {
                     var fileName = e.target.files[0];

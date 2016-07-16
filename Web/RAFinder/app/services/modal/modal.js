@@ -16,7 +16,9 @@ angular.module('RAFinder.services.modal', [])
             };
 
             this.showModal = function (customModalDefaults, customModalOptions) {
-                if (!customModalDefaults) customModalDefaults = {};
+                if (!customModalDefaults) {
+                    customModalDefaults = {};
+                }
                 customModalDefaults.backdrop = 'static';
                 return this.show(customModalDefaults, customModalOptions);
             };
@@ -47,7 +49,7 @@ angular.module('RAFinder.services.modal', [])
                         $scope.modalOptions.ok = function (result) {
                             $uibModalInstance.close(result);
                         };
-                        $scope.modalOptions.close = function (result) {
+                        $scope.modalOptions.close = function () {
                             $uibModalInstance.dismiss('cancel');
                         };
                     };

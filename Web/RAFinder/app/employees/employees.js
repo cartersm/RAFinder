@@ -148,7 +148,7 @@ angular.module('RAFinder.employees', [
                 };
 
                 Modal.showModal(modalDefaults, modalOptions)
-                    .then(function (successResult) {
+                    .then(function () {
                         console.warn('Deleting user ' + person.email);
                         Database.removeEmployee(type, person);
                     });
@@ -157,5 +157,4 @@ angular.module('RAFinder.employees', [
             $scope.isAdmin = function () {
                 return Auth.isAdmin();
             };
-        }
-    ]);
+        }]);

@@ -12,8 +12,7 @@ angular.module('RAFinder.hallRoster', [
                 templateUrl: 'hall_roster/hallRoster.html',
                 controller: 'HallRosterCtrl'
             });
-        }
-    ])
+        }])
     .controller('HallRosterCtrl', [
         '$scope',
         '$location',
@@ -39,14 +38,16 @@ angular.module('RAFinder.hallRoster', [
 
             // Populate Hall Data
             Database.getResHalls(function (data) {
-                    $scope.hallData = data;
-                    $scope.isLoading = false;
-                });
+                $scope.hallData = data;
+                $scope.isLoading = false;
+            });
 
             $scope.getResidents = function (room) {
                 var residents = [];
-                angular.forEach(room, function (value, key) {
-                    if (key === '$id' || key === 'number') return;
+                angular.forEach(room, function (ignored, key) {
+                    if (key === '$id' || key === 'number') {
+                        return;
+                    }
                     residents.push(key);
                 });
                 return residents;
@@ -55,5 +56,4 @@ angular.module('RAFinder.hallRoster', [
             $scope.isAdmin = function () {
                 return Auth.isAdmin();
             };
-        }
-    ]);
+        }]);
