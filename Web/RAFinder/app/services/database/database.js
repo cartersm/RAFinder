@@ -125,40 +125,6 @@ angular.module('RAFinder.services.database', [
                 }
             };
 
-            var normalizeHall = function (hall) {
-                if (hall === 'APT. STYLE - EAST') {
-                    return 'Apartments East';
-                }
-                if (hall === 'APT. STYLE - WEST') {
-                    return 'Apartments West';
-                }
-                if (hall === 'BAUR-SAMES-BOGART HALL') {
-                    return 'BSB';
-                }
-                if (hall === 'BLUMBERG HALL') {
-                    return 'Blumberg';
-                }
-                if (hall === 'DEMING HALL') {
-                    return 'Deming';
-                }
-                if (hall === 'MEES HALL') {
-                    return 'Mees';
-                }
-                if (hall === 'PERCOPO HALL') {
-                    return 'Percopo';
-                }
-                if (hall === 'SCHARPENBERG HALL') {
-                    return 'Scharpenberg';
-                }
-                if (hall === 'LAKESIDE HALL') {
-                    return 'Lakeside';
-                }
-                if (hall === 'SPEED HALL') {
-                    return 'Speed';
-                }
-                return hall;
-            };
-
             /**
              * Parses the given CSV of employee data.
              *
@@ -238,6 +204,40 @@ angular.module('RAFinder.services.database', [
                         //    self.employees.fraternityPresidents.$add(pres);
                         //});
                     });
+            };
+
+            var normalizeHall = function (hall) {
+                if (hall === 'APT. STYLE - EAST') {
+                    return 'Apartments East';
+                }
+                if (hall === 'APT. STYLE - WEST') {
+                    return 'Apartments West';
+                }
+                if (hall === 'BAUR-SAMES-BOGART HALL') {
+                    return 'BSB';
+                }
+                if (hall === 'BLUMBERG HALL') {
+                    return 'Blumberg';
+                }
+                if (hall === 'DEMING HALL') {
+                    return 'Deming';
+                }
+                if (hall === 'MEES HALL') {
+                    return 'Mees';
+                }
+                if (hall === 'PERCOPO HALL') {
+                    return 'Percopo';
+                }
+                if (hall === 'SCHARPENBERG HALL') {
+                    return 'Scharpenberg';
+                }
+                if (hall === 'LAKESIDE HALL') {
+                    return 'Lakeside';
+                }
+                if (hall === 'SPEED HALL') {
+                    return 'Speed';
+                }
+                return hall;
             };
 
             /**
@@ -342,17 +342,6 @@ angular.module('RAFinder.services.database', [
                 }
             };
 
-            var numberToOrdinal = function (number) {
-                switch (number) {
-                case '1':
-                    return '1st';
-                case '2':
-                    return '2nd';
-                default:
-                    return number + 'th';
-                }
-            };
-
             this.parseHallRosterCsv = function (data) {
                 var residents = [];
 
@@ -407,6 +396,17 @@ angular.module('RAFinder.services.database', [
                 };
 
                 FileReader.readCsv(data, dataCallback, endCallback);
+            };
+
+            var numberToOrdinal = function (number) {
+                switch (number) {
+                case '1':
+                    return '1st';
+                case '2':
+                    return '2nd';
+                default:
+                    return number + 'th';
+                }
             };
 
             // Duty Rosters
