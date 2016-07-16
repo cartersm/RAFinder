@@ -23,7 +23,10 @@
 
     ```npm install -g browserify firebase-tools grunt```
 
-5. To run the app. run ```npm start```, then navigate to http://localhost:8000/app/index.html. You should see a login screen welcoming you to RAFinder.
+5. Perform one-time setup with grunt (required for customized bootstrap):
+	```grunt setup```
+
+6. To run the app. run ```npm start```, then navigate to http://localhost:8000/app/index.html. You should see a login screen welcoming you to RAFinder.
 
 ### Basics
 This app can seem daunting at first. Here are a few tips:
@@ -84,7 +87,7 @@ The core dependencies of this project are as follows, and can be found in ```pac
 
 - ```angularfire``` provides an AngularJS API for Firebase. [See here](https://www.firebase.com/docs/web/libraries/angular/quickstart.html).
 
-- ```bootstrap``` "is the most popular HTML, CSS, and JS framework for developing responsive, mobile first projects on the web." More to the point, it's a BUNCH of CSS classes and directives to make your web page look pretty. [See here](http://getbootstrap.com/).
+- ```bootstrap``` "is the most popular HTML, CSS, and JS framework for developing responsive, mobile first projects on the web." More to the point, it's a BUNCH of CSS classes and directives to make your web page look pretty. [See here](http://getbootstrap.com/). **NOTE:** The version of bootstrap used here is slightly [customized](http://getbootstrap.com/customize/). ```grunt setup``` will install the customized files.
 
 - ```firebase``` is the base NodeJS API for Firebase. [See here](https://www.firebase.com/docs/web/quickstart.html).
 

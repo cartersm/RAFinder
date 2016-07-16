@@ -14,7 +14,7 @@
     </div>
 
     <uib-accordion>
-        <uib-accordion-group class="row" is-open="false" ng-repeat="roster in rosterData">
+        <uib-accordion-group class="row panel-primary" is-open="false" ng-repeat="roster in rosterData">
             <uib-accordion-heading>
                 {{getDate(roster.date) | date: 'EEE, MMM dd, yyyy'}}
                 <i class="pull-right glyphicon glyphicon-pencil" ng-click=showEditDutyRosterItemModal(roster)></i>

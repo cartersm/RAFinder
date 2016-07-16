@@ -2,14 +2,14 @@ module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         watch: {
-            app: {
-                files: ['app/*.js', 'app/*.html']
-            },
             dev: {
-                files: ['Gruntfile.js', 'app/*.js', 'app/*.html'],
+                files: ['Gruntfile.js', 'app/**/*.js', 'app/**/*.html'],
                 options: {
                     atBegin: true
                 }
+            },
+            dist: {
+                files: ['dist/<%= pkg.name %>.min.js', 'dist/**/*.html']
             }
         },
         connect: {
@@ -62,12 +62,133 @@ module.exports = function (grunt) {
             }
         },
         copy: {
-            main: {
+            rosefire: {
                 files: [
                     // includes files within path and its sub-directories
-                    {expand: true, cwd: 'node_modules/rosefire-js-sdk/', src: ['**'], dest: 'app/bower_components/rosefire-js-sdk'}
+                    {
+                        expand: true,
+                        cwd: 'node_modules/rosefire-js-sdk/',
+                        src: ['**'],
+                        dest: 'bower_components/rosefire-js-sdk'
+                    }
+                ]
+            },
+            source: {
+                files: [
+                    {
+                        expand: true,
+                        src: 'app/**/*.js',
+                        dest: 'intermediate/src',
+                        noProcess: 'app/services/file_reader/fileReader.js'
+                    }
+                ]
+            },
+            html: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'app',
+                        src: '*/**/*.html',
+                        dest: 'intermediate/html',
+                        filter: 'isFile'
+                    }
+                ]
+            },
+            dist_html: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'intermediate/html',
+                        src: '**/*.html',
+                        dest: 'dist',
+                        filter: 'isFile'
+                    }
                 ]
             }
+        },
+        jshint: {
+            options: {
+                force: false,
+                ignores: 'app/services/file_reader/fileReader.browserify.js',
+                jshintrc: true
+
+            },
+            beforeconcat: ['app/**/*.js']
+        },
+        bowercopy: {
+            options: {
+                runBower: false
+            },
+            libs: {
+                options: {
+                    destPrefix: 'intermediate/libs'
+                },
+                files: {
+                    'angular.js': 'angular/angular.js',
+                    'rosefire-angular.min.js': 'rosefire-js-sdk/dist/js/rosefire-angular.min.js',
+                    'angular-route.js': 'angular-route/angular-route.js',
+                    'firebase.js': 'firebase/firebase.js',
+                    'angularfire.min.js': 'angularfire/dist/angularfire.min.js',
+                    'jquery.min.js': 'jquery/dist/jquery.min.js',
+                    'bootstrap.min.js': 'bootstrap/dist/js/bootstrap.min.js',
+                    'angular-animate.js': 'angular-animate/angular-animate.js',
+                    'ui-bootstrap.min.js': 'angular-bootstrap/ui-bootstrap.min.js',
+                    'ui-bootstrap-tpls.min.js': 'angular-bootstrap/ui-bootstrap-tpls.min.js',
+                    'hotkeys.min.js': 'angular-hotkeys/build/hotkeys.min.js',
+                    'modernizr-2.8.3.min.js': 'html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js'
+                }
+            },
+            css: {
+                options: {
+                    destPrefix: 'intermediate/css'
+                },
+                files: {
+                    'html5/normalize.css': 'html5-boilerplate/dist/css/normalize.css',
+                    'html5/main.css': 'html5-boilerplate/dist/css/main.css',
+                    'bootstrap.min.css': 'bootstrap/dist/css/bootstrap.css',
+                    'ui-bootstrap-csp.css': 'angular-bootstrap/ui-bootstrap-csp.css'
+                }
+            }
+        },
+        concat: {
+            source: {
+                src: ['app/**/*.js', '!app/services/file_reader/fileReader.js'],
+                dest: 'intermediate/<%= pkg.name %>.js'
+
+            },
+            libs: {
+                src: ['intermediate/libs/**/*.js'],
+                dest: 'intermediate/libs.js'
+            }
+        },
+        uglify: {
+            options: {
+                mangle: false
+            },
+            dist: {
+                files: {
+                    'dist/<%= pkg.name %>.min.js': ['intermediate/<%= pkg.name %>.js'],
+                    'dist/libs.min.js': ['intermediate/libs.js']
+                }
+            }
+        },
+        cssmin: {
+            dist: {
+                files: {
+                    'dist/app.min.css': ['app/**/*.css', 'intermediate/css/**/*.css']
+                }
+            }
+        },
+        clean: {
+            build: {
+                src: ['intermediate']
+            },
+            bootstrap: {
+                src: ['bower_components/bootstrap/dist']
+            }
+        },
+        unzip: {
+            'bower_components/bootstrap': 'bootstrap.zip'
         }
     });
     grunt.loadNpmTasks('grunt-contrib-connect');
@@ -75,28 +196,68 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-ng-constant');
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-bowercopy');
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-zip');
+
+    grunt.registerTask('setup', [
+        'clean:bootstrap',
+        'unzip'
+    ]);
 
     grunt.registerTask('dev', [
-        'copy:main',
+        'copy:rosefire',
         'ngconstant:dev',
+        'jshint',
         'connect:server',
-        'watch:app'
+        'watch:dev'
     ]);
-    grunt.registerTask('dev-deploy', [
-        'copy:main',
-        'ngconstant:dev'
-    ]);
+
     grunt.registerTask('prod', [
-        'copy:main',
+        'copy:rosefire',
         'ngconstant:prod',
+        'jshint',
         'connect:server',
-        'watch:app'
+        'watch:dev'
     ]);
-    grunt.registerTask('prod-deploy', [
-        'copy:main',
-        'ngconstant:prod'
+
+    grunt.registerTask('dist_test', [
+        'copy:rosefire',
+        'ngconstant:dev',
+        'build',
+        'connect:server',
+        'watch:dist'
     ]);
+
     grunt.registerTask('browserify', [
         'browserify:main'
+    ]);
+
+    grunt.registerTask('build', [
+        // 'jshint',
+        'bowercopy',
+        'copy:source',
+        'copy:html',
+        'concat',
+        'uglify',
+        'cssmin',
+        'copy:dist_html',
+        'clean:build'
+    ]);
+
+    grunt.registerTask('dev-deploy', [
+        'copy:rosefire',
+        'ngconstant:dev',
+        'build'
+    ]);
+
+    grunt.registerTask('prod-deploy', [
+        'copy:rosefire',
+        'ngconstant:prod',
+        'build'
     ]);
 };
