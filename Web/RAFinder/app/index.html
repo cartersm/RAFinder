@@ -13,15 +13,22 @@
     <title>RAFinder</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!-- CONSIDER: Do not change comment pairs of the form ' * ' ... ' End * '
+                   These are used by grunt to replace dependencies -->
+    <!-- Modernizr -->
     <script src="../bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+    <!-- End Modernizr -->
 
+    <!-- CSS -->
     <link rel="stylesheet" href="../bower_components/html5-boilerplate/dist/css/normalize.css">
     <link rel="stylesheet" href="../bower_components/html5-boilerplate/dist/css/main.css">
     <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../bower_components/angular-bootstrap/ui-bootstrap-csp.css">
 
     <link rel="stylesheet" href="app.css">
-    <link rel="shortcut icon" href="../dist/favicon.ico">
+    <!-- End CSS -->
+
+    <link rel="shortcut icon" href="favicon.ico">
 </head>
 <body>
 <!-- Navbar -->
@@ -65,6 +72,7 @@
 <script src="../bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
 <script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 <script src="../bower_components/angular-hotkeys/build/hotkeys.min.js"></script>
+<!-- End Libraries -->
 
 <!-- Sources -->
 <script type="text/javascript" src="app.js"></script>
@@ -78,6 +86,7 @@
 <script type="text/javascript" src="services/file_reader/fileReader.browserify.js"></script>
 <script type="text/javascript" src="services/environment/environment.js"></script>
 <script type="text/javascript" src="config.js"></script>
+<!-- End Sources -->
 
 </body>
 </html>
