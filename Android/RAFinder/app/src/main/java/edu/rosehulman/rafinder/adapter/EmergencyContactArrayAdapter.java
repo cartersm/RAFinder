@@ -42,7 +42,7 @@ public class EmergencyContactArrayAdapter extends ArrayAdapter<EmergencyContact>
         Button callButton = (Button) view.findViewById(R.id.callButton);
         Button emailButton = (Button) view.findViewById(R.id.emailButton);
 
-        final EmergencyContact selected = mObjects.get(position);
+        EmergencyContact selected = mObjects.get(position);
         String name = selected.getName();
         switch (selected.getUserType()) {
             case RESIDENT_ASSISTANT:
@@ -64,18 +64,8 @@ public class EmergencyContactArrayAdapter extends ArrayAdapter<EmergencyContact>
 
         nameTextView.setText(name);
 
-        callButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.makePhoneCall(selected.getPhone());
-            }
-        });
-        emailButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.sendEmail(selected.getEmail());
-            }
-        });
+        callButton.setOnClickListener(v -> mListener.makePhoneCall(selected.getPhone()));
+        emailButton.setOnClickListener(v -> mListener.sendEmail(selected.getEmail()));
         view.refreshDrawableState();
         return view;
     }

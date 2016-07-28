@@ -10,7 +10,7 @@ public class ConfigKeys {
 
     public static final String LOG_TAG = "RAFinder";
     public static final String FIREBASE_ROOT_URL = "https://ra-finder.firebaseio.com";
-    public static final Environment ENV = Environment.PROD;
+    public static final Environment ENV = Environment.PRODUCTION;
     public static final String REGISTRY_TOKEN = "bf2f8ab7c101995e3ae8669d1dd467592dec77d1158673685f9b0ba2efbe6ba5508" +
             "1ba228ff365dfa68f9beeba5fd196adXg/W9RjB0YrQHQHIw3dCOyVQXrXrboe7TEqu/6U8C1U4J9wnGQa0BFW+X3duaugCr2TybsIt" +
             "42XZSjZmkvgQ==";

@@ -14,8 +14,8 @@ import edu.rosehulman.rafinder.UserType;
  */
 public class EmergencyContact {
     // EmergencyContact Firebase keys
-    private static final String ecEmail = "Email";
-    private static final String ecPhone = "Phone";
+    private static final String EC_EMAIL = "Email";
+    private static final String EC_PHONE = "Phone";
 
     private String name;
     private String email;
@@ -34,9 +34,9 @@ public class EmergencyContact {
                 setUserType(UserType.ADMINISTRATOR);
 
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    if (child.getKey().equals(ecEmail)) {
+                    if (child.getKey().equals(EC_EMAIL)) {
                         setEmail(child.getValue(String.class));
-                    } else if (child.getKey().equals(ecPhone)) {
+                    } else if (child.getKey().equals(EC_PHONE)) {
                         setPhone(child.getValue(String.class));
                     }
                 }
@@ -50,7 +50,7 @@ public class EmergencyContact {
     }
 
     public EmergencyContact(Employee employee, boolean isOnDuty) {
-        priority = (isOnDuty) ? Priority.ON_DUTY : Priority.MY_RA;
+        priority = isOnDuty ? Priority.ON_DUTY : Priority.MY_RA;
         userType = employee.getUserType();
         name = employee.getName();
         email = employee.getEmail();

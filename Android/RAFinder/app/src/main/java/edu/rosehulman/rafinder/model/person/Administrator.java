@@ -5,6 +5,7 @@ import edu.rosehulman.rafinder.UserType;
 /**
  * A Residence Life administrator (an employee of the Office of Residence Life)
  */
+@SuppressWarnings("unused") // constructors used by Jackson
 public class Administrator extends Employee {
 
     public Administrator() {

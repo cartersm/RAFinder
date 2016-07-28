@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import edu.rosehulman.rafinder.MainActivity;
 import edu.rosehulman.rafinder.R;
+import edu.rosehulman.rafinder.controller.HomeFragment;
 import edu.rosehulman.rafinder.model.person.Employee;
 
 /**
@@ -46,17 +46,12 @@ public class SearchResultArrayAdapter extends ArrayAdapter<Employee> {
         TextView roomText = (TextView) view.findViewById(R.id.roomTextView);
         TextView statusText = (TextView) view.findViewById(R.id.dutyStatusTextView);
 
-        final Employee employee = mObjects.get(position);
+        Employee employee = mObjects.get(position);
         nameText.setText(employee.getName());
         roomText.setText(mContext.getString(R.string.profile_room_format, employee.getHall(), employee.getRoom()));
         statusText.setText(employee.getStatus());
         typeIcon.setImageBitmap(employee.getProfilePictureAsBitmap());
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainActivity) getContext()).switchToProfile(employee);
-            }
-        });
+        view.setOnClickListener(v -> ((HomeFragment.HomeListener) getContext()).switchToProfile(employee));
 
         view.refreshDrawableState();
         return view;

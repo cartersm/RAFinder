@@ -75,7 +75,7 @@ public class MainActivity extends Activity implements
     private String mHallName = "";
     private UserType mUserType = UserType.RESIDENT;
     private Employee mUser;
-    private Employee myRA;
+    private Employee mUserRA;
 
     private EmployeeLoader mEmployeeLoader;
     private DutyRosterLoader mDutyRosterLoader;
@@ -130,7 +130,9 @@ public class MainActivity extends Activity implements
         mUserType = UserType.valueOf(getIntent().getStringExtra(ConfigKeys.KEY_USER_TYPE));
         mEmail = getIntent().getStringExtra(ConfigKeys.KEY_USER_EMAIL);
 
-        Log.d(ConfigKeys.LOG_TAG, "Main got UserType <" + mUserType + "> and raEmail <" + mRaEmail + ">");
+        if (BuildConfig.DEBUG) {
+            Log.d(ConfigKeys.LOG_TAG, "Main got UserType <" + mUserType + "> and raEmail <" + mRaEmail + ">");
+        }
         mTitle = getTitle();
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
@@ -177,7 +179,7 @@ public class MainActivity extends Activity implements
                 fragment = HomeFragment.newInstance();
                 break;
             case MY_RA:
-                switchToProfile(myRA);
+                switchToProfile(mUserRA);
                 return;
             case EMERGENCY_CONTACTS:
                 fragment = EmergencyContactsFragment.newInstance();
@@ -186,7 +188,7 @@ public class MainActivity extends Activity implements
                 fragment = DutyRosterFragment.newInstance(mDate);
                 break;
             case HALL_ROSTER_OR_RESIDENT_LOGOUT:
-                if (mUserType.equals(UserType.RESIDENT)) {
+                if (mUserType == UserType.RESIDENT) {
                     logout();
                     return;
                 } else {
@@ -194,7 +196,7 @@ public class MainActivity extends Activity implements
                     break;
                 }
             case SUPPORT_REQUEST_OR_EMPLOYEE_LOGOUT:
-                if (mUserType.equals(UserType.RESIDENT)) {
+                if (mUserType == UserType.RESIDENT) {
                     requestSupport();
                     return;
                 } else {
@@ -217,7 +219,7 @@ public class MainActivity extends Activity implements
     private void requestSupport() {
         Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
         String uri = "mailto:" + Uri.encode(ConfigKeys.SUPPORT_EMAIL) +
-                     "?subject=" + Uri.encode("RAFinder Support Request");
+                "?subject=" + Uri.encode("RAFinder Support Request");
         emailIntent.setData(Uri.parse(uri));
         startActivity(emailIntent);
     }
@@ -232,7 +234,7 @@ public class MainActivity extends Activity implements
 
     private void restoreActionBar() {
         ActionBar actionBar = getActionBar();
-        //noinspection deprecation
+        //noinspection deprecation,ConstantConditions
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
@@ -255,8 +257,8 @@ public class MainActivity extends Activity implements
         startActivity(intent);
     }
 
-    public void sendEmail(String email) {
-        Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", email, null));
+    public void sendEmail(String emailAddress) {
+        Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", emailAddress, null));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
@@ -303,7 +305,9 @@ public class MainActivity extends Activity implements
 
     @Override
     public void sendFeedback(String name, String email, String body) {
-        Log.d(ConfigKeys.LOG_TAG, "Preparing to send feedback email...");
+        if (BuildConfig.DEBUG) {
+            Log.d(ConfigKeys.LOG_TAG, "Preparing to send feedback email...");
+        }
         String subject = getString(R.string.profile_feedback_subject_format, name);
         String ccList = ConfigKeys.FEEDBACK_CC;
         new SendEmailAsyncTask().execute(subject, body, email + ccList);
@@ -394,10 +398,10 @@ public class MainActivity extends Activity implements
     @Override
     public void onEmployeeLoadingComplete() {
         setAllEmployees();
-        myRA = getRA(mRaEmail);
+        mUserRA = getRA(mRaEmail);
         mUser = getEmployee(mEmail);
-        mHallName = myRA.getHall();
-        mFloor = myRA.getFloor();
+        mHallName = mUserRA.getHall();
+        mFloor = mUserRA.getFloor();
         mDutyRosterLoader = new DutyRosterLoader(this, mAllRAs, false);
     }
 
@@ -436,7 +440,7 @@ public class MainActivity extends Activity implements
     public List<Employee> getRAsForHall(String hallName) {
         List<Employee> hallRAs = new ArrayList<>();
         for (Employee ra : mAllRAs) {
-            if (ra.getHall().equals(hallName) && !ra.equals(myRA)) {
+            if (ra.getHall().equals(hallName) && !ra.equals(mUserRA)) {
                 hallRAs.add(ra);
             }
         }
@@ -459,7 +463,7 @@ public class MainActivity extends Activity implements
      * StackOverflowArticle</a>
      * For sending email directly from the app.
      */
-    private class SendEmailAsyncTask extends AsyncTask<String, Void, Boolean> {
+    private final class SendEmailAsyncTask extends AsyncTask<String, Void, Boolean> {
         public static final int SUBJECT = 0;
         public static final int BODY = 1;
         public static final int TO = 2;

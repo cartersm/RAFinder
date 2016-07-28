@@ -5,6 +5,8 @@ import edu.rosehulman.rafinder.UserType;
 /**
  * An SA.
  */
+
+@SuppressWarnings("unused") // constructors used by Jackson
 public class SophomoreAdvisor extends Employee {
 
     public SophomoreAdvisor() {

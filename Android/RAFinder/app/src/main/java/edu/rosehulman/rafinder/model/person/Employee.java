@@ -20,6 +20,7 @@ import edu.rosehulman.rafinder.UserType;
 /**
  * Any Residence Life employee.
  */
+@SuppressWarnings({"MethodOnlyUsedFromInnerClass", "AbstractClassNamingConvention"})
 public abstract class Employee extends AuthenticatedResident {
     private String email;
     private int floor;
@@ -35,23 +36,7 @@ public abstract class Employee extends AuthenticatedResident {
     private UserType userType;
 
     Employee() {
-        userType = getEmployeeType();
-    }
-
-    public Employee(DataSnapshot ds) {
-        this(
-                ds.child(ConfigKeys.EMPLOYEE_NAME).getValue(String.class),
-                ds.child(ConfigKeys.EMPLOYEE_EMAIL).getValue(String.class),
-                ds.child(ConfigKeys.EMPLOYEE_FLOOR).getValue(int.class),
-                ds.child(ConfigKeys.EMPLOYEE_HALL).getValue(String.class),
-                ds.child(ConfigKeys.EMPLOYEE_PHONE).getValue(String.class),
-                ds.child(ConfigKeys.EMPLOYEE_ROOM).getValue(String.class),
-                ds.child(ConfigKeys.EMPLOYEE_STATUS).getValue(String.class),
-                ds.child(ConfigKeys.EMPLOYEE_STATUS_DETAIL).getValue(String.class),
-                ds.child(ConfigKeys.EMPLOYEE_PICTURE).getValue(String.class)
-        );
-        firebase = new Firebase(ConfigKeys.FIREBASE_ROOT_URL + ds.getRef().getPath().toString());
-        firebase.addChildEventListener(new EmployeeChangedListener());
+        this.userType = getEmployeeType();
     }
 
     Employee(String name,
@@ -72,12 +57,12 @@ public abstract class Employee extends AuthenticatedResident {
         this.status = status;
         this.statusDetail = statusDetail;
         this.profilePicture = profilePicture;
-        userType = getEmployeeType();
+        this.userType = getEmployeeType();
     }
 
     Employee(String name) {
         super(name);
-        userType = getEmployeeType();
+        this.userType = getEmployeeType();
     }
 
     private static Bitmap convertToBitmap(String image) {
@@ -166,7 +151,6 @@ public abstract class Employee extends AuthenticatedResident {
 
     public void setFirebase(Firebase firebase) {
         this.firebase = firebase;
-        // FIXME: there has to be a better way to do this
         this.firebase.addChildEventListener(new EmployeeChangedListener());
     }
 
@@ -203,7 +187,7 @@ public abstract class Employee extends AuthenticatedResident {
                 && room.equals(e.getRoom())
                 && status.equals(e.getStatus())
                 && statusDetail.equals(e.getStatusDetail())
-                && userType.equals(e.userType);
+                && userType == e.getUserType();
     }
 
     @Override

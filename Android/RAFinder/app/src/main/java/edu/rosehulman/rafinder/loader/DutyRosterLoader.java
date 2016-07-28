@@ -35,9 +35,9 @@ public class DutyRosterLoader extends Loader {
         loadData(new Firebase(ConfigKeys.FIREBASE_ROOT_URL + "/" + DUTY_ROSTERS));
     }
 
-    protected void loadData(Firebase firebaseRef) {
+    protected void loadData(Firebase firebase) {
         Log.d(ConfigKeys.LOG_TAG, "Loading Duty Roster data...");
-        firebaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        firebase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mRoster = new DutyRoster(dataSnapshot, modifyDate(LocalDate.now()), mRAs);

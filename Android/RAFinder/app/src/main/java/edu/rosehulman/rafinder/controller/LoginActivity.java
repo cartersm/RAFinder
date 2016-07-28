@@ -5,14 +5,13 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.BuildConfig;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -27,7 +26,6 @@ import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
 import edu.rosehulman.rafinder.ConfigKeys;
@@ -57,6 +55,14 @@ public class LoginActivity extends Activity {
 
     private Login mLogin;
 
+    public static boolean isEmailInvalid(String email) {
+        return !email.matches(".*?@.*?\\..*");
+    }
+
+    public static boolean isPasswordInvalid(String password) {
+        return password.length() <= 4;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,35 +80,27 @@ public class LoginActivity extends Activity {
         // Set up the login form.
         mEmailView = (TextView) findViewById(R.id.email);
         switch (ConfigKeys.ENV) {
-            case PROD:
+            case PRODUCTION:
                 mEmailView.setHint(R.string.kerberos_username);
                 break;
         }
 
         mPasswordView = (EditText) findViewById(R.id.password);
         switch (ConfigKeys.ENV) {
-            case PROD:
+            case PRODUCTION:
                 mPasswordView.setHint(R.string.kerberos_password);
                 break;
         }
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
+        mPasswordView.setOnEditorActionListener((textView, id, keyEvent) -> {
+            if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                attemptLogin();
+                return true;
             }
+            return false;
         });
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View ignored) {
-                attemptLogin();
-            }
-        });
+        mEmailSignInButton.setOnClickListener(ignored -> attemptLogin());
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
@@ -114,13 +112,13 @@ public class LoginActivity extends Activity {
 
         // Skip login screen if we're still authorized and have data.
         if (firebase.getAuth() != null
-                && !userType.equals(UserType.NONE)
+                && userType != UserType.NONE
                 && !raEmail.equals("")
                 && !email.equals("")) {
             launchMainActivity(userType, raEmail, email);
         }
 
-        if (ConfigKeys.ENV.equals(Environment.PROD)) {
+        if (ConfigKeys.ENV == Environment.PRODUCTION) {
             onRosefireLogin();
             mEmailView.setVisibility(View.GONE);
             mPasswordView.setVisibility(View.GONE);
@@ -146,7 +144,7 @@ public class LoginActivity extends Activity {
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && Login.isPasswordInvalid(password)) {
+        if (!TextUtils.isEmpty(password) && isPasswordInvalid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
@@ -157,7 +155,7 @@ public class LoginActivity extends Activity {
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
-        } else if (Login.isEmailInvalid(email)) {
+        } else if (isEmailInvalid(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
@@ -192,7 +190,9 @@ public class LoginActivity extends Activity {
         editor.putString(ConfigKeys.KEY_USER_EMAIL, email);
         editor.apply();
 
-        Log.d(ConfigKeys.LOG_TAG, "starting Main with userType <" + userType + "> and raEmail <" + raEmail + ">");
+        if (BuildConfig.DEBUG){
+            Log.d(ConfigKeys.LOG_TAG, "starting Main with userType <" + userType + "> and raEmail <" + raEmail + ">");
+        }
         startActivity(intent);
         finish();
     }
@@ -200,7 +200,7 @@ public class LoginActivity extends Activity {
     /**
      * Shows the progress UI and hides the login form.
      */
-    private void showProgress(final boolean show) {
+    private void showProgress(boolean show) {
         int shortAnimTime = getResources().getInteger(
                 android.R.integer.config_shortAnimTime);
 
@@ -268,7 +268,7 @@ public class LoginActivity extends Activity {
         }
     }
 
-    public void getRAAndLogin(final UserType userType, final String userEmail) {
+    public void getRAAndLogin(UserType userType, String userEmail) {
         mLogin.firebase.child(ConfigKeys.EMPLOYEES + "/" + ConfigKeys.RESIDENT_ASSISTANTS)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -280,12 +280,7 @@ public class LoginActivity extends Activity {
                         ResidentAssistant[] rasArray = new ResidentAssistant[(int) dataSnapshot.getChildrenCount()];
                         rasArray = ras.toArray(rasArray);
                         // sort alphabetically by name
-                        Arrays.sort(rasArray, new Comparator<ResidentAssistant>() {
-                            @Override
-                            public int compare(ResidentAssistant lhs, ResidentAssistant rhs) {
-                                return lhs.getName().toLowerCase().compareTo(rhs.getName().toLowerCase());
-                            }
-                        });
+                        Arrays.sort(rasArray, (lhs, rhs) -> lhs.getName().toLowerCase().compareTo(rhs.getName().toLowerCase()));
 
                         createRADialog(rasArray, userType, userEmail);
                     }
@@ -297,7 +292,7 @@ public class LoginActivity extends Activity {
                 });
     }
 
-    private void createRADialog(final ResidentAssistant[] ras, final UserType userType, final String userEmail) {
+    private void createRADialog(ResidentAssistant[] ras, UserType userType, String userEmail) {
         RAChooserDialogFragment.getInstance(ras, userType, userEmail).show(getFragmentManager(), "raChooser");
     }
 

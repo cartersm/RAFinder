@@ -5,6 +5,7 @@ import edu.rosehulman.rafinder.UserType;
 /**
  * A GA.
  */
+@SuppressWarnings("unused") // constructors used by Jackson
 public class GraduateAssistant extends Employee {
 
     public GraduateAssistant() {

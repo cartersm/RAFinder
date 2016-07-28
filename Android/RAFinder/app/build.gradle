@@ -15,14 +15,17 @@ android {
             storePassword 'That is a logical request.'
         }
     }
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 24
+    buildToolsVersion '24.0.0'
     defaultConfig {
         applicationId "edu.rosehulman.rafinder"
         minSdkVersion 17
-        targetSdkVersion 23
+        targetSdkVersion 24
         versionCode 1
         versionName "1.0"
+        jackOptions {
+            enabled true
+        }
     }
     buildTypes {
         release {
@@ -40,11 +43,12 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     //noinspection GradleDependency
     compile 'joda-time:joda-time:2.8.1'
-    compile 'com.android.support:support-v4:23.2.1'
+    compile 'com.android.support:support-v4:24.1.0'
     compile 'com.firebase:firebase-client-android:2.3.1'
     compile 'eu.ocathain.com.sun.mail:javax.mail:1.5.2'
     compile 'edu.rosehulman.csse.rosefire:rosefire-android-client:2.0.0beta3'
 }
+
 
 
 
@@ -66,5 +70,9 @@ android {
             applicationId "edu.rosehulman.rafinder.dev"
             signingConfig signingConfigs.DevRelease
         }
+    }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
     }
 }

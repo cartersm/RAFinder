@@ -3,6 +3,7 @@ package edu.rosehulman.rafinder.model.reshall;
 /**
  * A single resident in a room.
  */
+@SuppressWarnings("unused") // constructors used by Jackson
 public class Resident {
     private String image;
     private String name;

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.BuildConfig;
 import android.util.Log;
 
 import edu.rosehulman.rafinder.ConfigKeys;
@@ -49,24 +50,23 @@ public class RAChooserDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.select_ra);
-        final String[] raStrings = new String[mRAs.length];
+        String[] raStrings = new String[mRAs.length];
         for (int i = 0; i < mRAs.length; i++) {
             ResidentAssistant ra = mRAs[i];
             raStrings[i] = ra.getName();
         }
-        builder.setItems(raStrings, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                ResidentAssistant ra = mRAs[which];
-                Activity context = getActivity();
-                SharedPreferences prefs = context.getSharedPreferences(ConfigKeys.KEY_SHARED_PREFS, Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putString(ConfigKeys.KEY_RA_EMAIL, ra.getEmail());
-                editor.putString(ConfigKeys.KEY_USER_EMAIL, ((LoginActivity) context).getEmail());
-                editor.apply();
+        builder.setItems(raStrings, (DialogInterface dialog, int which) -> {
+            ResidentAssistant ra = mRAs[which];
+            Activity context = getActivity();
+            SharedPreferences prefs = context.getSharedPreferences(ConfigKeys.KEY_SHARED_PREFS, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString(ConfigKeys.KEY_RA_EMAIL, ra.getEmail());
+            editor.putString(ConfigKeys.KEY_USER_EMAIL, ((LoginActivity) context).getEmail());
+            editor.apply();
+            if (BuildConfig.DEBUG){
                 Log.d(ConfigKeys.LOG_TAG, "Set RA Email '" + prefs.getString(ConfigKeys.KEY_RA_EMAIL, "") + "'");
-                ((LoginActivity) context).launchMainActivity(mUserType, ra.getEmail(), mUserEmail);
             }
+            ((LoginActivity) context).launchMainActivity(mUserType, ra.getEmail(), mUserEmail);
         });
 
         return builder.create();

@@ -8,6 +8,7 @@ import edu.rosehulman.rafinder.UserType;
 /**
  * An RA.
  */
+@SuppressWarnings("unused") // constructors used by Jackson
 public class ResidentAssistant extends Employee implements Parcelable {
 
     public ResidentAssistant() {

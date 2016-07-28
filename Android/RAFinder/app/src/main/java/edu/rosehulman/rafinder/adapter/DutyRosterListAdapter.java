@@ -13,6 +13,8 @@ import java.util.List;
 
 import edu.rosehulman.rafinder.MainActivity;
 import edu.rosehulman.rafinder.R;
+import edu.rosehulman.rafinder.controller.EmergencyContactsFragment;
+import edu.rosehulman.rafinder.controller.HomeFragment;
 import edu.rosehulman.rafinder.model.DutyRoster;
 import edu.rosehulman.rafinder.model.DutyRosterItem;
 
@@ -83,24 +85,15 @@ public class DutyRosterListAdapter extends BaseExpandableListAdapter {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = convertView != null ? convertView : inflater.inflate(R.layout.layout_duty_roster_item, null);
 
-        final DutyRosterItem item = mRoster.getRosterAsList().get(groupPosition).get(childPosition);
+        DutyRosterItem item = mRoster.getRosterAsList().get(groupPosition).get(childPosition);
 
         ((TextView) view.findViewById(R.id.hallTextView)).setText(item.getHall());
         ((TextView) view.findViewById(R.id.nameTextView)).setText(item.getName());
 
-        view.findViewById(R.id.callButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((MainActivity) mContext).dialPhoneNumber(item.getPhoneNumber());
-            }
-        });
+        view.findViewById(R.id.callButton).setOnClickListener(view1 ->
+                ((EmergencyContactsFragment.EmergencyContactsListener) mContext).dialPhoneNumber(item.getPhoneNumber()));
 
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainActivity) mContext).switchToProfile(item.getRa());
-            }
-        });
+        view.setOnClickListener(v -> ((HomeFragment.HomeListener) mContext).switchToProfile(item.getRa()));
 
         return view;
     }

@@ -1,7 +1,7 @@
 package edu.rosehulman.rafinder.controller;
 
-import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +19,7 @@ import edu.rosehulman.rafinder.model.reshall.ResHall;
  * The RA's view of a listing for a floor's residents
  */
 public class HallRosterFragment extends Fragment {
-    private List<ResHall> mHalls;
 
-    private int floorIndex; //not necessarily the floor number
     private HallRosterListener mListener;
     private ExpandableListAdapter mAdapter;
 
@@ -46,7 +44,7 @@ public class HallRosterFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_hall_roster, container, false);
-        final ExpandableListView listView = (ExpandableListView) view.findViewById(R.id.hallList);
+        ExpandableListView listView = (ExpandableListView) view.findViewById(R.id.hallList);
         listView.setAdapter(mAdapter);
         listView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             int previousGroup = -1;
@@ -64,12 +62,12 @@ public class HallRosterFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         try {
-            mListener = (HallRosterListener) activity;
+            mListener = (HallRosterListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement HallRosterListener");
+            throw new ClassCastException(context.toString() + " must implement HallRosterListener");
         }
     }
 

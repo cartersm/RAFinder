@@ -95,14 +95,9 @@ public class NavigationDrawerFragment extends Fragment {
                              Bundle savedInstanceState) {
         mDrawerListView = (ListView) inflater.inflate(
                 R.layout.fragment_navigation_drawer, container, false);
-        mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectItem(position);
-            }
-        });
+        mDrawerListView.setOnItemClickListener((AdapterView<?> parent, View view, int position, long id) -> selectItem(position));
 
-        updateDrawerList(((MainActivity) mDrawerListView.getContext()).getUserType());
+        updateDrawerList(((HomeFragment.HomeListener) mDrawerListView.getContext()).getUserType());
         return mDrawerListView;
     }
 
@@ -169,12 +164,7 @@ public class NavigationDrawerFragment extends Fragment {
             mDrawerLayout.openDrawer(mFragmentContainerView);
         }
 
-        mDrawerLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                mDrawerToggle.syncState();
-            }
-        });
+        mDrawerLayout.post(() -> mDrawerToggle.syncState());
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
@@ -198,11 +188,9 @@ public class NavigationDrawerFragment extends Fragment {
 
     public void updateDrawerList(UserType userType) {
         int items;
-        if (userType.equals(UserType.RESIDENT)) {
-            items = R.array.nav_drawer_student;
-        } else {
-            items = R.array.nav_drawer_ra;
-        }
+        items = (userType == UserType.RESIDENT) ?
+                R.array.nav_drawer_student :
+                R.array.nav_drawer_ra;
 
         mDrawerListView.setAdapter(new ArrayAdapter<>(
                 getActionBar().getThemedContext(),

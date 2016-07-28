@@ -1,5 +1,6 @@
 package edu.rosehulman.rafinder.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,7 @@ class FloorRosterArrayAdapter extends ArrayAdapter<Room> {
         mContext = context;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) mContext

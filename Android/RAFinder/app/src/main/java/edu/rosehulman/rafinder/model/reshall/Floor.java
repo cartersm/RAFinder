@@ -2,7 +2,6 @@ package edu.rosehulman.rafinder.model.reshall;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +9,7 @@ import java.util.Map;
 /**
  * One floor of a Residence Hall.
  */
+@SuppressWarnings("unused") // constructors used by Jackson
 public class Floor {
     private String floor;
     private Map<String, Room> rooms;
@@ -37,13 +37,10 @@ public class Floor {
     }
 
     public List<Room> getRooms() {
-        ArrayList<Room> list = new ArrayList<>(this.rooms.values());
-        Collections.sort(list, new Comparator<Room>() {
-            @Override
-            public int compare(Room room, Room room2) {
-                // order by room number
-                return room.getNumber().compareTo(room2.getNumber());
-            }
+        List<Room> list = new ArrayList<>(this.rooms.values());
+        Collections.sort(list, (room, room2) -> {
+            // order by room number
+            return room.getNumber().compareTo(room2.getNumber());
         });
         return list;
     }

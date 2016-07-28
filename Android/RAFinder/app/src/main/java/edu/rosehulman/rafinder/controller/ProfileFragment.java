@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -90,12 +91,12 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         try {
-            mListener = (StudentProfileListener) activity;
+            mListener = (StudentProfileListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement StudentProfileListener");
+            throw new ClassCastException(context.toString() + " must implement StudentProfileListener");
         }
     }
 
@@ -136,7 +137,7 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
         }
 
         // Set editable fields based on MainActivity.getUserType
-        if (!mContext.getUserType().equals(UserType.RESIDENT)
+        if (mContext.getUserType() != UserType.RESIDENT
                 && mContext.getUser() != null
                 && employee.equals(mContext.getUser())) {
 
@@ -146,27 +147,9 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
             imageView.setOnLongClickListener(this);
             showEditPromptDialog();
         }
-
-        view.findViewById(R.id.phoneButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mContext.dialPhoneNumber(employee.getPhoneNumber());
-            }
-        });
-
-        view.findViewById(R.id.emailButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mContext.sendEmail(employee.getEmail());
-            }
-        });
-
-        view.findViewById(R.id.feedbackButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showFeedbackDialog();
-            }
-        });
+        view.findViewById(R.id.phoneButton).setOnClickListener(v -> mContext.dialPhoneNumber(employee.getPhoneNumber()));
+        view.findViewById(R.id.emailButton).setOnClickListener(v -> mContext.sendEmail(employee.getEmail()));
+        view.findViewById(R.id.feedbackButton).setOnClickListener(v -> showFeedbackDialog());
 
         return view;
     }
@@ -184,11 +167,8 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
             public Dialog onCreateDialog(Bundle savedInstanceState) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setMessage(getString(R.string.edit_prompt));
-                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
+                builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    dialog.dismiss();
                 });
                 return builder.create();
             }
@@ -196,30 +176,24 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
         dialogFragment.show(getFragmentManager(), "editPrompt");
     }
 
-    private void showEditTextDialog(final TextView v) {
+    private void showEditTextDialog(TextView v) {
         DialogFragment dialogFragment = new DialogFragment() {
             @Override
             public Dialog onCreateDialog(Bundle savedInstanceState) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 View view = inflater.inflate(R.layout.dialog_edit_text, null);
-                final EditText editText = (EditText) view.findViewById(R.id.editText);
+                EditText editText = (EditText) view.findViewById(R.id.editText);
                 setMessageAndType(builder, editText, v.getId());
 
                 builder.setView(view);
 
-                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        setTextAndEmployeeField(v, editText.getText().toString());
-                        dialog.dismiss();
-                    }
+                builder.setPositiveButton(android.R.string.ok, (DialogInterface dialog, int which) -> {
+                    setTextAndEmployeeField(v, editText.getText().toString());
+                    dialog.dismiss();
                 });
-                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
+                builder.setNegativeButton(android.R.string.cancel, (DialogInterface dialog, int which) -> {
+                    dialog.cancel();
                 });
 
                 return builder.create();
@@ -229,7 +203,7 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
     }
 
     private void setMessageAndType(AlertDialog.Builder builder, EditText editText, int id) {
-        final String hint;
+        String hint;
         switch (id) {
             case R.id.phoneTextView:
                 hint = getString(R.string.profile_edit_phone);
@@ -243,7 +217,7 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
                 hint = "value";
                 break;
         }
-        final String message = getString(R.string.profile_edit_message_format, hint);
+        String message = getString(R.string.profile_edit_message_format, hint);
         builder.setTitle(message);
         editText.setHint(hint);
     }
@@ -263,22 +237,19 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
         }
     }
 
-    private void showStatusChooserDialog(final TextView v) {
+    private void showStatusChooserDialog(TextView v) {
         DialogFragment dialogFragment = new DialogFragment() {
             @Override
             public Dialog onCreateDialog(Bundle savedInstanceState) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle(getString(R.string.profile_edit_message_default));
-                final String[] statuses = getResources().getStringArray(R.array.default_statuses);
+                String[] statuses = getResources().getStringArray(R.array.default_statuses);
                 statuses[0] = String.format(statuses[0], employee.getHall());
-                builder.setItems(statuses, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String status = statuses[which];
-                        v.setText(getString(R.string.status_format, status));
-                        employee.setStatus(status);
-                        employee.getFirebase().child("status").setValue(employee.getStatus()); // async
-                    }
+                builder.setItems(statuses, (DialogInterface dialog, int which) -> {
+                    String status = statuses[which];
+                    v.setText(getString(R.string.status_format, status));
+                    employee.setStatus(status);
+                    employee.getFirebase().child("status").setValue(employee.getStatus()); // async
                 });
                 return builder.create();
             }
@@ -304,29 +275,23 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 View view = inflater.inflate(R.layout.dialog_edit_text, null);
-                final EditText editText = (EditText) view.findViewById(R.id.editText);
+                EditText editText = (EditText) view.findViewById(R.id.editText);
                 editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
                 editText.setMinLines(5);
 
-                final String hint = getString(R.string.profile_feedback);
-                final String message = getString(R.string.profile_edit_message_format, hint);
+                String hint = getString(R.string.profile_feedback);
+                String message = getString(R.string.profile_edit_message_format, hint);
                 builder.setTitle(message);
                 editText.setHint(hint);
 
                 builder.setView(view);
 
-                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mListener.sendFeedback(employee.getName(), employee.getEmail(), editText.getText().toString());
-                        dialog.dismiss();
-                    }
+                builder.setPositiveButton(android.R.string.ok, (DialogInterface dialog, int which) -> {
+                    mListener.sendFeedback(employee.getName(), employee.getEmail(), editText.getText().toString());
+                    dialog.dismiss();
                 });
-                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
+                builder.setNegativeButton(android.R.string.cancel, (DialogInterface dialog, int which) -> {
+                    dialog.cancel();
                 });
 
                 return builder.create();

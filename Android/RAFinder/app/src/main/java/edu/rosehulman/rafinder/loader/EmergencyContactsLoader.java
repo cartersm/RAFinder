@@ -1,5 +1,6 @@
 package edu.rosehulman.rafinder.loader;
 
+import android.os.Build;
 import android.util.Log;
 
 import com.firebase.client.DataSnapshot;
@@ -9,6 +10,7 @@ import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import edu.rosehulman.rafinder.ConfigKeys;
 import edu.rosehulman.rafinder.model.person.EmergencyContact;
@@ -31,8 +33,16 @@ public class EmergencyContactsLoader extends Loader {
 //            }
 
             List<Employee> myRAs = listener.getMyRAs();
-            for (Employee employee : myRAs) {
-                mContacts.add(new EmergencyContact(employee, false));
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                //noinspection Convert2streamapi
+                for (Employee employee : myRAs) {
+                    mContacts.add(new EmergencyContact(employee, false));
+                }
+            } else {
+                mContacts.addAll(
+                        myRAs.stream()
+                                .map(employee -> new EmergencyContact(employee, false))
+                                .collect(Collectors.toList()));
             }
         }
 

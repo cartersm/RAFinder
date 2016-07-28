@@ -1,7 +1,7 @@
 package edu.rosehulman.rafinder.controller;
 
-import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,20 +37,20 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        final Spinner hallSelectionSpinner = (Spinner) view.findViewById(R.id.hallSelectionSpinner);
+        Spinner hallSelectionSpinner = (Spinner) view.findViewById(R.id.hallSelectionSpinner);
         List<String> hallNames = mListener.getHallNames();
-        final ArrayAdapter<String> hallNameAdapter = new ArrayAdapter<>(
+        ArrayAdapter<String> hallNameAdapter = new ArrayAdapter<>(
                 getActivity(),
                 android.R.layout.simple_list_item_1,
                 hallNames);
         hallSelectionSpinner.setAdapter(hallNameAdapter);
 
-        final ExpandableListView listView = (ExpandableListView) view.findViewById(R.id.employeesListView);
-        final EmployeeList employees = new EmployeeList(mListener, mListener.getHallName());
-        final EmployeeListAdapter employeeListAdapter = new EmployeeListAdapter(view.getContext(), employees);
+        ExpandableListView listView = (ExpandableListView) view.findViewById(R.id.employeesListView);
+        EmployeeList employees = new EmployeeList(mListener, mListener.getHallName());
+        EmployeeListAdapter employeeListAdapter = new EmployeeListAdapter(view.getContext(), employees);
         listView.setAdapter(employeeListAdapter);
 
-        if (!mListener.getUserType().equals(UserType.ADMINISTRATOR)) {
+        if (mListener.getUserType() != UserType.ADMINISTRATOR) {
             hallSelectionSpinner.setSelection(hallNames.indexOf(mListener.getHallName()));
         }
 
@@ -74,12 +74,12 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         try {
-            mListener = (HomeListener) activity;
+            mListener = (HomeListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement HomeListener");
+            throw new ClassCastException(context.toString() + " must implement HomeListener");
         }
     }
 
@@ -90,7 +90,7 @@ public class HomeFragment extends Fragment {
     }
 
     public interface HomeListener {
-        void switchToProfile(Employee res);
+        void switchToProfile(Employee employee);
 
         String getString(int id);
 

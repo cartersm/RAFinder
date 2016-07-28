@@ -1,7 +1,7 @@
 package edu.rosehulman.rafinder.controller;
 
-import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import edu.rosehulman.rafinder.R;
@@ -47,16 +46,14 @@ public class EmergencyContactsFragment extends Fragment
         View view = inflater.inflate(R.layout.fragment_emergency_contacts, container, false);
         ListView listView = (ListView) view.findViewById(R.id.emergencyContactsListView);
 
-        Collections.sort(emergencyContacts, new Comparator<EmergencyContact>() {
-            @Override
-            public int compare(EmergencyContact lhs, EmergencyContact rhs) {
-                if (lhs.getPriority().ordinal() > rhs.getPriority().ordinal()) {
-                    return -1;
-                } else if (lhs.getPriority().ordinal() < rhs.getPriority().ordinal()) {
-                    return 1;
-                }
-                return 0;
+        Collections.sort(emergencyContacts, (lhs, rhs) -> {
+            if (lhs.getPriority().ordinal() > rhs.getPriority().ordinal()) {
+                return -1;
             }
+            if (lhs.getPriority().ordinal() < rhs.getPriority().ordinal()) {
+                return 1;
+            }
+            return 0;
         });
         EmergencyContactArrayAdapter mAdapter = new EmergencyContactArrayAdapter(
                 getActivity(),
@@ -69,12 +66,12 @@ public class EmergencyContactsFragment extends Fragment
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         try {
-            mListener = (EmergencyContactsListener) activity;
+            mListener = (EmergencyContactsListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement EmergencyContactsListener");
+            throw new ClassCastException(context.toString() + " must implement EmergencyContactsListener");
         }
     }
 

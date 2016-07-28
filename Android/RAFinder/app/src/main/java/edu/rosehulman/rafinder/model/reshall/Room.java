@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +11,7 @@ import java.util.Map;
 /**
  * A single room in the hall roster.
  */
+@SuppressWarnings("unused") // constructors used by Jackson
 public class Room {
 
     @JsonProperty("number")
@@ -42,13 +42,10 @@ public class Room {
     }
 
     public List<Resident> getResidents() {
-        ArrayList<Resident> list = new ArrayList<>(this.residents.values());
-        Collections.sort(list, new Comparator<Resident>() {
-            @Override
-            public int compare(Resident resident, Resident resident2) {
-                // order by resident name
-                return resident.getName().compareTo(resident2.getName());
-            }
+        List<Resident> list = new ArrayList<>(this.residents.values());
+        Collections.sort(list, (resident, resident2) -> {
+            // order by resident name
+            return resident.getName().compareTo(resident2.getName());
         });
         return list;
     }

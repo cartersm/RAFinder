@@ -90,7 +90,7 @@ public class DutyRoster {
      * Returns the duty roster's dates as a list of lists of LocalDates, sorted by date.
      */
     public List<LocalDate> getRosterDatesAsList() {
-        ArrayList<LocalDate> localDates = new ArrayList<>(roster.keySet());
+        List<LocalDate> localDates = new ArrayList<>(roster.keySet());
         Collections.sort(localDates);
         return localDates;
     }

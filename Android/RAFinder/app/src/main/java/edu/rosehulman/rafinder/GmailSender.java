@@ -93,11 +93,7 @@ class GmailSender extends Authenticator {
         }
 
         public String getContentType() {
-            if (type == null) {
-                return "application/octet-stream";
-            } else {
-                return type;
-            }
+            return type == null ? "application/octet-stream" : type;
         }
 
         public InputStream getInputStream() throws IOException {

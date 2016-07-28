@@ -20,7 +20,7 @@ public class EmployeeList {
         this.employees = new ArrayList<>();
 
         UserType userType = context.getUserType();
-        if (!userType.equals(UserType.RESIDENT)) {
+        if (userType != UserType.RESIDENT) {
             this.employees.add(new EmployeeSubList(
                     context.getString(R.string.my_profile),
                     Collections.singletonList(context.getUser())));

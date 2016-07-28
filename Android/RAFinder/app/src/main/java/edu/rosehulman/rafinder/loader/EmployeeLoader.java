@@ -22,10 +22,10 @@ import edu.rosehulman.rafinder.model.person.SophomoreAdvisor;
  */
 public class EmployeeLoader extends Loader {
     private final LoaderListener mListener;
-    private List<Employee> mAdmins = new ArrayList<>();
-    private List<Employee> mRAs = new ArrayList<>();
-    private List<Employee> mGAs = new ArrayList<>();
-    private List<Employee> mSAs = new ArrayList<>();
+    private final List<Employee> mAdmins = new ArrayList<>();
+    private final List<Employee> mRAs = new ArrayList<>();
+    private final List<Employee> mGAs = new ArrayList<>();
+    private final List<Employee> mSAs = new ArrayList<>();
 
 
     public EmployeeLoader(String url, LoaderListener listener) {
@@ -89,31 +89,16 @@ public class EmployeeLoader extends Loader {
         return mAdmins;
     }
 
-    public void setAdmins(List<Employee> admins) {
-        mAdmins = admins;
-    }
-
     public List<Employee> getRAs() {
         return mRAs;
-    }
-
-    public void setRAs(List<Employee> ras) {
-        mRAs = ras;
     }
 
     public List<Employee> getGAs() {
         return mGAs;
     }
 
-    public void setGas(List<Employee> gas) {
-        mGAs = gas;
-    }
-
     public List<Employee> getSAs() {
         return mSAs;
     }
 
-    public void setSAs(List<Employee> sas) {
-        mSAs = sas;
-    }
 }

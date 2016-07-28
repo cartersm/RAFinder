@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import edu.rosehulman.rafinder.MainActivity;
 import edu.rosehulman.rafinder.R;
+import edu.rosehulman.rafinder.controller.HomeFragment;
 import edu.rosehulman.rafinder.model.EmployeeList;
 import edu.rosehulman.rafinder.model.person.Employee;
 
@@ -80,7 +81,7 @@ public class EmployeeListAdapter extends BaseExpandableListAdapter {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = convertView != null ? convertView : inflater.inflate(R.layout.layout_ra_item, null);
 
-        final Employee employee = mEmployees.getEmployees().get(groupPosition).get(childPosition);
+        Employee employee = mEmployees.getEmployees().get(groupPosition).get(childPosition);
 
         ImageView imageView = (ImageView) view.findViewById(R.id.RAImageView);
         Bitmap profilePicture = employee.getProfilePictureAsBitmap();
@@ -92,12 +93,7 @@ public class EmployeeListAdapter extends BaseExpandableListAdapter {
         ((TextView) view.findViewById(R.id.myRATextView)).setText(employee.getName());
         ((TextView) view.findViewById(R.id.status)).setText(mContext.getString(R.string.status_format, employee.getStatus()));
 
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainActivity) mContext).switchToProfile(employee);
-            }
-        });
+        view.setOnClickListener(v -> ((HomeFragment.HomeListener) mContext).switchToProfile(employee));
 
         return view;
     }
