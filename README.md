@@ -1,5 +1,12 @@
 ![alt-text](http://rosestem.rose-hulman.edu/s/1554/images/Rose-Hulman-footer-logo.png)
 
+```
+ ___  ___  ___  _         _           
+| . \| . || __><_>._ _  _| | ___  _ _ 
+|   /|   || _> | || ' |/ . |/ ._>| '_>
+|_\_\|_|_||_|  |_||_|_|\___|\___.|_|  
+```
+
 ## Rose-Hulman RA Finder
 ### _Property of Rose-Hulman Institute of Technology_
 ##### _Author:_ Sean Carter ( cartersm@rose-hulman.edu / sean47933@gmail.com )
